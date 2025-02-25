@@ -2,6 +2,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <iostream>
 #include "Game.hpp"
 #include "../common.h"
 
@@ -27,6 +28,13 @@ Game::Game() {
 }
 
 void Game::start_game_loop() {
+	std::thread fixedUpdateThread([&](void){
+		while (running) {
+			fixed_update();
+			SDL_Delay(FIXED_UPDATE_TIME_STEP);
+		}
+	});
+
 	float deltaTime = 1.0f;
 	float frameTime = (float)1000 / MAX_FPS;
 
@@ -59,6 +67,8 @@ void Game::start_game_loop() {
 			}
 		}
 	}
+
+	fixedUpdateThread.join();
 }
 
 void Game::stop_game_loop() {
@@ -70,7 +80,7 @@ void Game::update() {
 }
 
 void Game::fixed_update() {
-
+	
 }
 
 void Game::render() {
