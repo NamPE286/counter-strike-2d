@@ -11,4 +11,7 @@ public:
 	Game();
 	void start_game_loop();
 	void stop_game_loop();
+	void update();
+	void fixed_update();
+	void render();
 };

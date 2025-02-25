@@ -1,7 +1,8 @@
 #include <stdexcept>
 #include <string>
 #include <chrono>
-#include "game.hpp"
+#include <thread>
+#include "Game.hpp"
 #include "../common.h"
 
 Game::Game() {
@@ -26,7 +27,7 @@ Game::Game() {
 }
 
 void Game::start_game_loop() {
-	float deltaTime;
+	float deltaTime = 1.0f;
 	float frameTime = (float)1000 / MAX_FPS;
 
 	while (running) {
@@ -42,16 +43,13 @@ void Game::start_game_loop() {
 				if (event.key.keysym.sym == SDLK_ESCAPE) {
 					stop_game_loop();
 				}
-
-
 			}
 
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			SDL_RenderClear(renderer);
 
-			// update here
-
-			SDL_RenderPresent(renderer);
+			update();
+			render();
 
 			auto frameEndTime = std::chrono::high_resolution_clock().now();
 			deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(frameEndTime - frameStartTime).count();
@@ -65,4 +63,16 @@ void Game::start_game_loop() {
 
 void Game::stop_game_loop() {
 	running = false;
+}
+
+void Game::update() {
+
+}
+
+void Game::fixed_update() {
+
+}
+
+void Game::render() {
+	SDL_RenderPresent(renderer);
 }
