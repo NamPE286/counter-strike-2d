@@ -4,6 +4,7 @@
 #include <thread>
 #include <iostream>
 #include "Game.hpp"
+#include "Time.hpp"
 #include "../common.h"
 
 Game::Game() {
@@ -30,8 +31,14 @@ Game::Game() {
 void Game::start_game_loop() {
 	std::thread fixedUpdateThread([&](void){
 		while (running) {
+			auto start = std::chrono::high_resolution_clock().now();
+
 			fixed_update();
-			SDL_Delay(FIXED_UPDATE_TIME_STEP);
+
+			auto end = std::chrono::high_resolution_clock().now();
+			Time::fixedDeltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(frameEndTime - frameStartTime).count();
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(FIXED_UPDATE_TIME_STEP));
 		}
 	});
 
@@ -40,7 +47,7 @@ void Game::start_game_loop() {
 
 	while (running) {
 		SDL_Event event;
-		auto frameStartTime = std::chrono::high_resolution_clock().now();
+		auto start = std::chrono::high_resolution_clock().now();
 
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
@@ -59,8 +66,8 @@ void Game::start_game_loop() {
 			update();
 			render();
 
-			auto frameEndTime = std::chrono::high_resolution_clock().now();
-			deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(frameEndTime - frameStartTime).count();
+			auto end = std::chrono::high_resolution_clock().now();
+			Time::deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(frameEndTime - frameStartTime).count();
 
 			if (frameTime > deltaTime) {
 				SDL_Delay(Uint32(frameTime - deltaTime));
