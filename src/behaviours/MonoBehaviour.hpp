@@ -1,7 +1,7 @@
 class MonoBehaviour {
-	SDL_Renderer* renderer = nullptr;
+	SDL_Renderer* const renderer = nullptr;
 
-	MonoBehaviour(SDL_Renderer* renderer);
+	MonoBehaviour(SDL_Renderer* const renderer);
 	void start();
 	void update();
 	void fixed_update();
