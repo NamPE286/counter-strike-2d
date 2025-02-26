@@ -9,6 +9,8 @@
 #include "../common.h"
 #include "../scenes/GameScene.hpp"
 
+GameScene* scene = nullptr;
+
 Game::Game() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		throw std::runtime_error("Failed to initialize SDL. SDL error: " + std::string(SDL_GetError()));
@@ -28,6 +30,8 @@ Game::Game() {
 	if (renderer == nullptr) {
 		throw std::runtime_error("Failed to create renderer. Error: " + std::string(SDL_GetError()));
 	}
+
+	scene = new GameScene(renderer);
 }
 
 void Game::start_game_loop() {
@@ -88,7 +92,7 @@ void Game::stop_game_loop() {
 }
 
 void Game::update() {
-
+	scene->update();
 }
 
 void Game::fixed_update() {

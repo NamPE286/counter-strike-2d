@@ -6,4 +6,5 @@
 class GameScene : private MonoBehaviour {
 public:
 	using MonoBehaviour::MonoBehaviour;
+	void update();
 };
