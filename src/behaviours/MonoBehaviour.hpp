@@ -1,3 +1,5 @@
+#pragma once
+
 class MonoBehaviour {
 	SDL_Renderer* const renderer = nullptr;
 
