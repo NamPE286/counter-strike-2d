@@ -67,7 +67,7 @@ void Game::start_game_loop() {
 			render();
 
 			auto end = std::chrono::high_resolution_clock().now();
-			Time::deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(frameEndTime - frameStartTime).count();
+			Time::deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
 
 			if (frameTime > deltaTime) {
 				SDL_Delay(Uint32(frameTime - deltaTime));
