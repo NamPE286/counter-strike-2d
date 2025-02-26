@@ -9,4 +9,5 @@ public:
 
 	void event_handler(SDL_Event& event);
 	void update();
+	void render();
 };
