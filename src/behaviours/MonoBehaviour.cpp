@@ -4,11 +4,10 @@
 MonoBehaviour::MonoBehaviour(SDL_Renderer* renderer):
 	renderer(renderer) 
 {
-
+	start();
 }
 
 void MonoBehaviour::start() {
-
 }
 
 void MonoBehaviour::update() {
