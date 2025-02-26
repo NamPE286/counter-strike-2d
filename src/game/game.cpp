@@ -63,24 +63,24 @@ void Game::start_game_loop() {
 					stop_game_loop();
 				}
 			}
+		}
 
-			auto start = std::chrono::high_resolution_clock().now();
+		auto start = std::chrono::high_resolution_clock().now();
 
-			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-			SDL_RenderClear(renderer);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_RenderClear(renderer);
 
-			update();
-			render();
+		update();
+		render();
+
+		auto end = std::chrono::high_resolution_clock().now();
+		Time::deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
+
+		if (frameTime > Time::deltaTime) {
+			SDL_Delay(Uint32(frameTime - Time::deltaTime));
 
 			auto end = std::chrono::high_resolution_clock().now();
 			Time::deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
-
-			if (frameTime > Time::deltaTime) {
-				SDL_Delay(Uint32(frameTime - Time::deltaTime));
-
-				auto end = std::chrono::high_resolution_clock().now();
-				Time::deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
-			}
 		}
 	}
 
