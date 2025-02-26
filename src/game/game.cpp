@@ -36,7 +36,7 @@ void Game::start_game_loop() {
 			fixed_update();
 
 			auto end = std::chrono::high_resolution_clock().now();
-			Time::fixedDeltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(frameEndTime - frameStartTime).count();
+			Time::fixedDeltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(start - end).count();
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(FIXED_UPDATE_TIME_STEP));
 		}
