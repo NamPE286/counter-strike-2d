@@ -6,12 +6,3 @@ MonoBehaviour::MonoBehaviour(SDL_Renderer* renderer):
 {
 	start();
 }
-
-void MonoBehaviour::start() {
-}
-
-void MonoBehaviour::update() {
-}
-
-void MonoBehaviour::fixed_update() {
-}

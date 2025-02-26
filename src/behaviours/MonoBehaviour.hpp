@@ -1,12 +1,12 @@
 #pragma once
 
 class MonoBehaviour {
+public:
 	SDL_Renderer* const renderer = nullptr;
 
-	void start();
-	void update();
-	void fixed_update();
-
-public:
 	MonoBehaviour(SDL_Renderer* const renderer);
+
+	virtual void start() {};
+	virtual void update() {};
+	virtual void fixed_update() {};
 };
