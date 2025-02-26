@@ -11,7 +11,12 @@ public:
 	Game();
 	void start_game_loop();
 	void stop_game_loop();
+
+	// Call all update method. This method is called every frame
 	void update();
+
+	// Call all fixed_update method. This method is called every 20ms
 	void fixed_update();
+
 	void render();
 };
