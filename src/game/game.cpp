@@ -73,9 +73,6 @@ void Game::start_game_loop() {
 
 		auto start = std::chrono::high_resolution_clock().now();
 
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		SDL_RenderClear(renderer);
-
 		update();
 		render();
 
@@ -102,9 +99,14 @@ void Game::update() {
 }
 
 void Game::fixed_update() {
-	
+	scene->fixed_update();
 }
 
 void Game::render() {
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
+	scene->render();
+
 	SDL_RenderPresent(renderer);
 }
