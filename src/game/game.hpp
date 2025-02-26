@@ -18,5 +18,6 @@ public:
 	// Call all fixed_update method. This method is called every 20ms
 	void fixed_update();
 
+	// Call all render method. This method is called after all update finished
 	void render();
 };

@@ -9,4 +9,5 @@ public:
 	virtual void start() {};
 	virtual void update() {};
 	virtual void fixed_update() {};
+	virtual void render() {};
 };
