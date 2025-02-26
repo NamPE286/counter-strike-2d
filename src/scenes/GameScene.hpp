@@ -6,6 +6,7 @@
 class GameScene : public MonoBehaviour {
 public:
 	using MonoBehaviour::MonoBehaviour;
+
 	void event_handler(SDL_Event& event);
 	void update();
 };
