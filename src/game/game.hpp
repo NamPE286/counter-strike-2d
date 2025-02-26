@@ -18,7 +18,7 @@ public:
 	// Call all update method. This method is called every frame
 	void update();
 
-	// Call all fixed_update method. This method is called every 20ms
+	// Call all fixed_update method. This method is called every FIXED_UPDATE_TIME_STEP
 	void fixed_update();
 
 	// Call all render method. This method is called after all update finished

@@ -7,7 +7,7 @@ void GameScene::event_handler(SDL_Event& event) {
 }
 
 void GameScene::update() {
-
+	std::cout << Time::deltaTime << ' ' << Time::fixedDeltaTime << '\n';
 }
 
 void GameScene::render() {
