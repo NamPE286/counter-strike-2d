@@ -7,6 +7,7 @@
 #include "Time.hpp"
 #include "../game_objects/Player.hpp"
 #include "../common.h"
+#include "../scenes/GameScene.hpp"
 
 Game::Game() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
