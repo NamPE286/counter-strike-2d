@@ -6,3 +6,7 @@ MonoBehaviour::MonoBehaviour(SDL_Renderer* renderer):
 {
 	start();
 }
+
+MonoBehaviour::~MonoBehaviour() {
+	clean_up();
+}

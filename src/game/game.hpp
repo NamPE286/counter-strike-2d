@@ -13,6 +13,7 @@ public:
 
 	void start_game_loop();
 	void stop_game_loop();
+	void event_handler(SDL_Event& event);
 
 	// Call all update method. This method is called every frame
 	void update();

@@ -35,6 +35,8 @@ Game::Game() {
 }
 
 Game::~Game() {
+	delete scene;
+
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
@@ -60,15 +62,7 @@ void Game::start_game_loop() {
 		SDL_Event event;
 
 		while (SDL_PollEvent(&event)) {
-			if (event.type == SDL_QUIT) {
-				stop_game_loop();
-			}
-
-			if (event.type == SDL_KEYDOWN) {
-				if (event.key.keysym.sym == SDLK_ESCAPE) {
-					stop_game_loop();
-				}
-			}
+			event_handler(event);
 		}
 
 		auto start = std::chrono::high_resolution_clock().now();
@@ -92,6 +86,20 @@ void Game::start_game_loop() {
 
 void Game::stop_game_loop() {
 	running = false;
+}
+
+void Game::event_handler(SDL_Event& event) {
+	if (event.type == SDL_QUIT) {
+		stop_game_loop();
+	}
+
+	if (event.type == SDL_KEYDOWN) {
+		if (event.key.keysym.sym == SDLK_ESCAPE) {
+			stop_game_loop();
+		}
+	}
+
+	scene->event_handler(event);
 }
 
 void Game::update() {
