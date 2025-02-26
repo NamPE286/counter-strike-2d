@@ -47,7 +47,6 @@ void Game::start_game_loop() {
 
 	while (running) {
 		SDL_Event event;
-		auto start = std::chrono::high_resolution_clock().now();
 
 		while (SDL_PollEvent(&event)) {
 			if (event.type == SDL_QUIT) {
@@ -59,6 +58,8 @@ void Game::start_game_loop() {
 					stop_game_loop();
 				}
 			}
+
+			auto start = std::chrono::high_resolution_clock().now();
 
 			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 			SDL_RenderClear(renderer);
