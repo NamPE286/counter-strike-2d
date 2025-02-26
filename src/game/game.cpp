@@ -34,6 +34,12 @@ Game::Game() {
 	scene = new GameScene(renderer);
 }
 
+Game::~Game() {
+	SDL_DestroyWindow(window);
+	SDL_DestroyRenderer(renderer);
+	SDL_Quit();
+}
+
 void Game::start_game_loop() {
 	std::thread fixedUpdateThread([&](void){
 		while (running) {

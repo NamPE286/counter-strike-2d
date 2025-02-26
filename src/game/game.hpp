@@ -9,6 +9,8 @@ class Game {
 
 public:
 	Game();
+	~Game();
+
 	void start_game_loop();
 	void stop_game_loop();
 
