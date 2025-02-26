@@ -6,7 +6,7 @@ if (POLICY CMP0141)
 endif()
 
 project (main)
-add_executable (main "src/main.cpp"  "src/game/Game.cpp" "src/common.h" "src/behaviours/MonoBehaviour.cpp")
+add_executable (main "src/main.cpp"  "src/game/Game.cpp" "src/common.h" "src/behaviours/MonoBehaviour.cpp" "src/game_objects/Player.cpp")
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

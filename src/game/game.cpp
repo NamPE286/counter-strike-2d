@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Game.hpp"
 #include "Time.hpp"
+#include "../game_objects/Player.hpp"
 #include "../common.h"
 
 Game::Game() {
@@ -42,7 +43,6 @@ void Game::start_game_loop() {
 		}
 	});
 
-	float deltaTime = 1.0f;
 	float frameTime = (float)1000 / MAX_FPS;
 
 	while (running) {
@@ -70,8 +70,11 @@ void Game::start_game_loop() {
 			auto end = std::chrono::high_resolution_clock().now();
 			Time::deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
 
-			if (frameTime > deltaTime) {
-				SDL_Delay(Uint32(frameTime - deltaTime));
+			if (frameTime > Time::deltaTime) {
+				SDL_Delay(Uint32(frameTime - Time::deltaTime));
+
+				auto end = std::chrono::high_resolution_clock().now();
+				Time::deltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
 			}
 		}
 	}
