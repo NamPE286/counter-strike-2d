@@ -3,7 +3,7 @@
 #include <SDL2/SDL.h>
 #include <vector>
 #include "../behaviours/MonoBehaviour.hpp"
-#include "../game_objects/Player.hpp"
+#include "../gameObjects/Player.hpp"
 
 class GameScene : public MonoBehaviour {
 	std::vector<Player> players;

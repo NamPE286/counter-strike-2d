@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "../managers/Time.hpp"
-#include "../game_objects/Player.hpp"
+#include "../gameObjects/Player.hpp"
 #include "../common.h"
 #include "../scenes/GameScene.hpp"
 
