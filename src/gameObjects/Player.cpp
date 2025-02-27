@@ -37,22 +37,13 @@ void Player::render() {
 void Player::on_key_down(SDL_Event& event) {
 	const auto keyboard = SDL_GetKeyboardState(0);
 
-	Vec2 direction = Vec2(0, 0);
-
-	for (auto& [bind, v] : directionBind) {
-		if (keyboard[bind]) {
-			direction += v;
-		}
+	if (event.key.repeat) {
+		return;
 	}
 
-	velocity = direction * speed;
+	velocity += directionMap[event.key.keysym.sym] * speed;
 }
 
 void Player::on_key_up(SDL_Event& event) {
-	for (auto& [bind, v] : directionBind) {
-		if (bind == event.key.keysym.scancode) {
-			velocity += v * speed * -1;
-			break;
-		}
-	}
+	velocity += directionMap[event.key.keysym.sym] * speed * -1;
 }

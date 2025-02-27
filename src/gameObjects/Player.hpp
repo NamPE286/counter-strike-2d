@@ -2,17 +2,17 @@
 
 #include <SDL2/SDL.h>
 #include <utility>
-#include <vector>
+#include <map>
 
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../geometry/Vec2.hpp"
 
 class Player : public MonoBehaviour {
-	std::vector<std::pair<Uint32, Vec2>> directionBind = {
-		{ SDL_SCANCODE_W, Vec2(0, -1) },
-		{ SDL_SCANCODE_A, Vec2(-1, 0) },
-		{ SDL_SCANCODE_S, Vec2(0, 1) },
-		{ SDL_SCANCODE_D, Vec2(1, 0) }
+	std::map<Uint32, Vec2> directionMap = {
+		{ SDLK_w, Vec2(0, -1) },
+		{ SDLK_a, Vec2(-1, 0) },
+		{ SDLK_s, Vec2(0, 1) },
+		{ SDLK_d, Vec2(1, 0) }
 	};
 	Vec2 position, velocity;
 	const int size = 30, borderWidth = 8;
