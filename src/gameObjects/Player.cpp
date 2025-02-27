@@ -59,5 +59,11 @@ void Player::on_key_down(SDL_Event& event) {
 }
 
 void Player::on_key_up(SDL_Event& event) {
-	velocity = acceleration = Vec2(0, 0);
+	if (directionMap[event.key.keysym.sym].x != 0) {
+		velocity.x = acceleration.x = 0;
+	}
+
+	if (directionMap[event.key.keysym.sym].y != 0) {
+		velocity.y = acceleration.y = 0;
+	}
 }
