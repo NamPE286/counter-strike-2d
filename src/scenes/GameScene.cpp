@@ -1,18 +1,22 @@
+#include <iostream>
 #include "GameScene.hpp"
 #include "../managers/Time.hpp"
-#include <iostream>
+
+GameScene::GameScene(SDL_Renderer* renderer):
+	MonoBehaviour(renderer)
+{
+	players.emplace_back(renderer, Vec2(10, 50));
+}
 
 void GameScene::event_handler(SDL_Event& event) {
 
 }
 
 void GameScene::update() {
-	std::cout << Time::deltaTime << ' ' << Time::fixedDeltaTime << '\n';
 }
 
 void GameScene::render() {
-	SDL_Rect rect = { 100, 100, 100, 100 };
-
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_RenderFillRect(renderer, &rect);
+	for (Player& p : players) {
+		p.render();
+	}
 }
