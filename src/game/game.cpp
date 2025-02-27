@@ -1,9 +1,11 @@
+#include "Game.hpp"
+
 #include <stdexcept>
 #include <string>
 #include <chrono>
 #include <thread>
 #include <iostream>
-#include "Game.hpp"
+
 #include "../managers/Time.hpp"
 #include "../game_objects/Player.hpp"
 #include "../common.h"
