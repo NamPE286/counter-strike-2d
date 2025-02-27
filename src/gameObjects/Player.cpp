@@ -9,6 +9,12 @@ Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos):
 {}
 
 void Player::update() {
+	velocity += acceleration * Time::deltaTime;
+
+	if (velocity.magnitude() > maxSpeed) {
+		velocity = velocity.normalized() * maxSpeed;
+	}
+
 	position += velocity * Time::deltaTime;
 }
 
@@ -41,9 +47,17 @@ void Player::on_key_down(SDL_Event& event) {
 		return;
 	}
 
-	velocity += directionMap[event.key.keysym.sym] * speed;
+	if (directionMap[event.key.keysym.sym].x != 0) {
+		velocity.x = 0;
+	}
+
+	if (directionMap[event.key.keysym.sym].y != 0) {
+		velocity.y = 0;
+	}
+
+	acceleration += directionMap[event.key.keysym.sym] * 0.002f;
 }
 
 void Player::on_key_up(SDL_Event& event) {
-	velocity += directionMap[event.key.keysym.sym] * speed * -1;
+	velocity = acceleration = Vec2(0, 0);
 }

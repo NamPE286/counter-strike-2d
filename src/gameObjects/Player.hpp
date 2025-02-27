@@ -14,11 +14,10 @@ class Player : public MonoBehaviour {
 		{ SDLK_s, Vec2(0, 1) },
 		{ SDLK_d, Vec2(1, 0) }
 	};
-	Vec2 position, velocity;
+	Vec2 position, velocity, acceleration;
 	const int size = 30, borderWidth = 8;
-	const float speed = 0.2f;
+	const float maxSpeed = 0.4f;
 	int r, g, b;
-
 public:
 	Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos = Vec2(0, 0));
 
