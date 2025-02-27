@@ -12,5 +12,6 @@ public:
 	GameScene(SDL_Renderer* renderer);
 	void event_handler(SDL_Event& event);
 	void update();
+	void fixed_update();
 	void render();
 };

@@ -12,5 +12,7 @@ public:
 	virtual void update() {};
 	virtual void fixed_update() {};
 	virtual void render() {};
-	virtual void event_handler(SDL_Event& event) {};
+	virtual void event_handler(SDL_Event& event);
+	virtual void on_key_down(SDL_Event& event) {};
+	virtual void on_key_up(SDL_Event& event) {};
 };

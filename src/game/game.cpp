@@ -51,10 +51,15 @@ void Game::start_game_loop() {
 
 			fixed_update();
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(FIXED_UPDATE_TIME_STEP));
-
 			auto end = std::chrono::high_resolution_clock().now();
 			Time::fixedDeltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
+
+			if (FIXED_UPDATE_TIME_STEP > Time::fixedDeltaTime) {
+				std::this_thread::sleep_for(std::chrono::milliseconds(FIXED_UPDATE_TIME_STEP - (int)Time::fixedDeltaTime));
+
+				auto end = std::chrono::high_resolution_clock().now();
+				Time::fixedDeltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
+			}
 		}
 	});
 
