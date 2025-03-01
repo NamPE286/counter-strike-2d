@@ -4,11 +4,7 @@
 
 #include "../managers/Time.hpp"
 
-Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos):
-	MonoBehaviour(renderer), position(pos), r(r), g(g), b(b)
-{}
-
-void Player::update() {
+void Player::update_position() {
 	velocity += acceleration * Time::deltaTime * 0.5;
 	position += velocity * Time::deltaTime;
 	velocity += acceleration * Time::deltaTime * 0.5;
@@ -24,8 +20,14 @@ void Player::update() {
 	if (velocity.y * direction.y <= 0) {
 		velocity.y = acceleration.y = 0;
 	}
+}
 
-	std::cout << direction.x << ' ' << direction.y << '\n';
+Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos):
+	MonoBehaviour(renderer), position(pos), r(r), g(g), b(b)
+{}
+
+void Player::update() {
+	update_position();
 }
 
 void Player::fixed_update() {}

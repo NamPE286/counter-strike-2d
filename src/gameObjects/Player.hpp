@@ -18,6 +18,8 @@ class Player : public MonoBehaviour {
 	const int size = 30, borderWidth = 8;
 	const float maxSpeed = 0.4f;
 	int r, g, b;
+
+	void update_position();
 public:
 	Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos = Vec2(0, 0));
 
