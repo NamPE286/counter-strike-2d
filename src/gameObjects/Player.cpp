@@ -9,7 +9,9 @@ Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos):
 {}
 
 void Player::update() {
-	velocity += acceleration * Time::deltaTime;
+	velocity += acceleration * Time::deltaTime * 0.5;
+	position += velocity * Time::deltaTime;
+	velocity += acceleration * Time::deltaTime * 0.5;
 
 	if (velocity.magnitude() > maxSpeed) {
 		velocity = velocity.normalized() * maxSpeed;
@@ -22,8 +24,6 @@ void Player::update() {
 	if (velocity.y * direction.y < 0) {
 		velocity.y = acceleration.y = direction.y = 0;
 	}
-
-	position += velocity * Time::deltaTime;
 }
 
 void Player::fixed_update() {}
