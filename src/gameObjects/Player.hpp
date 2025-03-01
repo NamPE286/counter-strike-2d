@@ -9,10 +9,10 @@
 
 class Player : public MonoBehaviour {
 	std::map<Uint32, Vec2> directionMap = {
-		{ SDLK_w, Vec2(0, -1) },
-		{ SDLK_a, Vec2(-1, 0) },
-		{ SDLK_s, Vec2(0, 1) },
-		{ SDLK_d, Vec2(1, 0) }
+		{ SDL_SCANCODE_W, Vec2(0, -1) },
+		{ SDL_SCANCODE_A, Vec2(-1, 0) },
+		{ SDL_SCANCODE_S, Vec2(0, 1) },
+		{ SDL_SCANCODE_D, Vec2(1, 0) }
 	};
 	Vec2 position, velocity, acceleration, direction;
 	const int size = 30, borderWidth = 8;

@@ -69,25 +69,47 @@ void Player::on_key_down(SDL_Event& event) {
 		return;
 	}
 
-	if (directionMap[event.key.keysym.sym].x != 0) {
+	if (directionMap[event.key.keysym.scancode].x != 0) {
 		velocity.x = 0;
-		direction.x = directionMap[event.key.keysym.sym].x;
-		acceleration.x = directionMap[event.key.keysym.sym].x * 0.002f;
+		direction.x = directionMap[event.key.keysym.scancode].x;
+		acceleration.x = directionMap[event.key.keysym.scancode].x * 0.002f;
 	}
 
-	if (directionMap[event.key.keysym.sym].y != 0) {
+	if (directionMap[event.key.keysym.scancode].y != 0) {
 		velocity.y = 0;
-		direction.y = directionMap[event.key.keysym.sym].y;
-		acceleration.y = directionMap[event.key.keysym.sym].y * 0.002f;
+		direction.y = directionMap[event.key.keysym.scancode].y;
+		acceleration.y = directionMap[event.key.keysym.scancode].y * 0.002f;
 	}
 }
 
 void Player::on_key_up(SDL_Event& event) {
-	if (directionMap[event.key.keysym.sym].x != 0 && velocity.x != 0) {
-		acceleration.x = directionMap[event.key.keysym.sym].x * 0.002f * -1;
+	const auto keyboard = SDL_GetKeyboardState(0);
+
+	if (directionMap[event.key.keysym.scancode].x != 0 && velocity.x != 0) {
+		acceleration.x = directionMap[event.key.keysym.scancode].x * 0.002f * -1;
 	}
 
-	if (directionMap[event.key.keysym.sym].y != 0 && velocity.y != 0) {
-		acceleration.y = directionMap[event.key.keysym.sym].y * 0.002f * -1;
+	if (directionMap[event.key.keysym.scancode].y != 0 && velocity.y != 0) {
+		acceleration.y = directionMap[event.key.keysym.scancode].y * 0.002f * -1;
+	}
+
+	if (keyboard[SDL_SCANCODE_W] && !keyboard[SDL_SCANCODE_S]) {
+		velocity.y = 0;
+		direction.y = directionMap[SDL_SCANCODE_W].y;
+		acceleration.y = directionMap[SDL_SCANCODE_W].y * 0.002f;
+	} else if (!keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_S]) {
+		velocity.y = 0;
+		direction.y = directionMap[SDL_SCANCODE_S].y;
+		acceleration.y = directionMap[SDL_SCANCODE_S].y * 0.002f;
+	}
+	
+	if (keyboard[SDL_SCANCODE_A] && !keyboard[SDL_SCANCODE_D]) {
+		velocity.x = 0;
+		direction.x = directionMap[SDL_SCANCODE_A].x;
+		acceleration.x = directionMap[SDL_SCANCODE_A].x * 0.002f;
+	} else if (!keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
+		velocity.x = 0;
+		direction.x = directionMap[SDL_SCANCODE_D].x;
+		acceleration.x = directionMap[SDL_SCANCODE_D].x * 0.002f;
 	}
 }
