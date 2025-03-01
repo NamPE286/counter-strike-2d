@@ -15,6 +15,14 @@ void Player::update() {
 		velocity = velocity.normalized() * maxSpeed;
 	}
 
+	if (velocity.x * direction.x < 0) {
+		velocity.x = acceleration.x = direction.x = 0;
+	}
+
+	if (velocity.y * direction.y < 0) {
+		velocity.y = acceleration.y = direction.y = 0;
+	}
+
 	position += velocity * Time::deltaTime;
 }
 
@@ -49,23 +57,23 @@ void Player::on_key_down(SDL_Event& event) {
 
 	if (directionMap[event.key.keysym.sym].x != 0) {
 		velocity.x = 0;
+		direction.x = directionMap[event.key.keysym.sym].x;
+		acceleration.x = directionMap[event.key.keysym.sym].x * 0.002f;
 	}
 
 	if (directionMap[event.key.keysym.sym].y != 0) {
 		velocity.y = 0;
+		direction.y = directionMap[event.key.keysym.sym].y;
+		acceleration.y = directionMap[event.key.keysym.sym].y * 0.002f;
 	}
-
-	acceleration += directionMap[event.key.keysym.sym] * 0.002f;
 }
 
 void Player::on_key_up(SDL_Event& event) {
 	if (directionMap[event.key.keysym.sym].x != 0) {
-		velocity.x = 0;
+		acceleration.x = directionMap[event.key.keysym.sym].x * 0.002f * -1;
 	}
 
 	if (directionMap[event.key.keysym.sym].y != 0) {
-		velocity.y = 0;
+		acceleration.y = directionMap[event.key.keysym.sym].y * 0.002f * -1;
 	}
-
-	acceleration += directionMap[event.key.keysym.sym] * 0.002f * -1;
 }

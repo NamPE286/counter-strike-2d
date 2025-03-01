@@ -14,7 +14,7 @@ class Player : public MonoBehaviour {
 		{ SDLK_s, Vec2(0, 1) },
 		{ SDLK_d, Vec2(1, 0) }
 	};
-	Vec2 position, velocity, acceleration;
+	Vec2 position, velocity, acceleration, direction;
 	const int size = 30, borderWidth = 8;
 	const float maxSpeed = 0.4f;
 	int r, g, b;
