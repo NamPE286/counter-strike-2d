@@ -17,13 +17,15 @@ void Player::update() {
 		velocity = velocity.normalized() * maxSpeed;
 	}
 
-	if (velocity.x * direction.x < 0) {
-		velocity.x = acceleration.x = direction.x = 0;
+	if (velocity.x * direction.x <= 0) {
+		velocity.x = acceleration.x = 0;
 	}
 
-	if (velocity.y * direction.y < 0) {
-		velocity.y = acceleration.y = direction.y = 0;
+	if (velocity.y * direction.y <= 0) {
+		velocity.y = acceleration.y = 0;
 	}
+
+	std::cout << direction.x << ' ' << direction.y << '\n';
 }
 
 void Player::fixed_update() {}
@@ -55,6 +57,16 @@ void Player::on_key_down(SDL_Event& event) {
 		return;
 	}
 
+	if (keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
+		acceleration.x *= -1;
+		return;
+	}
+
+	if (keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_S]) {
+		acceleration.y *= -1;
+		return;
+	}
+
 	if (directionMap[event.key.keysym.sym].x != 0) {
 		velocity.x = 0;
 		direction.x = directionMap[event.key.keysym.sym].x;
@@ -69,11 +81,11 @@ void Player::on_key_down(SDL_Event& event) {
 }
 
 void Player::on_key_up(SDL_Event& event) {
-	if (directionMap[event.key.keysym.sym].x != 0) {
+	if (directionMap[event.key.keysym.sym].x != 0 && velocity.x != 0) {
 		acceleration.x = directionMap[event.key.keysym.sym].x * 0.002f * -1;
 	}
 
-	if (directionMap[event.key.keysym.sym].y != 0) {
+	if (directionMap[event.key.keysym.sym].y != 0 && velocity.y != 0) {
 		acceleration.y = directionMap[event.key.keysym.sym].y * 0.002f * -1;
 	}
 }
