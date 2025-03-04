@@ -26,7 +26,7 @@ void Player::update_position() {
 Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos, bool playable):
 	MonoBehaviour(renderer), position(pos), r(r), g(g), b(b), playable(playable)
 {
-	weapons[0] = new Weapon(renderer, "Knife");
+	weapons[0] = new Weapon(renderer, "AK-47");
 	weapons[1] = new Weapon(renderer, "Knife");
 	weapons[2] = new Weapon(renderer, "Knife");
 }
@@ -75,6 +75,24 @@ void Player::on_key_down(SDL_Event& event) {
 	const auto keyboard = SDL_GetKeyboardState(0);
 
 	if (event.key.repeat) {
+		return;
+	}
+
+	if (event.key.keysym.scancode == SDL_SCANCODE_1) {
+		weapons[weaponSlot]->stopFire();
+		weaponSlot = 0;
+		return;
+	}
+
+	if (event.key.keysym.scancode == SDL_SCANCODE_2) {
+		weapons[weaponSlot]->stopFire();
+		weaponSlot = 1;
+		return;
+	}
+
+	if (event.key.keysym.scancode == SDL_SCANCODE_3) {
+		weapons[weaponSlot]->stopFire();
+		weaponSlot = 2;
 		return;
 	}
 
