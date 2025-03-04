@@ -75,16 +75,21 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 	}
 	
 	if (name == "AK-47") {
-		magSize = 30, mobility = 215, range = 8192, killAward = 300;
+		magSize = 30, mobility = 215, range = 1000, killReward = 300, price = 2700;
 		damage = 36.0f, armorPenetration = 0.775f, tagging = 0.6f,
-		headshotMultiplier = 4.0f, standingInaccuracy = 7.1f, runningInaccuracy = 5.41f,
+		headshotMultiplier = 4.0f, standingInaccuracy = 7.8f, runningInaccuracy = 5.41f,
 		fireRate = 100.0f, reloadTime = 2400.0f;
 		automatic = true;
 		ammo = 30, reserveAmmo = 90;
 	} else if (name == "M4A4") {
 
 	} else if (name == "Glock-18") {
-
+		magSize = 20, mobility = 240, range = 400, killReward = 300, price = 200;
+		damage = 30.0f, armorPenetration = 0.47f, tagging = 0.5f,
+		headshotMultiplier = 4.0f, standingInaccuracy = 56.0f, runningInaccuracy = 17.6f,
+		fireRate = 50.0f, reloadTime = 2300.0f;
+		automatic = false;
+		ammo = 20, reserveAmmo = 120;
 	} else if (name == "USP-S") {
 
 	} else {
