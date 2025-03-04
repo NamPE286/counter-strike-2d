@@ -7,14 +7,11 @@
 #include "../utilities/Utils.hpp"
 
 void Weapon::update_fire() {
-	if (!firing) {
-		return;
-	}
-
 	fireCooldown -= Time::deltaTime;
+	fireCooldown = std::max(fireCooldown, -1.0f);
 
-	if (fireCooldown <= 0.0f) {
-		fireCooldown = -1.0f;
+	if (!firing || fireCooldown > 0.0f) {
+		return;
 	}
 
 	int x = 0, y = 0;
@@ -23,7 +20,7 @@ void Weapon::update_fire() {
 
 	float angle = Utils::getAngle((int)pos->x, (int)pos->y, x, y);
 
-	if (automatic && fireCooldown <= 0.0f) {
+	if (automatic) {
 		bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
 		fireCooldown = fireRate;
 
@@ -31,11 +28,13 @@ void Weapon::update_fire() {
 			ammo--;
 			play_firing_sound(ammo <= magSize * 20 / 100);
 			std::cout << ammo << ' ' << reserveAmmo << '\n';
+		} else if (ammo == -1) {
+			play_firing_sound(false);
+			std::cout << ammo << ' ' << reserveAmmo << '\n';
 		}
-	}
-
-	if (!automatic) {
+	} else {
 		bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
+		fireCooldown = fireRate;
 		firing = false;
 
 		if (ammo > 0) {
@@ -89,8 +88,12 @@ void Weapon::play_draw_sound() {
 	std::thread t([&]() {
 		Mix_PlayChannel(-1, drawSound, 0);
 		SDL_Delay(300);
-		Mix_PlayChannel(-1, pullSound, 0);
-		SDL_Delay(500);
+
+		if (pullSound != nullptr) {
+			Mix_PlayChannel(-1, pullSound, 0);
+			SDL_Delay(500);
+		}
+
 		pullingOut = false;
 	});
 
@@ -196,7 +199,6 @@ void Weapon::fire(Vec2* position) {
 
 void Weapon::stop_firing() {
 	firing = false;
-	fireCooldown = -1.0f;
 }
 
 void Weapon::reload() {
