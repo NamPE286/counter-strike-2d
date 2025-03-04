@@ -1,10 +1,13 @@
 #include "Bullet.hpp"
+#include "../managers/Time.hpp"
 
 Bullet::Bullet(SDL_Renderer* renderer, float angle, int x, int y):
 	MonoBehaviour(renderer), angle(angle), x(x), y(y)
 {}
 
-void Bullet::update() {}
+void Bullet::update() {
+	alpha -= 255 * Time::deltaTime / 2000
+}
 
 void Bullet::render() {
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, alpha);
