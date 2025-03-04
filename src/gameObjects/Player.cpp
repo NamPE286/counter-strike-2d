@@ -79,13 +79,16 @@ void Player::on_key_down(SDL_Event& event) {
 	}
 
 	if (event.key.keysym.scancode == SDL_SCANCODE_1) {
-		weapons[weaponSlot]->stopFire();
+		weapons[weaponSlot]->stop_firing();
+		weapons[weaponSlot]->stop_reloading();
 		weaponSlot = 0;
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_2) {
-		weapons[weaponSlot]->stopFire();
+		weapons[weaponSlot]->stop_firing();
+		weapons[weaponSlot]->stop_reloading();
 		weaponSlot = 1;
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_3) {
-		weapons[weaponSlot]->stopFire();
+		weapons[weaponSlot]->stop_firing();
+		weapons[weaponSlot]->stop_reloading();
 		weaponSlot = 2;
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_R) {
 		weapons[weaponSlot]->reload();
@@ -151,5 +154,5 @@ void Player::on_mouse_button_down(SDL_Event& event) {
 }
 
 void Player::on_mouse_button_up(SDL_Event& event) {
-	weapons[weaponSlot]->stopFire();
+	weapons[weaponSlot]->stop_firing();
 }

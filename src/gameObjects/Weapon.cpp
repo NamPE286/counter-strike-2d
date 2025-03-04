@@ -11,10 +11,10 @@ void Weapon::update_fire() {
 		return;
 	}
 
-	cooldown -= Time::deltaTime;
+	fireCooldown -= Time::deltaTime;
 
-	if (cooldown <= 0.0f) {
-		cooldown = -1.0f;
+	if (fireCooldown <= 0.0f) {
+		fireCooldown = -1.0f;
 	}
 
 	int x = 0, y = 0;
@@ -23,9 +23,9 @@ void Weapon::update_fire() {
 
 	float angle = Utils::getAngle((int)pos->x, (int)pos->y, x, y);
 
-	if (automatic && cooldown <= 0.0f) {
+	if (automatic && fireCooldown <= 0.0f) {
 		bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
-		cooldown = fireRate;
+		fireCooldown = fireRate;
 
 		if (ammo > 0) {
 			ammo--;
@@ -97,8 +97,9 @@ void Weapon::fire(Vec2* position) {
 	firing = true;
 }
 
-void Weapon::stopFire() {
+void Weapon::stop_firing() {
 	firing = false;
+	fireCooldown = -1.0f;
 }
 
 void Weapon::reload() {
@@ -111,6 +112,11 @@ void Weapon::reload() {
 
 	reloading = true;
 	reloadCooldown = reloadTime;
+}
+
+void Weapon::stop_reloading() {
+	reloading = false;
+	reloadCooldown = -1.0f;
 }
 
 void Weapon::update() {
