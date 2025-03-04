@@ -23,8 +23,8 @@ void Player::update_position() {
 	}
 }
 
-Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos):
-	MonoBehaviour(renderer), position(pos), r(r), g(g), b(b)
+Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos, bool playable):
+	MonoBehaviour(renderer), position(pos), r(r), g(g), b(b), playable(playable)
 {
 	weapons[0] = new Weapon(renderer, "Knife");
 	weapons[1] = new Weapon(renderer, "Knife");

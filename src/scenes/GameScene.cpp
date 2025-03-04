@@ -13,6 +13,10 @@ GameScene::GameScene(SDL_Renderer* renderer):
 
 void GameScene::event_handler(SDL_Event& event) {
 	for (Player& p : players) {
+		if (!p.playable) {
+			continue;
+		}
+
 		p.event_handler(event);
 	}
 }
