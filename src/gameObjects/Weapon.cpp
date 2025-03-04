@@ -32,26 +32,26 @@ void Weapon::update_fire() {
 	float angle = Utils::getAngle((int)pos->x, (int)pos->y, x, y);
 
 	if (automatic) {
-		bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
-		fireCooldown = fireRate;
-
 		if (ammo > 0) {
-			ammo--;
+			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
 			play_firing_sound(ammo <= magSize * 20 / 100);
-			std::cout << ammo << ' ' << reserveAmmo << '\n';
+
+			fireCooldown = fireRate;
+			ammo--;
 		} else if (ammo == -1) {
+			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
 			play_firing_sound(false);
-			std::cout << ammo << ' ' << reserveAmmo << '\n';
+
+			fireCooldown = fireRate;
 		}
 	} else {
-		bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
-		fireCooldown = fireRate;
-		firing = false;
-
 		if (ammo > 0) {
-			ammo--;
+			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
 			play_firing_sound(ammo <= magSize * 20 / 100);
-			std::cout << ammo << ' ' << reserveAmmo << '\n';
+
+			fireCooldown = fireRate;
+			firing = false;
+			ammo--;
 		}
 	}
 
