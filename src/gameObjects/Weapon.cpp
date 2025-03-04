@@ -21,11 +21,19 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 }
 
 void Weapon::fire(float angle, int x, int y) {
-	bullets.emplace(renderer, angle, x, y);
+	bullets.emplace_back(renderer, angle, x, y);
 }
 
 void Weapon::update() {
-	while (bullets.front().finished()) {
-		bullets.pop();
+	std::vector<Bullet> tmp;
+
+	for (auto& i : bullets) {
+		i.update();
+
+		if (!i.finished()) {
+			tmp.push_back(i);
+		}
 	}
+
+	bullets = tmp;
 }

@@ -1,5 +1,5 @@
 #include <string>
-#include <queue>
+#include <vector>
 #include <stdexcept>
 #include <SDL2/SDL.h>
 
@@ -10,7 +10,7 @@ class Weapon : public MonoBehaviour {
 	int magSize = -1, mobility = 250, range = 10, killAward = 1500, rpm = 150;
 	float damage = 0.0f, armorPenetration = 0.85f, tagging = 0.0f, headshotMultiplier = 1.0f, standingInaccuracy = 0.0f, runningInaccuracy = 0.0f, elapsed = 0.0f;
 	bool firing = false, automatic = true;
-	std::queue<Bullet> bullets;
+	std::vector<Bullet> bullets;
 public:
 	std::string name = "Knife";
 	int ammo = -1, reserveAmmo = -1;
