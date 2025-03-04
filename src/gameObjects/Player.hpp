@@ -17,6 +17,7 @@ class Player : public MonoBehaviour {
 	};
 	Vec2 position, velocity, acceleration, direction;
 	Weapon* weapons[3] = { nullptr, nullptr, nullptr };
+	
 	const int size = 30, borderWidth = 8;
 	float maxSpeed = 0.4f;
 	int r, g, b;

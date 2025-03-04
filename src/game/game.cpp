@@ -1,5 +1,6 @@
 #include "Game.hpp"
 
+#include <SDL2/SDL_mixer.h>
 #include <stdexcept>
 #include <string>
 #include <chrono>
@@ -34,6 +35,7 @@ Game::Game() {
 	}
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
 	scene = new GameScene(renderer);
 	mouse = new Mouse(renderer);
@@ -45,6 +47,8 @@ Game::~Game() {
 
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
+
+	Mix_Quit();
 	SDL_Quit();
 }
 

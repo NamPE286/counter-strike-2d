@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <thread>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 #include "../behaviours/MonoBehaviour.hpp"
 #include "Bullet.hpp"
@@ -18,6 +19,8 @@ class Weapon : public MonoBehaviour {
 		fireRate = 400.0f, fireCooldown = -1.0f, reloadTime = 0.0f, reloadCooldown = -1.0f;
 	bool firing = false, reloading = false, automatic = true;
 	std::vector<Bullet> bullets;
+	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr;
+	std::vector<Mix_Chunk*> reloadSoundSequence;
 
 	void update_fire();
 	void update_reload();
@@ -27,6 +30,9 @@ public:
 	int price = 0;
 
 	Weapon(SDL_Renderer* renderer, std::string name);
+	~Weapon();
+
+	void equip();
 	void fire(Vec2* position);
 	void stop_firing();
 	void reload();

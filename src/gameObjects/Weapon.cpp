@@ -77,16 +77,16 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 	MonoBehaviour(renderer), name(name)
 {
 	if (name == "Knife") {
-		return;
-	}
-	
-	if (name == "AK-47") {
+		drawSound = Mix_LoadWAV("assets/weapons/knife/knife_deploy1.wav");
+	} else if (name == "AK-47") {
 		magSize = 30, mobility = 215, range = 1000, killReward = 300, price = 2700;
 		damage = 36.0f, armorPenetration = 0.775f, tagging = 0.6f,
 		headshotMultiplier = 4.0f, standingInaccuracy = 7.8f, runningInaccuracy = 5.41f,
 		fireRate = 100.0f, reloadTime = 2400.0f;
 		automatic = true;
 		ammo = 30, reserveAmmo = 90;
+
+		drawSound = Mix_LoadWAV("assets/weapons/ak47/ak47_draw.wav");
 	} else if (name == "M4A4") {
 
 	} else if (name == "Glock-18") {
@@ -96,11 +96,26 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 		fireRate = 50.0f, reloadTime = 2300.0f;
 		automatic = false;
 		ammo = 20, reserveAmmo = 120;
+
+		drawSound = Mix_LoadWAV("assets/weapons/glock18/glock_draw.wav");
 	} else if (name == "USP-S") {
 
 	} else {
 		throw std::runtime_error("Weapon does not exist");
 	}
+}
+
+Weapon::~Weapon() {
+	Mix_FreeChunk(drawSound);
+	Mix_FreeChunk(firingSound);
+
+	for (auto i : reloadSoundSequence) {
+		Mix_FreeChunk(i);
+	}
+}
+
+void Weapon::equip() {
+	Mix_PlayChannel(-1, drawSound, 0);
 }
 
 void Weapon::fire(Vec2* position) {

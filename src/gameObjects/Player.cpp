@@ -81,15 +81,21 @@ void Player::on_key_down(SDL_Event& event) {
 	if (event.key.keysym.scancode == SDL_SCANCODE_1) {
 		weapons[weaponSlot]->stop_firing();
 		weapons[weaponSlot]->stop_reloading();
+
 		weaponSlot = 0;
+		weapons[weaponSlot]->equip();
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_2) {
 		weapons[weaponSlot]->stop_firing();
 		weapons[weaponSlot]->stop_reloading();
+
 		weaponSlot = 1;
+		weapons[weaponSlot]->equip();
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_3) {
 		weapons[weaponSlot]->stop_firing();
 		weapons[weaponSlot]->stop_reloading();
+
 		weaponSlot = 2;
+		weapons[weaponSlot]->equip();
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_R) {
 		weapons[weaponSlot]->reload();
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
