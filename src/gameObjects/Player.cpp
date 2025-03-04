@@ -164,7 +164,7 @@ void Player::on_key_up(SDL_Event& event) {
 }
 
 void Player::on_mouse_button_down(SDL_Event& event) {
-	weapons[weaponSlot]->fire(&position);
+	weapons[weaponSlot]->fire(&position, &velocity);
 }
 
 void Player::on_mouse_button_up(SDL_Event& event) {

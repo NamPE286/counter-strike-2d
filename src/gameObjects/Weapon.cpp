@@ -18,6 +18,17 @@ void Weapon::update_fire() {
 
 	SDL_GetMouseState(&x, &y);
 
+	float variance = 0.0f;
+
+	if (*vel == Vec2(0, 0)) {
+		variance = standingInaccuracy;
+	} else {
+		variance = runningInaccuracy;
+	}
+
+	x += (int)Utils::getRandom(variance);
+	y += (int)Utils::getRandom(variance);
+
 	float angle = Utils::getAngle((int)pos->x, (int)pos->y, x, y);
 
 	if (automatic) {
@@ -188,12 +199,12 @@ void Weapon::equip() {
 	play_draw_sound();
 }
 
-void Weapon::fire(Vec2* position) {
+void Weapon::fire(Vec2* position, Vec2* velocity) {
 	if (reloading || pullingOut) {
 		return;
 	}
 
-	pos = position;
+	pos = position, vel = velocity;
 	firing = true;
 }
 
@@ -207,7 +218,7 @@ void Weapon::reload() {
 		return;
 	}
 
-	if (reloading) {
+	if (reloading || reserveAmmo == 0) {
 		return;
 	}
 

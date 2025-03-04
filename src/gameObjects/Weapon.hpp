@@ -12,7 +12,7 @@
 #include "../geometry/Vec2.hpp"
 
 class Weapon : public MonoBehaviour {
-	Vec2* pos = nullptr;
+	Vec2 *pos = nullptr, *vel = nullptr;
 	int magSize = -1, mobility = 250, range = 50, killReward = 1500;
 	float damage = 25.0f, armorPenetration = 0.85f, tagging = 0.0f,
 		headshotMultiplier = 1.0f, standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
@@ -38,7 +38,7 @@ public:
 	~Weapon();
 
 	void equip();
-	void fire(Vec2* position);
+	void fire(Vec2* position, Vec2* velocity);
 	void stop_firing();
 	void reload();
 	void stop_reloading();
