@@ -35,5 +35,9 @@ void Weapon::update() {
 		}
 	}
 
-	bullets = tmp;
+	bullets.clear();
+
+	for (auto& i : tmp) {
+		bullets.push_back(i);
+	}
 }
