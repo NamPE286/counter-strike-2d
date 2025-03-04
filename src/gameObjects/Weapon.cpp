@@ -1,5 +1,8 @@
 #include "Weapon.hpp"
 
+#include "../managers/Time.hpp"
+#include "../utilities/Utils.hpp"
+
 Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 	MonoBehaviour(renderer), name(name)
 {
@@ -20,11 +23,40 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 	}
 }
 
-void Weapon::fire(float angle, int x, int y) {
-	bullets.emplace_back(renderer, angle, x, y, range);
+void Weapon::fire(Vec2* position) {
+	pos = position;
+	firing = true;
+}
+
+void Weapon::stopFire() {
+	firing = false;
 }
 
 void Weapon::update() {
+	cooldown -= Time::deltaTime;
+
+	if (cooldown <= 0.0f) {
+		cooldown = -1.0f;
+	}
+
+	if (firing) { 
+		int x = 0, y = 0;
+
+		SDL_GetMouseState(&x, &y);
+
+		float angle = Utils::getAngle((int)pos->x, (int)pos->y, x, y);
+
+		bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
+
+		if (automatic && cooldown <= 0.0f) {
+			cooldown = fireRate;
+		}
+
+		if (!automatic) {
+			firing = false;
+		}
+	}
+
 	std::vector<Bullet> tmp;
 
 	for (auto& i : bullets) {

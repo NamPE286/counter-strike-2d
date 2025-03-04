@@ -134,11 +134,9 @@ void Player::on_key_up(SDL_Event& event) {
 }
 
 void Player::on_mouse_button_down(SDL_Event& event) {
-	int x = 0, y = 0;
+	weapons[weaponSlot]->fire(&position);
+}
 
-	SDL_GetMouseState(&x, &y);
-
-	float angle = Utils::getAngle((int)position.x, (int)position.y, x, y);
-
-	weapons[weaponSlot]->fire(angle, (int)position.x, (int)position.y);
+void Player::on_mouse_button_up(SDL_Event& event) {
+	weapons[weaponSlot]->stopFire();
 }
