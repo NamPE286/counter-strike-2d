@@ -9,7 +9,7 @@ Bullet::Bullet(SDL_Renderer* renderer, float angle, int x, int y, int length):
 {}
 
 void Bullet::update() {
-	alpha -= int(2 * Time::deltaTime / 3);
+	alpha -= int(3 * Time::deltaTime / 2);
 }
 
 void Bullet::render() {
