@@ -21,7 +21,7 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 }
 
 void Weapon::fire(float angle, int x, int y) {
-	bullets.emplace_back(renderer, angle, x, y);
+	bullets.emplace_back(renderer, angle, x, y, range);
 }
 
 void Weapon::update() {
@@ -39,5 +39,11 @@ void Weapon::update() {
 
 	for (auto& i : tmp) {
 		bullets.push_back(i);
+	}
+}
+
+void Weapon::render() {
+	for (auto& i : bullets) {
+		i.render();
 	}
 }

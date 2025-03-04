@@ -33,6 +33,8 @@ Game::Game() {
 		throw std::runtime_error("Failed to create renderer. Error: " + std::string(SDL_GetError()));
 	}
 
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
 	scene = new GameScene(renderer);
 	mouse = new Mouse(renderer);
 }

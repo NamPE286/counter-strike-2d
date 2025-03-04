@@ -6,6 +6,7 @@
 
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../geometry/Vec2.hpp"
+#include "Weapon.hpp"
 
 class Player : public MonoBehaviour {
 	std::map<Uint32, Vec2> directionMap = {
@@ -15,15 +16,18 @@ class Player : public MonoBehaviour {
 		{ SDL_SCANCODE_D, Vec2(1, 0) }
 	};
 	Vec2 position, velocity, acceleration, direction;
+	Weapon* weapons[3] = { nullptr, nullptr, nullptr };
 	const int size = 30, borderWidth = 8;
 	const float maxSpeed = 0.4f;
 	int r, g, b;
+	int weaponSlot = 0;
 
 	void update_position();
 public:
 	int hp = 100, armor = 0;
 
 	Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos = Vec2(0, 0));
+	~Player();
 
 	void update();
 	void fixed_update();

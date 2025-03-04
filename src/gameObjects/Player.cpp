@@ -25,15 +25,33 @@ void Player::update_position() {
 
 Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos):
 	MonoBehaviour(renderer), position(pos), r(r), g(g), b(b)
-{}
+{
+	weapons[0] = new Weapon(renderer, "Knife");
+	weapons[1] = new Weapon(renderer, "Knife");
+	weapons[2] = new Weapon(renderer, "Knife");
+}
+
+Player::~Player() {
+	for (int i = 0; i < 3; i++) {
+		delete weapons[i];
+	}
+}
 
 void Player::update() {
 	update_position();
+
+	for (int i = 0; i < 3; i++) {
+		weapons[i]->update();
+	}
 }
 
 void Player::fixed_update() {}
 
 void Player::render() {
+	for (int i = 0; i < 3; i++) {
+		weapons[i]->render();
+	}
+
 	SDL_Rect rect = {
 		(int)position.x - (size - borderWidth) / 2,
 		(int)position.y - (size - borderWidth) / 2,
@@ -122,5 +140,5 @@ void Player::on_mouse_button_down(SDL_Event& event) {
 
 	float angle = Utils::getAngle((int)position.x, (int)position.y, x, y);
 
-	std::cout << angle * 180 / 3.14 << '\n';
+	weapons[weaponSlot]->fire(angle, (int)position.x, (int)position.y);
 }
