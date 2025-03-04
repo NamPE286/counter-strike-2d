@@ -21,6 +21,8 @@ class Player : public MonoBehaviour {
 
 	void update_position();
 public:
+	int hp = 100, armor = 0;
+
 	Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos = Vec2(0, 0));
 
 	void update();
