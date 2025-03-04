@@ -19,11 +19,12 @@ class Weapon : public MonoBehaviour {
 		fireRate = 400.0f, fireCooldown = -1.0f, reloadTime = 0.0f, reloadCooldown = -1.0f;
 	bool firing = false, reloading = false, automatic = true;
 	std::vector<Bullet> bullets;
-	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr;
+	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr, *pullSound = nullptr;
 	std::vector<Mix_Chunk*> reloadSoundSequence;
 
 	void update_fire();
 	void update_reload();
+	void play_draw_sound();
 public:
 	std::string name = "Knife";
 	int ammo = -1, reserveAmmo = -1;

@@ -1,6 +1,7 @@
 #include "Weapon.hpp"
 
 #include <iostream>
+#include <thread>
 
 #include "../managers/Time.hpp"
 #include "../utilities/Utils.hpp"
@@ -77,6 +78,16 @@ void Weapon::update_reload() {
 	std::cout << "Reloaded" << '\n';
 }
 
+void Weapon::play_draw_sound() {
+	std::thread t([&]() {
+		Mix_PlayChannel(-1, drawSound, 0);
+		SDL_Delay(400);
+		Mix_PlayChannel(-1, pullSound, 0);
+	});
+
+	t.detach();
+}
+
 Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 	MonoBehaviour(renderer), name(name)
 {
@@ -93,6 +104,7 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 
 		drawSound = Mix_LoadWAV("assets/weapons/ak47/ak47_draw.wav");
 		firingSound = Mix_LoadWAV("assets/weapons/ak47/ak47_01.wav");
+		pullSound = Mix_LoadWAV("assets/weapons/ak47/ak47_boltpull.wav");
 	} else if (name == "M4A4") {
 
 	} else if (name == "Glock-18") {
@@ -105,6 +117,7 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 
 		drawSound = Mix_LoadWAV("assets/weapons/glock18/glock_draw.wav");
 		firingSound = Mix_LoadWAV("assets/weapons/glock18/glock_01.wav");
+		pullSound = Mix_LoadWAV("assets/weapons/glock18/glock_slideback.wav");
 	} else if (name == "USP-S") {
 
 	} else {
@@ -122,7 +135,7 @@ Weapon::~Weapon() {
 }
 
 void Weapon::equip() {
-	Mix_PlayChannel(-1, drawSound, 0);
+	play_draw_sound();
 }
 
 void Weapon::fire(Vec2* position) {
