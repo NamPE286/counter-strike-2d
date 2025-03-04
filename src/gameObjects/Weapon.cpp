@@ -6,8 +6,14 @@
 #include "../utilities/Utils.hpp"
 
 void Weapon::update_fire() {
-	if (!firing || ammo == 0) {
+	if (!firing) {
+		return;
+	}
+
+	if (ammo == 0) {
 		firing = false;
+		reload();
+
 		return;
 	}
 
