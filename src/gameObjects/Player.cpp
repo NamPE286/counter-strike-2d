@@ -92,6 +92,8 @@ void Player::on_key_down(SDL_Event& event) {
 		weaponSlot = 2;
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_R) {
 		weapons[weaponSlot]->reload();
+	} else if (event.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+		maxSpeed /= 2;
 	} else {
 		if (keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
 			acceleration.x *= -1;
@@ -118,34 +120,38 @@ void Player::on_key_down(SDL_Event& event) {
 }
 
 void Player::on_key_up(SDL_Event& event) {
-	const auto keyboard = SDL_GetKeyboardState(0);
+	if (event.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
+		maxSpeed *= 2;
+	} else {
+		const auto keyboard = SDL_GetKeyboardState(0);
 
-	if (directionMap[event.key.keysym.scancode].x != 0 && velocity.x != 0) {
-		acceleration.x = directionMap[event.key.keysym.scancode].x * 0.002f * -1;
-	}
+		if (directionMap[event.key.keysym.scancode].x != 0 && velocity.x != 0) {
+			acceleration.x = directionMap[event.key.keysym.scancode].x * 0.002f * -1;
+		}
 
-	if (directionMap[event.key.keysym.scancode].y != 0 && velocity.y != 0) {
-		acceleration.y = directionMap[event.key.keysym.scancode].y * 0.002f * -1;
-	}
+		if (directionMap[event.key.keysym.scancode].y != 0 && velocity.y != 0) {
+			acceleration.y = directionMap[event.key.keysym.scancode].y * 0.002f * -1;
+		}
 
-	if (keyboard[SDL_SCANCODE_W] && !keyboard[SDL_SCANCODE_S]) {
-		velocity.y = 0;
-		direction.y = directionMap[SDL_SCANCODE_W].y;
-		acceleration.y = directionMap[SDL_SCANCODE_W].y * 0.002f;
-	} else if (!keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_S]) {
-		velocity.y = 0;
-		direction.y = directionMap[SDL_SCANCODE_S].y;
-		acceleration.y = directionMap[SDL_SCANCODE_S].y * 0.002f;
-	}
-	
-	if (keyboard[SDL_SCANCODE_A] && !keyboard[SDL_SCANCODE_D]) {
-		velocity.x = 0;
-		direction.x = directionMap[SDL_SCANCODE_A].x;
-		acceleration.x = directionMap[SDL_SCANCODE_A].x * 0.002f;
-	} else if (!keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
-		velocity.x = 0;
-		direction.x = directionMap[SDL_SCANCODE_D].x;
-		acceleration.x = directionMap[SDL_SCANCODE_D].x * 0.002f;
+		if (keyboard[SDL_SCANCODE_W] && !keyboard[SDL_SCANCODE_S]) {
+			velocity.y = 0;
+			direction.y = directionMap[SDL_SCANCODE_W].y;
+			acceleration.y = directionMap[SDL_SCANCODE_W].y * 0.002f;
+		} else if (!keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_S]) {
+			velocity.y = 0;
+			direction.y = directionMap[SDL_SCANCODE_S].y;
+			acceleration.y = directionMap[SDL_SCANCODE_S].y * 0.002f;
+		}
+
+		if (keyboard[SDL_SCANCODE_A] && !keyboard[SDL_SCANCODE_D]) {
+			velocity.x = 0;
+			direction.x = directionMap[SDL_SCANCODE_A].x;
+			acceleration.x = directionMap[SDL_SCANCODE_A].x * 0.002f;
+		} else if (!keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
+			velocity.x = 0;
+			direction.x = directionMap[SDL_SCANCODE_D].x;
+			acceleration.x = directionMap[SDL_SCANCODE_D].x * 0.002f;
+		}
 	}
 }
 
