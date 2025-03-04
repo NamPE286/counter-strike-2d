@@ -30,4 +30,5 @@ public:
 	void render();
 	void on_key_down(SDL_Event& event);
 	void on_key_up(SDL_Event& event);
+	void on_mouse_button_down(SDL_Event& event);
 };

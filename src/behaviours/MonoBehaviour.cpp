@@ -16,5 +16,11 @@ void MonoBehaviour::event_handler(SDL_Event& event) {
 	case SDL_KEYUP:
 		on_key_up(event);
 		break;
+	case SDL_MOUSEBUTTONDOWN:
+		on_mouse_button_down(event);
+		break;
+	case SDL_MOUSEBUTTONUP:
+		on_mouse_button_up(event);
+		break;
 	}
 }

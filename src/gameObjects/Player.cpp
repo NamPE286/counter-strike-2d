@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "../managers/Time.hpp"
+#include "../utilities/Utils.hpp"
 
 void Player::update_position() {
 	velocity += acceleration * Time::deltaTime * 0.5;
@@ -112,4 +113,14 @@ void Player::on_key_up(SDL_Event& event) {
 		direction.x = directionMap[SDL_SCANCODE_D].x;
 		acceleration.x = directionMap[SDL_SCANCODE_D].x * 0.002f;
 	}
+}
+
+void Player::on_mouse_button_down(SDL_Event& event) {
+	int x = 0, y = 0;
+
+	SDL_GetMouseState(&x, &y);
+
+	float angle = Utils::getAngle((int)position.x, (int)position.y, x, y);
+
+	std::cout << angle * 180 / 3.14 << '\n';
 }

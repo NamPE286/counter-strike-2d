@@ -15,4 +15,6 @@ public:
 	virtual void event_handler(SDL_Event& event);
 	virtual void on_key_down(SDL_Event& event) {};
 	virtual void on_key_up(SDL_Event& event) {};
+	virtual void on_mouse_button_down(SDL_Event& event) {};
+	virtual void on_mouse_button_up(SDL_Event& event) {};
 };
