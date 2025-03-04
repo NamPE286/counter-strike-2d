@@ -81,41 +81,36 @@ void Player::on_key_down(SDL_Event& event) {
 	if (event.key.keysym.scancode == SDL_SCANCODE_1) {
 		weapons[weaponSlot]->stopFire();
 		weaponSlot = 0;
-		return;
-	}
-
-	if (event.key.keysym.scancode == SDL_SCANCODE_2) {
+	} else if (event.key.keysym.scancode == SDL_SCANCODE_2) {
 		weapons[weaponSlot]->stopFire();
 		weaponSlot = 1;
-		return;
-	}
-
-	if (event.key.keysym.scancode == SDL_SCANCODE_3) {
+	} else if (event.key.keysym.scancode == SDL_SCANCODE_3) {
 		weapons[weaponSlot]->stopFire();
 		weaponSlot = 2;
-		return;
-	}
+	} else if (event.key.keysym.scancode == SDL_SCANCODE_R) {
+		weapons[weaponSlot]->reload();
+	} else {
+		if (keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
+			acceleration.x *= -1;
+			return;
+		}
 
-	if (keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
-		acceleration.x *= -1;
-		return;
-	}
+		if (keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_S]) {
+			acceleration.y *= -1;
+			return;
+		}
 
-	if (keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_S]) {
-		acceleration.y *= -1;
-		return;
-	}
+		if (directionMap[event.key.keysym.scancode].x != 0) {
+			velocity.x = 0;
+			direction.x = directionMap[event.key.keysym.scancode].x;
+			acceleration.x = directionMap[event.key.keysym.scancode].x * 0.002f;
+		}
 
-	if (directionMap[event.key.keysym.scancode].x != 0) {
-		velocity.x = 0;
-		direction.x = directionMap[event.key.keysym.scancode].x;
-		acceleration.x = directionMap[event.key.keysym.scancode].x * 0.002f;
-	}
-
-	if (directionMap[event.key.keysym.scancode].y != 0) {
-		velocity.y = 0;
-		direction.y = directionMap[event.key.keysym.scancode].y;
-		acceleration.y = directionMap[event.key.keysym.scancode].y * 0.002f;
+		if (directionMap[event.key.keysym.scancode].y != 0) {
+			velocity.y = 0;
+			direction.y = directionMap[event.key.keysym.scancode].y;
+			acceleration.y = directionMap[event.key.keysym.scancode].y * 0.002f;
+		}
 	}
 }
 
