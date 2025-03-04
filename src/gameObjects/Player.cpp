@@ -29,6 +29,8 @@ Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos, bool playa
 	weapons[0] = new Weapon(renderer, "AK-47");
 	weapons[1] = new Weapon(renderer, "Glock-18");
 	weapons[2] = new Weapon(renderer, "Knife");
+
+	weapons[weaponSlot]->equip();
 }
 
 Player::~Player() {

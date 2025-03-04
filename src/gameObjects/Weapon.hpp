@@ -17,14 +17,18 @@ class Weapon : public MonoBehaviour {
 	float damage = 25.0f, armorPenetration = 0.85f, tagging = 0.0f,
 		headshotMultiplier = 1.0f, standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
 		fireRate = 400.0f, fireCooldown = -1.0f, reloadTime = 0.0f, reloadCooldown = -1.0f;
-	bool firing = false, reloading = false, automatic = true;
+	bool firing = false, reloading = false, pullingOut = true, automatic = true;
 	std::vector<Bullet> bullets;
 	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr, *pullSound = nullptr;
-	std::vector<Mix_Chunk*> reloadSoundSequence;
+	Mix_Chunk* lowAmmoSound = Mix_LoadWAV("assets/weapons/lowammo_01.wav");
+	std::vector<Mix_Chunk*> reloadSound;
 
 	void update_fire();
 	void update_reload();
+	void play_firing_sound(bool lowAmmo);
 	void play_draw_sound();
+	void play_reload_sound();
+
 public:
 	std::string name = "Knife";
 	int ammo = -1, reserveAmmo = -1;
