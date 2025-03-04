@@ -10,13 +10,6 @@ void Weapon::update_fire() {
 		return;
 	}
 
-	if (ammo == 0) {
-		firing = false;
-		reload();
-
-		return;
-	}
-
 	fireCooldown -= Time::deltaTime;
 
 	if (fireCooldown <= 0.0f) {
@@ -35,6 +28,8 @@ void Weapon::update_fire() {
 
 		if (ammo > 0) {
 			ammo--;
+			Mix_HaltChannel(1);
+			Mix_PlayChannel(1, firingSound, 0);
 			std::cout << ammo << ' ' << reserveAmmo << '\n';
 		}
 	}
@@ -45,8 +40,17 @@ void Weapon::update_fire() {
 
 		if (ammo > 0) {
 			ammo--;
+			Mix_HaltChannel(1);
+			Mix_PlayChannel(1, firingSound, 0);
 			std::cout << ammo << ' ' << reserveAmmo << '\n';
 		}
+	}
+
+	if (ammo == 0) {
+		firing = false;
+		reload();
+
+		return;
 	}
 }
 
@@ -78,6 +82,7 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 {
 	if (name == "Knife") {
 		drawSound = Mix_LoadWAV("assets/weapons/knife/knife_deploy1.wav");
+		firingSound = Mix_LoadWAV("assets/weapons/knife/knife_slash1.wav");
 	} else if (name == "AK-47") {
 		magSize = 30, mobility = 215, range = 1000, killReward = 300, price = 2700;
 		damage = 36.0f, armorPenetration = 0.775f, tagging = 0.6f,
@@ -87,6 +92,7 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 		ammo = 30, reserveAmmo = 90;
 
 		drawSound = Mix_LoadWAV("assets/weapons/ak47/ak47_draw.wav");
+		firingSound = Mix_LoadWAV("assets/weapons/ak47/ak47_01.wav");
 	} else if (name == "M4A4") {
 
 	} else if (name == "Glock-18") {
@@ -98,6 +104,7 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 		ammo = 20, reserveAmmo = 120;
 
 		drawSound = Mix_LoadWAV("assets/weapons/glock18/glock_draw.wav");
+		firingSound = Mix_LoadWAV("assets/weapons/glock18/glock_01.wav");
 	} else if (name == "USP-S") {
 
 	} else {
@@ -119,6 +126,10 @@ void Weapon::equip() {
 }
 
 void Weapon::fire(Vec2* position) {
+	if (reloading) {
+		return;
+	}
+
 	pos = position;
 	firing = true;
 }
