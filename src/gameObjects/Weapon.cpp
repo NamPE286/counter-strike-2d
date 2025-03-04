@@ -11,7 +11,12 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 	}
 	
 	if (name == "AK-47") {
-
+		magSize = 30, mobility = 215, range = 8192, killAward = 1500;
+		damage = 36.0f, armorPenetration = 0.775f, tagging = 0.6f,
+		headshotMultiplier = 4.0f, standingInaccuracy = 7.1f, runningInaccuracy = 5.41f,
+		fireRate = 100.0f, cooldown = -1.0f;
+		automatic = true;
+		ammo = 30, reserveAmmo = 90;
 	} else if (name == "M4A4") {
 
 	} else if (name == "Glock-18") {
@@ -46,13 +51,13 @@ void Weapon::update() {
 
 		float angle = Utils::getAngle((int)pos->x, (int)pos->y, x, y);
 
-		bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
-
 		if (automatic && cooldown <= 0.0f) {
+			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
 			cooldown = fireRate;
 		}
 
 		if (!automatic) {
+			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
 			firing = false;
 		}
 	}
