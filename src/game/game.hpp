@@ -2,9 +2,12 @@
 
 #include <SDL2/SDL.h>
 
+#include "../gameObjects/Mouse.hpp"
+
 class Game {
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
+	Mouse* mouse = nullptr;
 	bool running = true;
 
 public:

@@ -34,10 +34,12 @@ Game::Game() {
 	}
 
 	scene = new GameScene(renderer);
+	mouse = new Mouse(renderer);
 }
 
 Game::~Game() {
 	delete scene;
+	delete mouse;
 
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
@@ -110,10 +112,12 @@ void Game::event_handler(SDL_Event& event) {
 }
 
 void Game::update() {
+	mouse->update();
 	scene->update();
 }
 
 void Game::fixed_update() {
+	mouse->fixed_update();
 	scene->fixed_update();
 }
 
@@ -122,6 +126,7 @@ void Game::render() {
 	SDL_RenderClear(renderer);
 
 	scene->render();
+	mouse->render();
 
 	SDL_RenderPresent(renderer);
 }
