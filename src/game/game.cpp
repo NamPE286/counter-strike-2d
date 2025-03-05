@@ -11,6 +11,7 @@
 #include "../gameObjects/Player.hpp"
 #include "../common.h"
 #include "../scenes/GameScene.hpp"
+#include "../managers/Audio.hpp"
 
 GameScene* scene = nullptr;
 
@@ -35,7 +36,7 @@ Game::Game() {
 	}
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	Audio::init();
 
 	scene = new GameScene(renderer);
 	mouse = new Mouse(renderer);
@@ -48,7 +49,7 @@ Game::~Game() {
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 
-	Mix_Quit();
+	Audio::destroy();
 	SDL_Quit();
 }
 
