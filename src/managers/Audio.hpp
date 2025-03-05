@@ -6,7 +6,7 @@
 #include <SDL2/SDL_mixer.h>
 
 namespace Audio {
-	std::map<std::string, Mix_Chunk*> mp;
+	inline std::map<std::string, Mix_Chunk*> mp;
 
 	void init();
 	Mix_Chunk* load(std::string filePath);

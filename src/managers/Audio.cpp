@@ -9,7 +9,7 @@ void Audio::init() {
 Mix_Chunk* Audio::load(std::string filePath) {
 	if (mp.contains(filePath)) {
 		std::cout << "Already loaded " + filePath << '\n';
-		return;
+		return mp[filePath];
 	}
 
 	std::cout << "Loading " + filePath << '\n';

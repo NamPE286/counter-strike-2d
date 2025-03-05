@@ -91,7 +91,7 @@ void Weapon::play_firing_sound(bool lowAmmo) {
 	Mix_PlayChannel(1, firingSound, 0);
 
 	if (lowAmmo) {
-		Mix_PlayChannel(-1, lowAmmoSound, 0);
+		Mix_PlayChannel(-1, Audio::load("assets/weapons/lowammo_01.wav"), 0);
 	}
 }
 
@@ -140,8 +140,8 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 	MonoBehaviour(renderer), name(name)
 {
 	if (name == "Knife") {
-		drawSound = Mix_LoadWAV("assets/weapons/knife/knife_deploy1.wav");
-		firingSound = Mix_LoadWAV("assets/weapons/knife/knife_slash1.wav");
+		drawSound = Audio::load("assets/weapons/knife/knife_deploy1.wav");
+		firingSound = Audio::load("assets/weapons/knife/knife_slash1.wav");
 	} else if (name == "AK-47") {
 		magSize = 30, mobility = 215, range = 1000, killReward = 300, price = 2700;
 		damage = 36.0f, armorPenetration = 0.775f, tagging = 0.6f,
@@ -150,13 +150,13 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 		automatic = true;
 		ammo = 30, reserveAmmo = 90;
 
-		drawSound = Mix_LoadWAV("assets/weapons/ak47/ak47_draw.wav");
-		firingSound = Mix_LoadWAV("assets/weapons/ak47/ak47_01.wav");
-		pullSound = Mix_LoadWAV("assets/weapons/ak47/ak47_boltpull.wav");
+		drawSound = Audio::load("assets/weapons/ak47/ak47_draw.wav");
+		firingSound = Audio::load("assets/weapons/ak47/ak47_01.wav");
+		pullSound = Audio::load("assets/weapons/ak47/ak47_boltpull.wav");
 		reloadSound = {
-			Mix_LoadWAV("assets/weapons/ak47/ak47_clipin.wav"),
-			Mix_LoadWAV("assets/weapons/ak47/ak47_clipout.wav"),
-			Mix_LoadWAV("assets/weapons/ak47/ak47_boltpull.wav")
+			Audio::load("assets/weapons/ak47/ak47_clipin.wav"),
+			Audio::load("assets/weapons/ak47/ak47_clipout.wav"),
+			Audio::load("assets/weapons/ak47/ak47_boltpull.wav")
 		};
 	} else if (name == "M4A4") {
 
@@ -168,29 +168,19 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name):
 		automatic = false;
 		ammo = 20, reserveAmmo = 120;
 
-		drawSound = Mix_LoadWAV("assets/weapons/glock18/glock_draw.wav");
-		firingSound = Mix_LoadWAV("assets/weapons/glock18/glock_01.wav");
-		pullSound = Mix_LoadWAV("assets/weapons/glock18/glock_slideback.wav");
+		drawSound = Audio::load("assets/weapons/glock18/glock_draw.wav");
+		firingSound = Audio::load("assets/weapons/glock18/glock_01.wav");
+		pullSound = Audio::load("assets/weapons/glock18/glock_slideback.wav");
 		reloadSound = {
-			Mix_LoadWAV("assets/weapons/glock18/glock_clipin.wav"),
-			Mix_LoadWAV("assets/weapons/glock18/glock_clipout.wav"),
-			Mix_LoadWAV("assets/weapons/glock18/glock_slideback.wav"),
-			Mix_LoadWAV("assets/weapons/glock18/glock_sliderelease.wav")
+			Audio::load("assets/weapons/glock18/glock_clipin.wav"),
+			Audio::load("assets/weapons/glock18/glock_clipout.wav"),
+			Audio::load("assets/weapons/glock18/glock_slideback.wav"),
+			Audio::load("assets/weapons/glock18/glock_sliderelease.wav")
 		};
 	} else if (name == "USP-S") {
 
 	} else {
 		throw std::runtime_error("Weapon does not exist");
-	}
-}
-
-Weapon::~Weapon() {
-	Mix_FreeChunk(drawSound);
-	Mix_FreeChunk(firingSound);
-	Mix_FreeChunk(pullSound);
-
-	for (auto i : reloadSound) {
-		Mix_FreeChunk(i);
 	}
 }
 

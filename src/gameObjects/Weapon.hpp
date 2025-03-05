@@ -10,6 +10,7 @@
 #include "../behaviours/MonoBehaviour.hpp"
 #include "Bullet.hpp"
 #include "../geometry/Vec2.hpp"
+#include "../managers/Audio.hpp"
 
 class Weapon : public MonoBehaviour {
 	Vec2 *pos = nullptr, *vel = nullptr;
@@ -20,7 +21,6 @@ class Weapon : public MonoBehaviour {
 	bool firing = false, reloading = false, pullingOut = true, automatic = true;
 	std::vector<Bullet> bullets;
 	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr, *pullSound = nullptr;
-	Mix_Chunk* lowAmmoSound = Mix_LoadWAV("assets/weapons/lowammo_01.wav");
 	std::vector<Mix_Chunk*> reloadSound;
 
 	void update_fire();
@@ -35,7 +35,6 @@ public:
 	int price = 0;
 
 	Weapon(SDL_Renderer* renderer, std::string name);
-	~Weapon();
 
 	void equip();
 	void fire(Vec2* position, Vec2* velocity);
