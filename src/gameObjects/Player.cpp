@@ -47,7 +47,11 @@ void Player::update() {
 	}
 }
 
-void Player::fixed_update() {}
+void Player::fixed_update() {
+	for (int i = 0; i < 3; i++) {
+		weapons[i]->fixed_update();
+	}
+}
 
 void Player::render() {
 	for (int i = 0; i < 3; i++) {

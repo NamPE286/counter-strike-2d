@@ -23,8 +23,8 @@ class Weapon : public MonoBehaviour {
 	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr, *pullSound = nullptr;
 	std::vector<Mix_Chunk*> reloadSound;
 
-	void update_fire();
-	void update_reload();
+	void fixed_update_fire();
+	void fixed_update_reload();
 	void play_firing_sound(bool lowAmmo);
 	void play_draw_sound();
 	void play_reload_sound();
@@ -42,5 +42,6 @@ public:
 	void reload();
 	void stop_reloading();
 	void update();
+	void fixed_update();
 	void render();
 };

@@ -6,8 +6,8 @@
 #include "../managers/Time.hpp"
 #include "../utilities/Utils.hpp"
 
-void Weapon::update_fire() {
-	fireCooldown -= Time::deltaTime;
+void Weapon::fixed_update_fire() {
+	fireCooldown -= Time::fixedDeltaTime;
 	fireCooldown = std::max(fireCooldown, -1.0f);
 
 	if (!firing || fireCooldown > 0.0f) {
@@ -63,13 +63,13 @@ void Weapon::update_fire() {
 	}
 }
 
-void Weapon::update_reload() {
+void Weapon::fixed_update_reload() {
 	if (!reloading || reserveAmmo <= 0) {
 		reloading = false;
 		return;
 	}
 
-	reloadCooldown -= Time::deltaTime;
+	reloadCooldown -= Time::fixedDeltaTime;
 
 	if (reloadCooldown > 0.0f) {
 		return;
@@ -225,9 +225,6 @@ void Weapon::stop_reloading() {
 }
 
 void Weapon::update() {
-	update_fire();
-	update_reload();
-
 	std::vector<Bullet> tmp;
 
 	for (auto& i : bullets) {
@@ -243,6 +240,11 @@ void Weapon::update() {
 	for (auto& i : tmp) {
 		bullets.push_back(i);
 	}
+}
+
+void Weapon::fixed_update() {
+	fixed_update_fire();
+	fixed_update_reload();
 }
 
 void Weapon::render() {
