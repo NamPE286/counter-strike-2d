@@ -4,6 +4,7 @@
 
 #include "../managers/Time.hpp"
 #include "../utilities/Utils.hpp"
+#include "../managers/Audio.hpp"
 
 void Player::update_position() {
 	velocity += acceleration * Time::deltaTime * 0.5;
@@ -48,8 +49,18 @@ void Player::update() {
 }
 
 void Player::fixed_update() {
+	static float footstepDelay = 0;
+
+	footstepDelay -= Time::fixedDeltaTime;
+	footstepDelay = std::max(footstepDelay, -1.0f);
+
 	for (int i = 0; i < 3; i++) {
 		weapons[i]->fixed_update();
+	}
+
+	if (velocity.magnitude() == 0.4f && footstepDelay <= 0.0f) {
+		footstepDelay = 400;
+		Mix_PlayChannel(-1, Audio::load("assets/player/footsteps/concrete_ct_01.wav"), 0);
 	}
 }
 
