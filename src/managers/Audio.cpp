@@ -1,9 +1,12 @@
 #include "Audio.hpp"
 
 #include <iostream>
+#include <stdexcept>
 
 void Audio::init() {
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+		throw std::runtime_error("Failed to initialize SDL_mixer. Error: " + std::string(Mix_GetError()));
+	}
 }
 
 Mix_Chunk* Audio::load(std::string filePath) {
