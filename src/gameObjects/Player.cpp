@@ -58,8 +58,8 @@ void Player::fixed_update() {
 		weapons[i]->fixed_update();
 	}
 
-	if (velocity.magnitude() == 0.4f && footstepDelay <= 0.0f) {
-		footstepDelay = 400;
+	if (velocity.magnitude() >= 0.35f && footstepDelay <= 0.0f) {
+		footstepDelay = 360;
 		Mix_PlayChannel(-1, Audio::load("assets/player/footsteps/concrete_ct_01.wav"), 0);
 	}
 }
