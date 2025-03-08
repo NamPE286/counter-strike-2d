@@ -1,5 +1,9 @@
 #include "Scene.hpp"
 
+void Scene::init(SDL_Renderer* _renderer) {
+	renderer = _renderer;
+}
+
 void Scene::update() {
 	if (stack.empty()) {
 		return;

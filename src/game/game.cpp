@@ -34,10 +34,11 @@ Game::Game() {
 	}
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+
 	Audio::init();
+	Scene::init(renderer);
 
 	mouse = new Mouse(renderer);
-	Scene::renderer = renderer;
 
 	Scene::stack.emplace(new GameScene(renderer));
 }
