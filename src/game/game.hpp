@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 
 #include "../gameObjects/Mouse.hpp"
+#include "../managers/Scene.hpp"
 
 class Game {
 	SDL_Window* window = nullptr;

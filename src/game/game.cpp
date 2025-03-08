@@ -13,8 +13,6 @@
 #include "../scenes/GameScene.hpp"
 #include "../managers/Audio.hpp"
 
-GameScene* scene = nullptr;
-
 Game::Game() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		throw std::runtime_error("Failed to initialize SDL. SDL error: " + std::string(SDL_GetError()));
@@ -38,12 +36,13 @@ Game::Game() {
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	Audio::init();
 
-	scene = new GameScene(renderer);
 	mouse = new Mouse(renderer);
+	Scene::renderer = renderer;
+
+	Scene::stack.emplace(new GameScene(renderer));
 }
 
 Game::~Game() {
-	delete scene;
 	delete mouse;
 
 	SDL_DestroyWindow(window);
@@ -115,25 +114,25 @@ void Game::event_handler(SDL_Event& event) {
 		}
 	}
 
-	scene->event_handler(event);
+	Scene::event_handler(event);
 }
 
 void Game::update() {
 	mouse->update();
-	scene->update();
+	Scene::update();
 }
 
 void Game::fixed_update() {
 	mouse->fixed_update();
-	scene->fixed_update();
+	Scene::fixed_update();
 }
 
 void Game::render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 
-	scene->render();
 	mouse->render();
+	Scene::render();
 
 	SDL_RenderPresent(renderer);
 }
