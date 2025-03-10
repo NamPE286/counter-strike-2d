@@ -185,3 +185,7 @@ void Player::on_mouse_button_down(SDL_Event& event) {
 void Player::on_mouse_button_up(SDL_Event& event) {
 	weapons[weaponSlot]->stop_firing();
 }
+
+Weapon* Player::get_weapon() {
+	return weapons[weaponSlot];
+}

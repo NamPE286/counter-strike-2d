@@ -9,13 +9,15 @@ class Text {
 	SDL_Surface* surface = nullptr;
 	SDL_Texture* texture = nullptr;
 	TTF_Font* font = nullptr;
-	std::string content;
 	SDL_Color color = { 0, 0, 0, 0 };
 	SDL_Rect rect = { 0, 0, 0, 0 };
+	std::string content;
 
 public:
-	Text(SDL_Renderer* renderer, TTF_Font* font, std::string content, SDL_Color color);
+	Text(SDL_Renderer* renderer, TTF_Font* font, SDL_Color color);
+	~Text();
 
-	void update_content(std::string newContent);
-	void render(int x, int y);
+	void set_content(std::string newContent);
+	void set_position(int x, int y);
+	void render();
 };

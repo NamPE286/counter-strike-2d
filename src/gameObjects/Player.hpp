@@ -38,4 +38,5 @@ public:
 	void on_key_up(SDL_Event& event);
 	void on_mouse_button_down(SDL_Event& event);
 	void on_mouse_button_up(SDL_Event& event);
+	Weapon* get_weapon();
 };

@@ -7,6 +7,7 @@
 #include <thread>
 #include <iostream>
 
+#include "../managers/Font.hpp"
 #include "../managers/Time.hpp"
 #include "../gameObjects/Player.hpp"
 #include "../common.h"
@@ -36,6 +37,7 @@ Game::Game() {
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
 	Audio::init();
+	Font::init();
 	Scene::init(renderer);
 
 	mouse = new Mouse(renderer);
