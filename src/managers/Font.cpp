@@ -9,6 +9,14 @@ void Font::init() {
 	}
 }
 
+void Font::destroy() {
+	for (auto& i : fontMap) {
+		TTF_CloseFont(i.second);
+	}
+
+	TTF_Quit();
+}
+
 TTF_Font* Font::load(std::string filePath, int fontSize) {
 	if (fontMap.contains({ filePath, fontSize })) {
 		return fontMap[{ filePath, fontSize }];

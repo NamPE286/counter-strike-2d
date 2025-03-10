@@ -52,6 +52,8 @@ Game::~Game() {
 	SDL_DestroyRenderer(renderer);
 
 	Audio::destroy();
+	Font::destroy();
+
 	SDL_Quit();
 }
 
