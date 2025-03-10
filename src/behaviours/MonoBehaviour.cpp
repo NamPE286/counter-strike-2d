@@ -1,10 +1,15 @@
 #include "MonoBehaviour.hpp"
 
 #include <SDL2/SDL.h>
+#include <stdexcept>
 
 MonoBehaviour::MonoBehaviour(SDL_Renderer* renderer):
 	renderer(renderer) 
-{}
+{
+	if (renderer == nullptr) {
+		throw std::runtime_error("Renderer cannot be null");
+	}
+}
 
 MonoBehaviour::~MonoBehaviour() {}
 

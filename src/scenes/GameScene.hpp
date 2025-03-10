@@ -4,12 +4,13 @@
 #include <vector>
 
 #include "../ui/Text.hpp"
+#include "../ui/HUD.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../gameObjects/Player.hpp"
 
 class GameScene : public MonoBehaviour {
 	std::vector<Player> players;
-	Text* text = nullptr;
+	HUD* hud = nullptr;
 
 public:
 	GameScene(SDL_Renderer* renderer);
