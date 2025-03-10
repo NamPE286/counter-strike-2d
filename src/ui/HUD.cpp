@@ -21,8 +21,10 @@ void HUD::update() {
 void HUD::render() {
 	SDL_Rect ammoSep = {ammoText->rect.x + 58, ammoText->rect.y + 12, 2, 21};
 
-	ammoText->render();
-	reserveAmmoText->render();
+	if (player->get_weapon()->ammo != -1) {
+		ammoText->render();
+		reserveAmmoText->render();
+	}
 
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 100);
 	SDL_RenderFillRect(renderer, &ammoSep);
