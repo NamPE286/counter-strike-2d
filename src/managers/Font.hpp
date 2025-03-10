@@ -6,9 +6,9 @@
 #include <map>
 
 namespace Font {
-	inline std::map<std::string, TTF_Font*> fontMap;
+	inline std::map<std::pair<std::string, int>, TTF_Font*> fontMap;
 
 	void init();
-	TTF_Font* load(std::string filePath);
-	void loadBatch(std::vector<std::string> filePaths);
+	TTF_Font* load(std::string filePath, int fontSize);
+	void loadBatch(std::vector<std::pair<std::string, int>> filePaths);
 }

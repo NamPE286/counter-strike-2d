@@ -9,9 +9,16 @@ void Font::init() {
 	}
 }
 
-TTF_Font* Font::load(std::string filePath) {
-	return nullptr;
+TTF_Font* Font::load(std::string filePath, int fontSize) {
+	if (fontMap.contains({ filePath, fontSize })) {
+		return fontMap[{ filePath, fontSize }];
+	}
+
+	return fontMap[{ filePath, fontSize }] = TTF_OpenFont(filePath.c_str(), fontSize);
 }
 
-void Font::loadBatch(std::vector<std::string> filePaths) {
+void Font::loadBatch(std::vector<std::pair<std::string, int>> filePaths) {
+	for (auto& i : filePaths) {
+		load(i.first, i.second);
+	}
 }
