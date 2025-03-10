@@ -8,7 +8,7 @@
 
 class HUD : public MonoBehaviour {
 	Player* player = nullptr;
-	Text* ammoText = nullptr;
+	Text *ammoText = nullptr, *reserveAmmoText = nullptr;
 	SDL_Color color = { 0, 0, 0, 0 };
 
 public:

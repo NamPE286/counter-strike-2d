@@ -25,7 +25,7 @@ void Text::set_content(std::string newContent) {
 	SDL_FreeSurface(surface);
 	SDL_DestroyTexture(texture);
 
-	surface = TTF_RenderText_Solid(font, content.c_str(), color);
+	surface = TTF_RenderText_Blended(font, content.c_str(), color);
 
 	if (surface == nullptr) {
 		throw std::runtime_error("Failed to update text surface. Error: " + std::string(TTF_GetError()));
