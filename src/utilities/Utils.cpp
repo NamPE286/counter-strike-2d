@@ -20,3 +20,13 @@ float Utils::getRandom(float variance) {
 
     return dis(gen);
 }
+
+float Utils::getRandom(int start, int end) {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+
+    std::uniform_real_distribution<int> dis(start, end);
+
+    return dis(gen);
+
+}
