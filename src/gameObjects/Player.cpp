@@ -24,8 +24,8 @@ void Player::update_position() {
 	}
 }
 
-Player::Player(SDL_Renderer* renderer, int side, Vec2 pos,  bool playable):
-	MonoBehaviour(renderer), position(pos), side(side), playable(playable)
+Player::Player(SDL_Renderer* renderer, std::string name, int side, Vec2 pos,  bool playable):
+	MonoBehaviour(renderer), name(name), position(pos), side(side), playable(playable)
 {
 	if (side == PlayerSide::T) {
 		color = { 255, 205, 100, 255 };

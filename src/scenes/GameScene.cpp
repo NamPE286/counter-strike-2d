@@ -10,8 +10,8 @@
 GameScene::GameScene(SDL_Renderer* renderer):
 	MonoBehaviour(renderer)
 {
-	players.push_back(new Player(renderer, PlayerSide::T, Vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)));
-	players.push_back(new Player(renderer, PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
+	players.push_back(new Player(renderer, "Me", PlayerSide::T, Vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)));
+	players.push_back(new Player(renderer, "BOT", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
 
 	self = players[0];
 	hud = new HUD(renderer, self, self->side);

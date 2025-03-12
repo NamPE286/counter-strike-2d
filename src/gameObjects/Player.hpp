@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <utility>
 #include <map>
+#include <string>
 
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../geometry/Vec2.hpp"
@@ -34,9 +35,11 @@ class Player : public MonoBehaviour {
 public:
 	int hp = 100, armor = 0, money = 800;
 	int side = PlayerSide::T;
+	int kill = 0, death = 0, assist = 0;
 	bool playable = true;
+	std::string name;
 
-	Player(SDL_Renderer* renderer, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);
+	Player(SDL_Renderer* renderer, std::string name, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);
 	~Player();
 
 	void update();
