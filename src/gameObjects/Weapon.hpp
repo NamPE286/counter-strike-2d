@@ -14,7 +14,7 @@
 
 class Weapon : public MonoBehaviour {
 	Vec2 *pos = nullptr, *vel = nullptr;
-	int magSize = -1, mobility = 250, range = 50, killReward = 1500;
+	int magSize = -1, range = 50;
 	float damage = 25.0f, armorPenetration = 0.85f, tagging = 0.0f,
 		headshotMultiplier = 1.0f, standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
 		fireRate = 400.0f, fireCooldown = -1.0f, reloadTime = 0.0f, reloadCooldown = -1.0f;
@@ -32,7 +32,7 @@ class Weapon : public MonoBehaviour {
 public:
 	std::string name = "Knife";
 	int ammo = -1, reserveAmmo = -1;
-	int price = 0;
+	int price = 0, mobility = 250, killReward = 1500;
 
 	Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel);
 

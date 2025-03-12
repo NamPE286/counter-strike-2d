@@ -32,6 +32,7 @@ class Player : public MonoBehaviour {
 	float footstepDelay = 0;
 
 	void update_position();
+	void change_weapon(int slot);
 public:
 	int hp = 100, armor = 0, money = 800;
 	int side = PlayerSide::T;

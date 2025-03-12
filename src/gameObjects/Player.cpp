@@ -24,6 +24,22 @@ void Player::update_position() {
 	}
 }
 
+void Player::change_weapon(int slot) {
+	const auto keyboard = SDL_GetKeyboardState(0);
+
+	weapons[weaponSlot]->stop_firing();
+	weapons[weaponSlot]->stop_reloading();
+
+	weaponSlot = slot;
+	weapons[weaponSlot]->equip();
+
+	maxSpeed = 0.4f * weapons[weaponSlot]->mobility / 250;
+
+	if (keyboard[SDL_SCANCODE_LSHIFT]) {
+		maxSpeed /= 2;
+	}
+}
+
 Player::Player(SDL_Renderer* renderer, std::string name, int side, Vec2 pos,  bool playable):
 	MonoBehaviour(renderer), name(name), position(pos), side(side), playable(playable)
 {
@@ -38,7 +54,7 @@ Player::Player(SDL_Renderer* renderer, std::string name, int side, Vec2 pos,  bo
 	weapons[2] = new Weapon(renderer, "Knife", &position, &velocity);
 
 	if (playable) {
-		weapons[weaponSlot]->equip();
+		change_weapon(0);
 	}
 }
 
@@ -108,23 +124,11 @@ void Player::on_key_down(SDL_Event& event) {
 	}
 
 	if (event.key.keysym.scancode == SDL_SCANCODE_1) {
-		weapons[weaponSlot]->stop_firing();
-		weapons[weaponSlot]->stop_reloading();
-
-		weaponSlot = 0;
-		weapons[weaponSlot]->equip();
+		change_weapon(0);
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_2) {
-		weapons[weaponSlot]->stop_firing();
-		weapons[weaponSlot]->stop_reloading();
-
-		weaponSlot = 1;
-		weapons[weaponSlot]->equip();
+		change_weapon(1);
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_3) {
-		weapons[weaponSlot]->stop_firing();
-		weapons[weaponSlot]->stop_reloading();
-
-		weaponSlot = 2;
-		weapons[weaponSlot]->equip();
+		change_weapon(2);
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_R) {
 		weapons[weaponSlot]->reload();
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
@@ -169,21 +173,17 @@ void Player::on_key_up(SDL_Event& event) {
 		}
 
 		if (keyboard[SDL_SCANCODE_W] && !keyboard[SDL_SCANCODE_S]) {
-			velocity.y = 0;
 			direction.y = directionMap[SDL_SCANCODE_W].y;
 			acceleration.y = directionMap[SDL_SCANCODE_W].y * 0.002f;
 		} else if (!keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_S]) {
-			velocity.y = 0;
 			direction.y = directionMap[SDL_SCANCODE_S].y;
 			acceleration.y = directionMap[SDL_SCANCODE_S].y * 0.002f;
 		}
 
 		if (keyboard[SDL_SCANCODE_A] && !keyboard[SDL_SCANCODE_D]) {
-			velocity.x = 0;
 			direction.x = directionMap[SDL_SCANCODE_A].x;
 			acceleration.x = directionMap[SDL_SCANCODE_A].x * 0.002f;
 		} else if (!keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
-			velocity.x = 0;
 			direction.x = directionMap[SDL_SCANCODE_D].x;
 			acceleration.x = directionMap[SDL_SCANCODE_D].x * 0.002f;
 		}
