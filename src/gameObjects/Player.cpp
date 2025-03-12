@@ -45,14 +45,6 @@ void Player::set_position(Vec2 newPos) {
 }
 
 void Player::take_damage(Weapon* w, bool headshot) {
-	if (headshot) {
-		std::cout << "Headshot ";
-	} else {
-		std::cout << "Hit ";
-	}
-
-	std::cout << name << " with " << w->name << ". ";
-
 	velocity = velocity * w->taggingPower;
 
 	float dmg = w->baseDamage;
