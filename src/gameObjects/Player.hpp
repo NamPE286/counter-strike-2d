@@ -26,6 +26,7 @@ class Player : public MonoBehaviour {
 	Weapon* weapons[3] = { nullptr, nullptr, nullptr };
 	SDL_Color color = { 0, 0, 0, 0 };
 	
+	int pointerX = 0, pointerY = 0;
 	const int size = 30, borderWidth = 8;
 	float maxSpeed = 0.4f;
 	int weaponSlot = 0;

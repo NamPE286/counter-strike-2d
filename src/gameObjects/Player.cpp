@@ -31,7 +31,7 @@ void Player::change_weapon(int slot) {
 	weapons[weaponSlot]->stop_reloading();
 
 	weaponSlot = slot;
-	weapons[weaponSlot]->equip();
+	weapons[weaponSlot]->equip(playable);
 
 	maxSpeed = 0.4f * weapons[weaponSlot]->mobility / 250;
 
@@ -49,13 +49,11 @@ Player::Player(SDL_Renderer* renderer, std::string name, int side, Vec2 pos,  bo
 		color = { 154, 203, 249, 255 };
 	}
 
-	weapons[0] = new Weapon(renderer, "AK-47", &position, &velocity);
-	weapons[1] = new Weapon(renderer, "Glock-18", &position, &velocity);
-	weapons[2] = new Weapon(renderer, "Knife", &position, &velocity);
+	weapons[0] = new Weapon(renderer, "AK-47", &position, &velocity, &pointerX, &pointerY);
+	weapons[1] = new Weapon(renderer, "Glock-18", &position, &velocity, &pointerX, &pointerY);
+	weapons[2] = new Weapon(renderer, "Knife", &position, &velocity, &pointerX, &pointerY);
 
-	if (playable) {
-		change_weapon(0);
-	}
+	change_weapon(0);
 }
 
 Player::~Player() {
@@ -73,6 +71,8 @@ void Player::update() {
 }
 
 void Player::fixed_update() {
+	SDL_GetMouseState(&pointerX, &pointerY);
+
 	const auto keyboard = SDL_GetKeyboardState(0);
 
 	for (int i = 0; i < 3; i++) {

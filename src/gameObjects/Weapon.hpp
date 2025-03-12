@@ -14,6 +14,7 @@
 
 class Weapon : public MonoBehaviour {
 	Vec2 *pos = nullptr, *vel = nullptr;
+	int* pointerX = nullptr, *pointerY = nullptr;
 	int magSize = -1, range = 50;
 	float damage = 25.0f, armorPenetration = 0.85f, tagging = 0.0f,
 		headshotMultiplier = 1.0f, standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
@@ -34,9 +35,9 @@ public:
 	int ammo = -1, reserveAmmo = -1;
 	int price = 0, mobility = 250, killReward = 1500;
 
-	Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel);
+	Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel, int* pointerX, int* pointerY);
 
-	void equip();
+	void equip(bool playSound);
 	void fire(Vec2* position, Vec2* velocity);
 	void stop_firing();
 	void reload();
