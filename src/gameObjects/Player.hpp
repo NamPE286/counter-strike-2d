@@ -62,9 +62,10 @@ public:
 	void fire(std::vector<Player*>* players);
 	void stop_firing();
 	void set_position(Vec2 newPos);
-	void take_damage(Weapon* w);
+	void take_damage(Weapon* w, bool headshot);
 
 	bool collide(Bullet bullet);
+	bool collide(int pointerX, int pointerY);
 
 	Weapon* get_weapon() const;
 };

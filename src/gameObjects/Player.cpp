@@ -44,8 +44,14 @@ void Player::set_position(Vec2 newPos) {
 	position = newPos;
 }
 
-void Player::take_damage(Weapon* w) {
-	
+void Player::take_damage(Weapon* w, bool headshot) {
+	if (headshot) {
+		std::cout << "Headshot ";
+	} else {
+		std::cout << "Hit ";
+	}
+
+	std::cout << name << " with " << w->name << '\n';
 }
 
 bool Player::collide(Bullet bullet) {
@@ -56,15 +62,19 @@ bool Player::collide(Bullet bullet) {
 		size
 	};
 
-	int endX = bullet.x + bullet.length * cos(bullet.angle);
-	int endY = bullet.y + bullet.length * sin(bullet.angle);
+	int endX = static_cast<int>(bullet.x + bullet.length * cos(bullet.angle));
+	int endY = static_cast<int>(bullet.y + bullet.length * sin(bullet.angle));
 
 	auto lines_intersect = [](int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
 		auto orientation = [](int x1, int y1, int x2, int y2, int x3, int y3) {
 			int val = (y2 - y1) * (x3 - x2) - (x2 - x1) * (y3 - y2);
-			if (val == 0) return 0; 
+
+			if (val == 0) {
+				return 0;
+			}
+
 			return (val > 0) ? 1 : 2; 
-			};
+		};
 
 		int o1 = orientation(x1, y1, x2, y2, x3, y3);
 		int o2 = orientation(x1, y1, x2, y2, x4, y4);
@@ -85,6 +95,18 @@ bool Player::collide(Bullet bullet) {
 	}
 
 	return false;
+}
+
+bool Player::collide(int pointerX, int pointerY) {
+	SDL_Rect rect = {
+		(int)position.x - 15 / 2,
+		(int)position.y - 15 / 2,
+		15,
+		15
+	};
+
+	return (pointerX >= rect.x && pointerX <= rect.x + rect.w &&
+			pointerY >= rect.y && pointerY <= rect.y + rect.h);
 }
 
 Player::Player(SDL_Renderer* renderer, std::string name, int side, Vec2 pos,  bool playable):
@@ -120,12 +142,12 @@ void Player::update() {
 		}
 
 		for (Player* p : *playerList) {
-			if (p == this) {
+			if (p == this || p->hp == 0) {
 				continue;
 			}
 
 			if (p->collide(bullet)) {
-				p->take_damage(weapons[weaponSlot]);
+				p->take_damage(weapons[weaponSlot], p->collide(pointerX, pointerY));
 			}
 		}
 	}
