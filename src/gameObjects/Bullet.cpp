@@ -4,9 +4,19 @@
 
 #include "../managers/Time.hpp"
 
+Bullet::Bullet(SDL_Renderer* renderer):
+	MonoBehaviour(renderer)
+{}
+
 Bullet::Bullet(SDL_Renderer* renderer, float angle, int x, int y, int length):
 	MonoBehaviour(renderer), angle(angle), x(x), y(y), length(length)
 {}
+
+void Bullet::operator=(Bullet rhs) {
+	angle = rhs.angle;
+	x = rhs.x, y = rhs.y;
+	length = rhs.length;
+}
 
 void Bullet::update() {
 	alpha -= int(2 * Time::deltaTime);

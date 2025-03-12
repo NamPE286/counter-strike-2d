@@ -4,6 +4,7 @@
 #include <vector>
 #include <stdexcept>
 #include <thread>
+#include <queue>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
@@ -20,9 +21,10 @@ class Weapon : public MonoBehaviour {
 		headshotMultiplier = 1.0f, standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
 		fireRate = 400.0f, fireCooldown = -1.0f, reloadTime = 0.0f, reloadCooldown = -1.0f;
 	bool firing = false, reloading = false, pullingOut = true, automatic = true;
-	std::vector<Bullet> bullets;
 	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr, *pullSound = nullptr;
 	std::vector<Mix_Chunk*> reloadSound;
+	std::vector<Bullet> bullets;
+	std::queue<Bullet> bulletQueue;
 
 	void fixed_update_fire();
 	void fixed_update_reload();
@@ -38,11 +40,13 @@ public:
 	Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel, int* pointerX, int* pointerY);
 
 	void equip(bool playSound);
-	void fire(Vec2* position, Vec2* velocity);
+	void fire();
 	void stop_firing();
 	void reload();
 	void stop_reloading();
 	void update();
 	void fixed_update();
 	void render();
+
+	bool poll_bullets(Bullet& bullet);
 };

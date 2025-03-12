@@ -21,4 +21,6 @@ public:
 	void update();
 	void fixed_update();
 	void render();
+	void on_mouse_button_down(SDL_Event& event);
+	void on_mouse_button_up(SDL_Event& event);
 };

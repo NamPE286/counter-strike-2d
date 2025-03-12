@@ -44,6 +44,54 @@ void Player::set_position(Vec2 newPos) {
 	position = newPos;
 }
 
+void Player::take_damage(int dmg) {
+	hp = std::max(hp - dmg, 0);
+
+	if (hp == 0) {
+		velocity = acceleration = direction = Vec2(0, 0);
+		weapons[weaponSlot]->stop_firing();
+	}
+}
+
+bool Player::collide(Bullet bullet) {
+	SDL_Rect rect = {
+		(int)position.x - size / 2,
+		(int)position.y - size / 2,
+		size,
+		size
+	};
+
+	int endX = bullet.x + bullet.length * cos(bullet.angle);
+	int endY = bullet.y + bullet.length * sin(bullet.angle);
+
+	auto lines_intersect = [](int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+		auto orientation = [](int x1, int y1, int x2, int y2, int x3, int y3) {
+			int val = (y2 - y1) * (x3 - x2) - (x2 - x1) * (y3 - y2);
+			if (val == 0) return 0; 
+			return (val > 0) ? 1 : 2; 
+			};
+
+		int o1 = orientation(x1, y1, x2, y2, x3, y3);
+		int o2 = orientation(x1, y1, x2, y2, x4, y4);
+		int o3 = orientation(x3, y3, x4, y4, x1, y1);
+		int o4 = orientation(x3, y3, x4, y4, x2, y2);
+
+		if (o1 != o2 && o3 != o4) return true;
+
+		return false;
+	};
+
+	if (lines_intersect(bullet.x, bullet.y, endX, endY, rect.x, rect.y, rect.x + rect.w, rect.y) ||
+		lines_intersect(bullet.x, bullet.y, endX, endY, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h) ||
+		lines_intersect(bullet.x, bullet.y, endX, endY, rect.x, rect.y, rect.x, rect.y + rect.h) ||
+		lines_intersect(bullet.x, bullet.y, endX, endY, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h))
+	{
+		return true;
+	}
+
+	return false;
+}
+
 Player::Player(SDL_Renderer* renderer, std::string name, int side, Vec2 pos,  bool playable):
 	MonoBehaviour(renderer), name(name), position(pos), side(side), playable(playable)
 {
@@ -68,6 +116,24 @@ Player::~Player() {
 
 void Player::update() {
 	update_position();
+
+	Bullet bullet(renderer);
+
+	while (weapons[weaponSlot]->poll_bullets(bullet)) {
+		if (playerList == nullptr) {
+			continue;
+		}
+
+		for (Player* p : *playerList) {
+			if (p == this) {
+				continue;
+			}
+
+			if (p->collide(bullet)) {
+				std::cout << "Hit " << p->name << '\n';
+			}
+		}
+	}
 
 	for (int i = 0; i < 3; i++) {
 		weapons[i]->update();
@@ -121,6 +187,10 @@ void Player::render() {
 void Player::on_key_down(SDL_Event& event) {
 	keyboard[event.key.keysym.scancode] = true;
 
+	if (hp == 0) {
+		return;
+	}
+
 	if (event.key.repeat) {
 		return;
 	}
@@ -163,6 +233,10 @@ void Player::on_key_down(SDL_Event& event) {
 void Player::on_key_up(SDL_Event& event) {
 	keyboard[event.key.keysym.scancode] = false;
 
+	if (hp == 0) {
+		return;
+	}
+
 	if (event.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
 		maxSpeed *= 2;
 	} else {
@@ -194,11 +268,20 @@ void Player::on_key_up(SDL_Event& event) {
 	}
 }
 
-void Player::on_mouse_button_down(SDL_Event& event) {
-	weapons[weaponSlot]->fire(&position, &velocity);
+void Player::fire(std::vector<Player*>* players) {
+	if (hp == 0) {
+		return;
+	}
+
+	playerList = players;
+	weapons[weaponSlot]->fire();
 }
 
-void Player::on_mouse_button_up(SDL_Event& event) {
+void Player::stop_firing() {
+	if (hp == 0) {
+		return;
+	}
+
 	weapons[weaponSlot]->stop_firing();
 }
 

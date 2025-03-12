@@ -4,10 +4,15 @@
 #include <utility>
 #include <map>
 #include <string>
+#include <vector>
+#include <thread>
 
+#include "../gameObjects/Bullet.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../geometry/Vec2.hpp"
 #include "Weapon.hpp"
+
+#include <vector>
 
 enum PlayerSide {
 	T,
@@ -25,6 +30,8 @@ class Player : public MonoBehaviour {
 	Vec2 position, velocity, acceleration, direction;
 	Weapon* weapons[3] = { nullptr, nullptr, nullptr };
 	SDL_Color color = { 0, 0, 0, 0 };
+	std::vector<Player*>* playerList = nullptr;
+
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
 	
 	int pointerX = 0, pointerY = 0;
@@ -52,9 +59,12 @@ public:
 	void render();
 	void on_key_down(SDL_Event& event);
 	void on_key_up(SDL_Event& event);
-	void on_mouse_button_down(SDL_Event& event);
-	void on_mouse_button_up(SDL_Event& event);
+	void fire(std::vector<Player*>* players);
+	void stop_firing();
 	void set_position(Vec2 newPos);
+	void take_damage(int dmg);
+
+	bool collide(Bullet bullet);
 
 	Weapon* get_weapon();
 };

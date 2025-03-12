@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <thread>
+#include <stdexcept>
 
 #include "../managers/Time.hpp"
 #include "../utilities/Utils.hpp"
@@ -31,12 +32,14 @@ void Weapon::fixed_update_fire() {
 	if (automatic) {
 		if (ammo > 0) {
 			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
+			bulletQueue.push(bullets.back());
 			play_firing_sound(ammo <= magSize * 20 / 100);
 
 			fireCooldown = fireRate;
 			ammo--;
 		} else if (ammo == -1) {
 			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
+			bulletQueue.push(bullets.back());
 			play_firing_sound(false);
 
 			fireCooldown = fireRate;
@@ -44,6 +47,7 @@ void Weapon::fixed_update_fire() {
 	} else {
 		if (ammo > 0) {
 			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
+			bulletQueue.push(bullets.back());
 			play_firing_sound(ammo <= magSize * 20 / 100);
 
 			fireCooldown = fireRate;
@@ -189,7 +193,7 @@ void Weapon::equip(bool playSound) {
 	}
 }
 
-void Weapon::fire(Vec2* position, Vec2* velocity) {
+void Weapon::fire() {
 	if (reloading || pullingOut) {
 		return;
 	}
@@ -250,4 +254,15 @@ void Weapon::render() {
 	for (auto& i : bullets) {
 		i.render();
 	}
+}
+
+bool Weapon::poll_bullets(Bullet& bullet) {
+	if (bulletQueue.empty()) {
+		return false;
+	}
+
+	bullet = bulletQueue.front();
+	bulletQueue.pop();
+
+	return true;
 }

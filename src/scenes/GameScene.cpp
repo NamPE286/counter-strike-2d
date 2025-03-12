@@ -31,6 +31,21 @@ void GameScene::event_handler(SDL_Event& event) {
 
 		p->event_handler(event);
 	}
+
+	switch (event.type) {
+	case SDL_KEYDOWN:
+		on_key_down(event);
+		break;
+	case SDL_KEYUP:
+		on_key_up(event);
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		on_mouse_button_down(event);
+		break;
+	case SDL_MOUSEBUTTONUP:
+		on_mouse_button_up(event);
+		break;
+	}
 }
 
 void GameScene::update() {
@@ -53,4 +68,12 @@ void GameScene::render() {
 	}
 	
 	hud->render();
+}
+
+void GameScene::on_mouse_button_down(SDL_Event& event) {
+	self->fire(&players);
+}
+
+void GameScene::on_mouse_button_up(SDL_Event & event) {
+	self->stop_firing();
 }
