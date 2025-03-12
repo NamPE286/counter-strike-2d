@@ -7,15 +7,19 @@ HUD::HUD(SDL_Renderer* renderer, Player* player, SDL_Color color):
 	MonoBehaviour(renderer), player(player), color(color)
 {
 	ammoText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 40), color);
-	ammoText->set_position(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT - 80);
+	ammoText->set_position(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT - 60);
 
 	reserveAmmoText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 20), color);
-	reserveAmmoText->set_position(WINDOW_WIDTH / 2 + 268, WINDOW_HEIGHT - 70);
+	reserveAmmoText->set_position(WINDOW_WIDTH / 2 + 268, WINDOW_HEIGHT - 50);
+
+	moneyText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 30), color);
+	moneyText->set_position(15, WINDOW_HEIGHT - 50);
 }
 
 void HUD::update() {
 	ammoText->set_content(std::to_string(player->get_weapon()->ammo));
 	reserveAmmoText->set_content(std::to_string(player->get_weapon()->reserveAmmo));
+	moneyText->set_content("$" + std::to_string(player->money));
 }
 
 void HUD::render() {
@@ -24,8 +28,10 @@ void HUD::render() {
 	if (player->get_weapon()->ammo != -1) {
 		ammoText->render();
 		reserveAmmoText->render();
+
+		SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 100);
+		SDL_RenderFillRect(renderer, &ammoSep);
 	}
 
-	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 100);
-	SDL_RenderFillRect(renderer, &ammoSep);
+	moneyText->render();
 }
