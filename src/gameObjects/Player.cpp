@@ -45,6 +45,10 @@ void Player::set_position(Vec2 newPos) {
 }
 
 void Player::take_damage(Weapon* w, bool headshot) {
+	if (w->name == "Knife") {
+		headshot = false;
+	}
+
 	velocity = velocity * w->taggingPower;
 
 	float dmg = w->baseDamage;
@@ -61,11 +65,41 @@ void Player::take_damage(Weapon* w, bool headshot) {
 	hp = std::max(0, hp - (int)dmg);
 
 	if (hp == 0) {
+		Mix_PlayChannel(-1, Audio::kill(), 0);
 		Mix_PlayChannel(-1, Audio::death(), 0);
-		armor = 0;
+
+		if (headshot) {
+			if (armor > 0 && helmet) {
+				Mix_PlayChannel(-1, Audio::headshot_armor(), 0);
+			} else {
+				Mix_PlayChannel(-1, Audio::headshot_no_armor(), 0);
+			}
+		} else {
+			if (armor > 0) {
+				Mix_PlayChannel(-1, Audio::bodyshot_armor(), 0);
+			} else {
+				Mix_PlayChannel(-1, Audio::bodyshot_no_armor(), 0);
+			}
+		}
+
+		armor = 0, helmet = false;
+	} else {
+		if (headshot) {
+			if (armor > 0 && helmet) {
+				Mix_PlayChannel(-1, Audio::headshot_armor_dink(), 0);
+			} else {
+				Mix_PlayChannel(-1, Audio::headshot_no_armor(), 0);
+			}
+		} else {
+			if (armor > 0) {
+				Mix_PlayChannel(-1, Audio::bodyshot_armor(), 0);
+			} else {
+				Mix_PlayChannel(-1, Audio::bodyshot_no_armor(), 0);
+			}
+		}
 	}
 
-	std::cout << "Damage taken: " << (int)dmg << ". HP: " << hp << " Armor: " << armor << '\n';
+	std::cout << "Damage taken: " << (int)dmg << ". HP: " << hp << " Armor: " << armor << " Helmet: " << helmet << '\n';
 }
 
 bool Player::collide(Bullet bullet) {

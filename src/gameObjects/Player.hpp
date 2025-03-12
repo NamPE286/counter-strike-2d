@@ -50,7 +50,7 @@ public:
 	int hp = 100, armor = 100, money = 800;
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
-	bool playable = true;
+	bool playable = true, helmet = true;
 	std::string name;
 
 	Player(SDL_Renderer* renderer, std::string name, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);
