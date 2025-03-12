@@ -35,9 +35,13 @@ void Player::change_weapon(int slot) {
 
 	maxSpeed = 0.4f * weapons[weaponSlot]->mobility / 250;
 
-	if (keyboard[SDL_SCANCODE_LSHIFT]) {
+	if (sneaking) {
 		maxSpeed /= 2;
 	}
+}
+
+void Player::set_position(Vec2 newPos) {
+	position = newPos;
 }
 
 Player::Player(SDL_Renderer* renderer, std::string name, int side, Vec2 pos,  bool playable):
@@ -72,8 +76,6 @@ void Player::update() {
 
 void Player::fixed_update() {
 	SDL_GetMouseState(&pointerX, &pointerY);
-
-	const auto keyboard = SDL_GetKeyboardState(0);
 
 	for (int i = 0; i < 3; i++) {
 		weapons[i]->fixed_update();
@@ -117,7 +119,7 @@ void Player::render() {
 }
 
 void Player::on_key_down(SDL_Event& event) {
-	const auto keyboard = SDL_GetKeyboardState(0);
+	keyboard[event.key.keysym.scancode] = true;
 
 	if (event.key.repeat) {
 		return;
@@ -159,6 +161,8 @@ void Player::on_key_down(SDL_Event& event) {
 }
 
 void Player::on_key_up(SDL_Event& event) {
+	keyboard[event.key.keysym.scancode] = false;
+
 	if (event.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
 		maxSpeed *= 2;
 	} else {

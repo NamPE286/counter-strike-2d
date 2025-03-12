@@ -25,15 +25,18 @@ class Player : public MonoBehaviour {
 	Vec2 position, velocity, acceleration, direction;
 	Weapon* weapons[3] = { nullptr, nullptr, nullptr };
 	SDL_Color color = { 0, 0, 0, 0 };
+	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
 	
 	int pointerX = 0, pointerY = 0;
 	const int size = 30, borderWidth = 8;
 	float maxSpeed = 0.4f;
 	int weaponSlot = 0;
+	bool sneaking = false;
 	float footstepDelay = 0;
 
 	void update_position();
 	void change_weapon(int slot);
+
 public:
 	int hp = 100, armor = 0, money = 800;
 	int side = PlayerSide::T;
@@ -51,5 +54,7 @@ public:
 	void on_key_up(SDL_Event& event);
 	void on_mouse_button_down(SDL_Event& event);
 	void on_mouse_button_up(SDL_Event& event);
+	void set_position(Vec2 newPos);
+
 	Weapon* get_weapon();
 };
