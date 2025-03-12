@@ -34,7 +34,7 @@ public:
 	int ammo = -1, reserveAmmo = -1;
 	int price = 0;
 
-	Weapon(SDL_Renderer* renderer, std::string name);
+	Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel);
 
 	void equip();
 	void fire(Vec2* position, Vec2* velocity);

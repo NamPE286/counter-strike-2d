@@ -28,6 +28,7 @@ class Player : public MonoBehaviour {
 	const int size = 30, borderWidth = 8;
 	float maxSpeed = 0.4f;
 	int weaponSlot = 0;
+	float footstepDelay = 0;
 
 	void update_position();
 public:

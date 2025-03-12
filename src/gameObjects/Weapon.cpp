@@ -100,10 +100,10 @@ void Weapon::play_draw_sound() {
 		Mix_PlayChannel(-1, drawSound, 0);
 		SDL_Delay(300);
 
-		if (pullSound != nullptr) {
-			Mix_PlayChannel(-1, pullSound, 0);
-			SDL_Delay(500);
-		}
+		//if (pullSound != nullptr) {
+		//	Mix_PlayChannel(-1, pullSound, 0);
+		//	SDL_Delay(500);
+		//}
 
 		pullingOut = false;
 	});
@@ -136,8 +136,8 @@ void Weapon::play_reload_sound() {
 	t.detach();
 }
 
-Weapon::Weapon(SDL_Renderer* renderer, std::string name):
-	MonoBehaviour(renderer), name(name)
+Weapon::Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel):
+	MonoBehaviour(renderer), name(name), pos(pos), vel(vel)
 {
 	if (name == "Knife") {
 		drawSound = Audio::load("assets/weapons/knife/knife_deploy1.wav");
@@ -194,7 +194,6 @@ void Weapon::fire(Vec2* position, Vec2* velocity) {
 		return;
 	}
 
-	pos = position, vel = velocity;
 	firing = true;
 }
 

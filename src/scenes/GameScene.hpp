@@ -9,12 +9,13 @@
 #include "../gameObjects/Player.hpp"
 
 class GameScene : public MonoBehaviour {
-	std::vector<Player> players;
+	std::vector<Player*> players;
 	Player* self = nullptr;
 	HUD* hud = nullptr;
 
 public:
 	GameScene(SDL_Renderer* renderer);
+	~GameScene();
 
 	void event_handler(SDL_Event& event);
 	void update();

@@ -33,11 +33,13 @@ Player::Player(SDL_Renderer* renderer, int side, Vec2 pos,  bool playable):
 		color = { 154, 203, 249, 255 };
 	}
 
-	weapons[0] = new Weapon(renderer, "AK-47");
-	weapons[1] = new Weapon(renderer, "Glock-18");
-	weapons[2] = new Weapon(renderer, "Knife");
+	weapons[0] = new Weapon(renderer, "AK-47", &position, &velocity);
+	weapons[1] = new Weapon(renderer, "Glock-18", &position, &velocity);
+	weapons[2] = new Weapon(renderer, "Knife", &position, &velocity);
 
-	weapons[weaponSlot]->equip();
+	if (playable) {
+		weapons[weaponSlot]->equip();
+	}
 }
 
 Player::~Player() {
@@ -55,8 +57,6 @@ void Player::update() {
 }
 
 void Player::fixed_update() {
-	static float footstepDelay = 0;
-
 	footstepDelay -= Time::fixedDeltaTime;
 	footstepDelay = std::max(footstepDelay, -1.0f);
 
