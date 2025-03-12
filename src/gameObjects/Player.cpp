@@ -24,9 +24,15 @@ void Player::update_position() {
 	}
 }
 
-Player::Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos, bool playable):
-	MonoBehaviour(renderer), position(pos), r(r), g(g), b(b), playable(playable)
+Player::Player(SDL_Renderer* renderer, int side, Vec2 pos,  bool playable):
+	MonoBehaviour(renderer), position(pos), side(side), playable(playable)
 {
+	if (side == PlayerSide::T) {
+		color = { 255, 205, 100, 255 };
+	} else if (side == PlayerSide::CT) {
+		color = { 154, 203, 249, 255 };
+	}
+
 	weapons[0] = new Weapon(renderer, "AK-47");
 	weapons[1] = new Weapon(renderer, "Glock-18");
 	weapons[2] = new Weapon(renderer, "Knife");
@@ -82,9 +88,9 @@ void Player::render() {
 		size
 	};
 
-	SDL_SetRenderDrawColor(renderer, r / 2, g / 2, b / 2, 255);
+	SDL_SetRenderDrawColor(renderer, color.r / 2, color.g / 2, color.b / 2, 255);
 	SDL_RenderFillRect(renderer, &borderRect);
-	SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 255);
 	SDL_RenderFillRect(renderer, &rect);
 }
 

@@ -29,7 +29,6 @@ void HUD::update() {
 }
 
 void HUD::render() {
-
 	SDL_Rect ammoSep = {ammoText->rect.x + 58, ammoText->rect.y + 12, 2, 21};
 
 	if (player->get_weapon()->ammo != -1) {

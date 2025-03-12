@@ -8,6 +8,12 @@
 #include "../geometry/Vec2.hpp"
 #include "Weapon.hpp"
 
+enum PlayerSide {
+	T,
+	CT,
+	SPECTATOR
+};
+
 class Player : public MonoBehaviour {
 	std::map<Uint32, Vec2> directionMap = {
 		{ SDL_SCANCODE_W, Vec2(0, -1) },
@@ -17,18 +23,19 @@ class Player : public MonoBehaviour {
 	};
 	Vec2 position, velocity, acceleration, direction;
 	Weapon* weapons[3] = { nullptr, nullptr, nullptr };
+	SDL_Color color = { 0, 0, 0, 0 };
 	
 	const int size = 30, borderWidth = 8;
 	float maxSpeed = 0.4f;
-	int r, g, b;
 	int weaponSlot = 0;
+	int side = PlayerSide::T;
 
 	void update_position();
 public:
 	int hp = 100, armor = 0, money = 800;
 	bool playable = true;
 
-	Player(SDL_Renderer* renderer, int r, int g, int b, Vec2 pos = Vec2(0, 0), bool playable = true);
+	Player(SDL_Renderer* renderer, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);
 	~Player();
 
 	void update();

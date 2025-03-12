@@ -10,7 +10,7 @@
 GameScene::GameScene(SDL_Renderer* renderer):
 	MonoBehaviour(renderer)
 {
-	players.emplace_back(renderer, 0, 255, 0, Vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
+	players.emplace_back(renderer, PlayerSide::T, Vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
 	hud = new HUD(renderer, &players[0], { 255, 205, 100, 255 });
 }
 
