@@ -57,16 +57,22 @@ void Player::update() {
 }
 
 void Player::fixed_update() {
-	footstepDelay -= Time::fixedDeltaTime;
-	footstepDelay = std::max(footstepDelay, -1.0f);
+	const auto keyboard = SDL_GetKeyboardState(0);
 
 	for (int i = 0; i < 3; i++) {
 		weapons[i]->fixed_update();
 	}
 
-	if (velocity.magnitude() >= 0.35f && footstepDelay <= 0.0f) {
+	if (velocity.magnitude() > 0 && !keyboard[SDL_SCANCODE_LSHIFT]) {
+		if (footstepDelay <= 0.0f) {
+			footstepDelay = 360;
+			Mix_PlayChannel(-1, Audio::load("assets/player/footsteps/concrete_ct_01.wav"), 0);
+		} else {
+			footstepDelay -= Time::fixedDeltaTime;
+			footstepDelay = std::max(footstepDelay, -1.0f);
+		}
+	} else if(!keyboard[SDL_SCANCODE_LSHIFT]) {
 		footstepDelay = 360;
-		Mix_PlayChannel(-1, Audio::load("assets/player/footsteps/concrete_ct_01.wav"), 0);
 	}
 }
 

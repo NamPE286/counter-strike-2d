@@ -52,6 +52,5 @@ void GameScene::render() {
 		p->render();
 	}
 	
-
 	hud->render();
 }
