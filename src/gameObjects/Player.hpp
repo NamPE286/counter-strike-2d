@@ -47,7 +47,7 @@ class Player : public MonoBehaviour {
 public:
 	int hp = 100, armor = 0, money = 800;
 	int side = PlayerSide::T;
-	int kill = 0, death = 0, assist = 0;
+	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
 	bool playable = true;
 	std::string name;
 
@@ -62,9 +62,9 @@ public:
 	void fire(std::vector<Player*>* players);
 	void stop_firing();
 	void set_position(Vec2 newPos);
-	void take_damage(int dmg);
+	void take_damage(Weapon* w);
 
 	bool collide(Bullet bullet);
 
-	Weapon* get_weapon();
+	Weapon* get_weapon() const;
 };

@@ -44,13 +44,8 @@ void Player::set_position(Vec2 newPos) {
 	position = newPos;
 }
 
-void Player::take_damage(int dmg) {
-	hp = std::max(hp - dmg, 0);
-
-	if (hp == 0) {
-		velocity = acceleration = direction = Vec2(0, 0);
-		weapons[weaponSlot]->stop_firing();
-	}
+void Player::take_damage(Weapon* w) {
+	
 }
 
 bool Player::collide(Bullet bullet) {
@@ -130,7 +125,7 @@ void Player::update() {
 			}
 
 			if (p->collide(bullet)) {
-				std::cout << "Hit " << p->name << '\n';
+				p->take_damage(weapons[weaponSlot]);
 			}
 		}
 	}
@@ -285,6 +280,6 @@ void Player::stop_firing() {
 	weapons[weaponSlot]->stop_firing();
 }
 
-Weapon* Player::get_weapon() {
+Weapon* Player::get_weapon() const {
 	return weapons[weaponSlot];
 }
