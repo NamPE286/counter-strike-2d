@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <utility>
 #include <map>
 #include <string>
@@ -10,9 +11,10 @@
 #include "../gameObjects/Bullet.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../geometry/Vec2.hpp"
+#include "../managers/Audio.hpp"
 #include "Weapon.hpp"
 
-#include <vector>
+
 
 enum PlayerSide {
 	T,

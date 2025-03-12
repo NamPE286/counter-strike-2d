@@ -46,7 +46,7 @@ void Audio::load_batch(std::vector<std::string> filePaths) {
 }
 
 Mix_Chunk* Audio::death() {
-	return load("assets/player/death" + std::to_string(Utils::getRandom(1, 6)) + ".wav");
+	return load("assets/player/death" + std::to_string(Utils::getRandomRange(1, 6)) + ".wav");
 }
 
 Mix_Chunk* Audio::kill() {
@@ -54,7 +54,7 @@ Mix_Chunk* Audio::kill() {
 }
 
 Mix_Chunk* Audio::headshot_no_armor() {
-	return load("assets/player/headshot_noarmor_0" + std::to_string(Utils::getRandom(1, 5)) + ".wav");
+	return load("assets/player/headshot_noarmor_0" + std::to_string(Utils::getRandomRange(1, 5)) + ".wav");
 }
 
 Mix_Chunk* Audio::headshot_armor() {
@@ -66,11 +66,11 @@ Mix_Chunk* Audio::headshot_armor_dink() {
 }
 
 Mix_Chunk* Audio::bodyshot_no_armor() {
-	return load("assets/player/player_damagebody_0" + std::to_string(Utils::getRandom(1, 5)) + ".wav");
+	return load("assets/player/player_damagebody_0" + std::to_string(Utils::getRandomRange(1, 5)) + ".wav");
 }
 
 Mix_Chunk* Audio::bodyshot_armor() {
-	return load("assets/player/kevlar_0" + std::to_string(Utils::getRandom(1, 5)) + ".wav");
+	return load("assets/player/kevlar_0" + std::to_string(Utils::getRandomRange(1, 5)) + ".wav");
 }
 
 
