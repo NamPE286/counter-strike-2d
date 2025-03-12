@@ -145,7 +145,7 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel, i
 		firingSound = Audio::load("assets/weapons/knife/knife_slash1.wav");
 	} else if (name == "AK-47") {
 		magSize = 30, mobility = 215, range = 1000, killReward = 300, price = 2700;
-		damage = 36.0f, armorPenetration = 0.775f, tagging = 0.6f,
+		baseDamage = 36.0f, armorPenetration = 0.775f, taggingPower = 0.6f,
 		headshotMultiplier = 4.0f, standingInaccuracy = 7.01f, runningInaccuracy = 182.07f,
 		fireRate = 100.0f, reloadTime = 2400.0f;
 		automatic = true;
@@ -163,7 +163,7 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel, i
 
 	} else if (name == "Glock-18") {
 		magSize = 20, mobility = 240, range = 400, killReward = 300, price = 200;
-		damage = 30.0f, armorPenetration = 0.47f, tagging = 0.5f,
+		baseDamage = 30.0f, armorPenetration = 0.47f, taggingPower = 0.5f,
 		headshotMultiplier = 4.0f, standingInaccuracy = 7.6f, runningInaccuracy = 17.6f,
 		fireRate = 50.0f, reloadTime = 2300.0f;
 		automatic = false;

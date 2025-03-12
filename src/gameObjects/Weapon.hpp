@@ -17,8 +17,7 @@ class Weapon : public MonoBehaviour {
 	Vec2 *pos = nullptr, *vel = nullptr;
 	int* pointerX = nullptr, *pointerY = nullptr;
 	int magSize = -1, range = 50;
-	float damage = 25.0f, armorPenetration = 0.85f, tagging = 0.0f,
-		headshotMultiplier = 1.0f, standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
+	float standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
 		fireRate = 400.0f, fireCooldown = -1.0f, reloadTime = 0.0f, reloadCooldown = -1.0f;
 	bool firing = false, reloading = false, pullingOut = true, automatic = true;
 	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr, *pullSound = nullptr;
@@ -34,6 +33,7 @@ class Weapon : public MonoBehaviour {
 
 public:
 	std::string name = "Knife";
+	float baseDamage = 25.0f, armorPenetration = 0.85f, taggingPower = 0.0f, headshotMultiplier = 1.0f;
 	int ammo = -1, reserveAmmo = -1;
 	int price = 0, mobility = 250, killReward = 1500;
 

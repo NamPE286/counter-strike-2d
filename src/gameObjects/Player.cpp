@@ -51,7 +51,28 @@ void Player::take_damage(Weapon* w, bool headshot) {
 		std::cout << "Hit ";
 	}
 
-	std::cout << name << " with " << w->name << '\n';
+	std::cout << name << " with " << w->name << ". ";
+
+	velocity = velocity * w->taggingPower;
+
+	float dmg = w->baseDamage;
+
+	if (armor > 0) {
+		dmg *= w->armorPenetration;
+	}
+
+	if (headshot) {
+		dmg *= w->headshotMultiplier;
+	}
+
+	armor = std::max(0, armor - (int)(w->baseDamage * w->armorPenetration / 2));
+	hp = std::max(0, hp - (int)dmg);
+
+	if (hp == 0) {
+		armor = 0;
+	}
+
+	std::cout << "Damage taken: " << (int)dmg << ". HP: " << hp << " Armor: " << armor << '\n';
 }
 
 bool Player::collide(Bullet bullet) {
@@ -195,10 +216,17 @@ void Player::render() {
 		size
 	};
 
-	SDL_SetRenderDrawColor(renderer, color.r / 2, color.g / 2, color.b / 2, 255);
-	SDL_RenderFillRect(renderer, &borderRect);
-	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 255);
-	SDL_RenderFillRect(renderer, &rect);
+	if (hp == 0) {
+		SDL_SetRenderDrawColor(renderer, 255 / 4, 255 / 4, 255 / 4, 255);
+		SDL_RenderFillRect(renderer, &borderRect);
+		SDL_SetRenderDrawColor(renderer, 255 / 2, 255 / 2, 255 / 2, 255);
+		SDL_RenderFillRect(renderer, &rect);
+	} else {
+		SDL_SetRenderDrawColor(renderer, color.r / 2, color.g / 2, color.b / 2, 255);
+		SDL_RenderFillRect(renderer, &borderRect);
+		SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 255);
+		SDL_RenderFillRect(renderer, &rect);
+	}
 }
 
 void Player::on_key_down(SDL_Event& event) {

@@ -45,7 +45,7 @@ class Player : public MonoBehaviour {
 	void change_weapon(int slot);
 
 public:
-	int hp = 100, armor = 0, money = 800;
+	int hp = 100, armor = 100, money = 800;
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
 	bool playable = true;
