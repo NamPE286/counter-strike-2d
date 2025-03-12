@@ -3,9 +3,15 @@
 #include <string>
 #include "../common.h"
 
-HUD::HUD(SDL_Renderer* renderer, Player* player, SDL_Color color):
-	MonoBehaviour(renderer), player(player), color(color)
+HUD::HUD(SDL_Renderer* renderer, Player* player, int side):
+	MonoBehaviour(renderer), player(player), side(side)
 {
+	if (side == PlayerSide::T) {
+		color = { 255, 205, 100, 255 };
+	} else if (side == PlayerSide::CT) {
+		color = { 154, 203, 249, 255 };
+	}
+
 	ammoText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 40), color);
 	ammoText->set_position(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT - 60);
 
@@ -15,8 +21,8 @@ HUD::HUD(SDL_Renderer* renderer, Player* player, SDL_Color color):
 	moneyText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 30), color);
 	moneyText->set_position(15, WINDOW_HEIGHT - 50);
 
-	hpText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 30), color);
-	hpText->set_position(WINDOW_WIDTH / 2 - 268, WINDOW_HEIGHT - 51);
+	hpText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 32), color);
+	hpText->set_position(WINDOW_WIDTH / 2 - 268, WINDOW_HEIGHT - 53);
 }
 
 void HUD::update() {
@@ -25,7 +31,7 @@ void HUD::update() {
 	moneyText->set_content("$" + std::to_string(player->money));
 	hpText->set_content(std::to_string(player->hp));
 
-	healthBarRect.w = 40 * player->hp / 100;
+	healthBarRect.w = 43 * player->hp / 100;
 }
 
 void HUD::render() {

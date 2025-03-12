@@ -28,11 +28,11 @@ class Player : public MonoBehaviour {
 	const int size = 30, borderWidth = 8;
 	float maxSpeed = 0.4f;
 	int weaponSlot = 0;
-	int side = PlayerSide::T;
 
 	void update_position();
 public:
 	int hp = 100, armor = 0, money = 800;
+	int side = PlayerSide::T;
 	bool playable = true;
 
 	Player(SDL_Renderer* renderer, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);

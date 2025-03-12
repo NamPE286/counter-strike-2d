@@ -10,10 +10,12 @@
 
 class GameScene : public MonoBehaviour {
 	std::vector<Player> players;
+	Player* self = nullptr;
 	HUD* hud = nullptr;
 
 public:
 	GameScene(SDL_Renderer* renderer);
+
 	void event_handler(SDL_Event& event);
 	void update();
 	void fixed_update();
