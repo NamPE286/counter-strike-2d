@@ -21,6 +21,8 @@ GameScene::~GameScene() {
 	for (Player *p : players) {
 		delete p;
 	}
+
+	delete hud;
 }
 
 void GameScene::event_handler(SDL_Event &event) {

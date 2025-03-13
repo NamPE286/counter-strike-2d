@@ -53,6 +53,21 @@ HUD::HUD(SDL_Renderer *renderer, Player *player):
 	weaponNameText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
 }
 
+HUD::~HUD() {
+	delete ammoText;
+	delete reserveAmmoText;
+	delete moneyText;
+	delete hpText;
+	delete armorText;
+	delete primaryGun;
+	delete secondaryGun;
+	delete knife;
+	delete weaponNameText;
+	delete primaryGunBindText;
+	delete secondaryGunBindText;
+	delete knifeBindText;
+}
+
 void HUD::update() {
 	std::map<std::string, std::string> mp = {
 		{"AK-47", "A"},
