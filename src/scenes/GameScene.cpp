@@ -23,6 +23,10 @@ GameScene::~GameScene() {
 }
 
 void GameScene::event_handler(SDL_Event &event) {
+	if (match.phase == Phase::BUY) {
+		return;
+	}
+
 	for (Player *p : match.players) {
 		if (!p->playable) {
 			continue;

@@ -39,6 +39,8 @@ class Match {
 
 	void T_win(int rewardType);
 	void CT_win(int rewardType);
+
+	void reset();
 public:
 	std::pair<int, int> scores = { 0, 0 };
 	std::pair<int, int> alive = { 0, 0 };
@@ -47,7 +49,7 @@ public:
 	std::pair< std::vector<Player *>, std::vector<Player *>> team;
 	Phase phase = Phase::WARMUP;
 	int round = 1;
-	float timeLeft = 60, defuseTimer = 10, plantTimer = 3;
+	float timeLeft = 10, defuseTimer = 10, plantTimer = 3;
 	bool planting = false, defusing = false;
 	Player *defuser = nullptr;
 	Player *planter = nullptr;
@@ -61,5 +63,4 @@ public:
 	// Return true if winner are decided
 	bool update();
 	void fixed_update();
-
 };

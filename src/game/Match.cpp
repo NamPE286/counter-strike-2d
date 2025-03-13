@@ -35,6 +35,7 @@ void Match::add_player(Player *player) {
 void Match::T_win(int rewardType) {
 	winner = Winner::T;
 
+	scores.first++;
 	lossInARow.first = 0;
 	lossInARow.second = std::max(lossInARow.second + 1, 5);
 
@@ -57,6 +58,7 @@ void Match::T_win(int rewardType) {
 void Match::CT_win(int rewardType) {
 	winner = Winner::CT;
 
+	scores.second++;
 	lossInARow.first = std::max(lossInARow.first + 1, 5);
 	lossInARow.second = 0;
 
@@ -78,6 +80,12 @@ void Match::CT_win(int rewardType) {
 
 	phase = Phase::POST_ROUND;
 	timeLeft = postRoundTime;
+}
+
+void Match::reset() {
+	for (Player *p : players) {
+		p->hp = 100;
+	}
 }
 
 bool Match::update() {
@@ -145,12 +153,17 @@ void Match::fixed_update() {
 	}
 
 	if (timeLeft == 0.0f) {
-		if (phase == Phase::BUY) {
+		if (phase == Phase::WARMUP) {
+			reset();
+
+			phase = Phase::BUY;
+			timeLeft = buyTime;
+		} else if (phase == Phase::BUY) {
 			phase = Phase::PRE_PLANT;
 			timeLeft = roundTime;
-		}
+		} else if (phase == Phase::POST_ROUND) {
+			reset();
 
-		if (phase == Phase::POST_ROUND) {
 			phase = Phase::BUY;
 			timeLeft = buyTime;
 		}
