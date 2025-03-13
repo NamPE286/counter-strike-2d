@@ -29,3 +29,14 @@ int Utils::getRandomRange(int start, int end) {
 
 	return dis(gen);
 }
+
+std::string Utils::getClockString(int m, int s) {
+	std::string a = std::to_string(m);
+	std::string b = std::to_string(s);
+
+	if (b.size() != 2) {
+		b.insert(b.begin(), '0');
+	}
+
+	return a + ":" + b;
+}

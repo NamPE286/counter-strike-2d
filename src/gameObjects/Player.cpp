@@ -111,6 +111,7 @@ void Player::reset() {
 		w->reset();
 	}
 
+	velocity = acceleration = direction = Vec2(0, 0);
 	hp = 100;
 }
 

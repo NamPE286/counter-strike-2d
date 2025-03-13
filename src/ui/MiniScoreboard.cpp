@@ -1,6 +1,7 @@
 #include "MiniScoreboard.hpp"
 
 #include "../managers/Font.hpp"
+#include "../utilities/Utils.hpp"
 #include "../common.h"
 
 MiniScoreboard::MiniScoreboard(SDL_Renderer *renderer, Match *match):
@@ -26,8 +27,12 @@ void MiniScoreboard::update() {
 	int m = static_cast<int>(match->timeLeft) / 60;
 	int s = static_cast<int>(match->timeLeft) % 60;
 
-	timerText->set_content(std::to_string(m) + ":" + std::to_string(s));
-	timerText->set_position(timerRect.x + (timerRect.w - timerText->rect.w) / 2, timerRect.y + (timerRect.h - timerText->rect.h) / 2);
+	if (match->phase == Phase::WARMUP) {
+		timerText->set_content("");
+	} else {
+		timerText->set_content(Utils::getClockString(m, s));
+		timerText->set_position(timerRect.x + (timerRect.w - timerText->rect.w) / 2, timerRect.y + (timerRect.h - timerText->rect.h) / 2);
+	}
 
 	TScoreText->set_content(std::to_string(match->scores.first));
 	TScoreText->set_position(TScoreRect.x + (TScoreRect.w - TScoreText->rect.w) / 2, TScoreRect.y + (TScoreRect.h - TScoreText->rect.h) / 2);
