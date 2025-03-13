@@ -3,8 +3,8 @@
 #include <SDL2/SDL.h>
 #include <stdexcept>
 
-MonoBehaviour::MonoBehaviour(SDL_Renderer* renderer):
-	renderer(renderer) 
+MonoBehaviour::MonoBehaviour(SDL_Renderer *renderer):
+	renderer(renderer)
 {
 	if (renderer == nullptr) {
 		throw std::runtime_error("Renderer cannot be null");
@@ -13,7 +13,7 @@ MonoBehaviour::MonoBehaviour(SDL_Renderer* renderer):
 
 MonoBehaviour::~MonoBehaviour() {}
 
-void MonoBehaviour::event_handler(SDL_Event& event) {
+void MonoBehaviour::event_handler(SDL_Event &event) {
 	switch (event.type) {
 	case SDL_KEYDOWN:
 		on_key_down(event);

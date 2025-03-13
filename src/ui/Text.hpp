@@ -8,16 +8,16 @@
 #include "../behaviours/MonoBehaviour.hpp"
 
 class Text : public MonoBehaviour {
-	SDL_Surface* surface = nullptr;
-	SDL_Texture* texture = nullptr;
-	TTF_Font* font = nullptr;
+	SDL_Surface *surface = nullptr;
+	SDL_Texture *texture = nullptr;
+	TTF_Font *font = nullptr;
 	SDL_Color color = { 0, 0, 0, 0 };
 	std::string content;
 
 public:
 	SDL_Rect rect = { 0, 0, 0, 0 };
 
-	Text(SDL_Renderer* renderer, TTF_Font* font, SDL_Color color);
+	Text(SDL_Renderer *renderer, TTF_Font *font, SDL_Color color);
 	~Text();
 
 	void set_content(std::string newContent);

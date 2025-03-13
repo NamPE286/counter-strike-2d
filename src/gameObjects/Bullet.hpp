@@ -11,8 +11,8 @@ public:
 	float angle = 0;
 	int x = 0, y = 0, length = 0;
 
-	Bullet(SDL_Renderer* renderer);
-	Bullet(SDL_Renderer* renderer, float angle, int x, int y, int length);
+	Bullet(SDL_Renderer *renderer);
+	Bullet(SDL_Renderer *renderer, float angle, int x, int y, int length);
 
 	void operator=(Bullet rhs);
 

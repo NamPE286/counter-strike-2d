@@ -1,6 +1,6 @@
 #include "Scene.hpp"
 
-void Scene::init(SDL_Renderer* _renderer) {
+void Scene::init(SDL_Renderer *_renderer) {
 	renderer = _renderer;
 }
 
@@ -28,7 +28,7 @@ void Scene::render() {
 	stack.top()->render();
 }
 
-void Scene::event_handler(SDL_Event& event) {
+void Scene::event_handler(SDL_Event &event) {
 	if (stack.empty()) {
 		return;
 	}

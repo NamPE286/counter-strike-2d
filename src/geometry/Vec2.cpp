@@ -25,30 +25,30 @@ Vec2 Vec2::normalized() {
 	return Vec2(x / mag, y / mag);
 }
 
-float Vec2::dot(const Vec2& rhs) const {
+float Vec2::dot(const Vec2 &rhs) const {
 	return x * rhs.x + y * rhs.y;
 }
 
-bool Vec2::operator==(Vec2 const& rhs) {
+bool Vec2::operator==(Vec2 const &rhs) {
 	return x == rhs.x && y == rhs.y;
 }
 
-bool Vec2::operator!=(Vec2 const& rhs) {
+bool Vec2::operator!=(Vec2 const &rhs) {
 	return !(x == rhs.x && y == rhs.y);
 }
 
-Vec2 Vec2::operator+(Vec2 const& rhs) {
+Vec2 Vec2::operator+(Vec2 const &rhs) {
 	return Vec2(x + rhs.x, y + rhs.y);
 }
 
-Vec2& Vec2::operator+=(Vec2 const& rhs) {
+Vec2 &Vec2::operator+=(Vec2 const &rhs) {
 	x += rhs.x;
 	y += rhs.y;
 
 	return *this;
 }
 
-Vec2& Vec2::operator*=(Vec2 const& rhs) {
+Vec2 &Vec2::operator*=(Vec2 const &rhs) {
 	x *= rhs.x;
 	y *= rhs.y;
 

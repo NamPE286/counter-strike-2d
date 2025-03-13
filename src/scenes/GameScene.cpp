@@ -7,7 +7,7 @@
 #include "../managers/Time.hpp"
 #include "../common.h"
 
-GameScene::GameScene(SDL_Renderer* renderer):
+GameScene::GameScene(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)
 {
 	players.push_back(new Player(renderer, "Me", PlayerSide::T, Vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)));
@@ -18,13 +18,13 @@ GameScene::GameScene(SDL_Renderer* renderer):
 }
 
 GameScene::~GameScene() {
-	for (Player* p : players) {
+	for (Player *p : players) {
 		delete p;
 	}
 }
 
-void GameScene::event_handler(SDL_Event& event) {
-	for (Player* p : players) {
+void GameScene::event_handler(SDL_Event &event) {
+	for (Player *p : players) {
 		if (!p->playable) {
 			continue;
 		}
@@ -49,7 +49,7 @@ void GameScene::event_handler(SDL_Event& event) {
 }
 
 void GameScene::update() {
-	for (Player* p : players) {
+	for (Player *p : players) {
 		p->update();
 	}
 
@@ -57,23 +57,23 @@ void GameScene::update() {
 }
 
 void GameScene::fixed_update() {
-	for (Player* p : players) {
+	for (Player *p : players) {
 		p->fixed_update();
 	}
 }
 
 void GameScene::render() {
-	for (Player* p : players) {
+	for (Player *p : players) {
 		p->render();
 	}
-	
+
 	hud->render();
 }
 
-void GameScene::on_mouse_button_down(SDL_Event& event) {
+void GameScene::on_mouse_button_down(SDL_Event &event) {
 	self->fire(&players);
 }
 
-void GameScene::on_mouse_button_up(SDL_Event & event) {
+void GameScene::on_mouse_button_up(SDL_Event &event) {
 	self->stop_firing();
 }

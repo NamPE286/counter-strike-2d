@@ -15,13 +15,13 @@
 
 class Weapon : public MonoBehaviour {
 	Vec2 *pos = nullptr, *vel = nullptr;
-	int* pointerX = nullptr, *pointerY = nullptr;
+	int *pointerX = nullptr, *pointerY = nullptr;
 	int magSize = -1, range = 50;
 	float standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
 		fireRate = 400.0f, fireCooldown = -1.0f, reloadTime = 0.0f, reloadCooldown = -1.0f;
 	bool firing = false, reloading = false, pullingOut = true, automatic = true;
 	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr, *pullSound = nullptr;
-	std::vector<Mix_Chunk*> reloadSound;
+	std::vector<Mix_Chunk *> reloadSound;
 	std::vector<Bullet> bullets;
 	std::queue<Bullet> bulletQueue;
 
@@ -37,7 +37,7 @@ public:
 	int ammo = -1, reserveAmmo = -1;
 	int price = 0, mobility = 250, killReward = 1500;
 
-	Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel, int* pointerX, int* pointerY);
+	Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel, int *pointerX, int *pointerY);
 
 	void equip(bool playSound);
 	void fire();
@@ -48,5 +48,5 @@ public:
 	void fixed_update();
 	void render();
 
-	bool poll_bullets(Bullet& bullet);
+	bool poll_bullets(Bullet &bullet);
 };

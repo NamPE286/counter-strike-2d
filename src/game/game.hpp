@@ -6,9 +6,9 @@
 #include "../managers/Scene.hpp"
 
 class Game {
-	SDL_Window* window = nullptr;
-	SDL_Renderer* renderer = nullptr;
-	Mouse* mouse = nullptr;
+	SDL_Window *window = nullptr;
+	SDL_Renderer *renderer = nullptr;
+	Mouse *mouse = nullptr;
 	bool running = true;
 
 public:
@@ -17,7 +17,7 @@ public:
 
 	void start_game_loop();
 	void stop_game_loop();
-	void event_handler(SDL_Event& event);
+	void event_handler(SDL_Event &event);
 
 	// Call all update method. This method is called every frame
 	void update();

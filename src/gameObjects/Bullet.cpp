@@ -4,11 +4,11 @@
 
 #include "../managers/Time.hpp"
 
-Bullet::Bullet(SDL_Renderer* renderer):
+Bullet::Bullet(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)
 {}
 
-Bullet::Bullet(SDL_Renderer* renderer, float angle, int x, int y, int length):
+Bullet::Bullet(SDL_Renderer *renderer, float angle, int x, int y, int length):
 	MonoBehaviour(renderer), angle(angle), x(x), y(y), length(length)
 {}
 

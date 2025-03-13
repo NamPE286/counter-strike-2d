@@ -1,6 +1,6 @@
 #include "Mouse.hpp"
 
-Mouse::Mouse(SDL_Renderer* renderer):
+Mouse::Mouse(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)
 {
 	SDL_ShowCursor(0);
@@ -19,7 +19,7 @@ void Mouse::render() {
 	};
 
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
-	
+
 	for (int i = 0; i < 4; i++) {
 		SDL_RenderFillRect(renderer, &arr[i]);
 	}

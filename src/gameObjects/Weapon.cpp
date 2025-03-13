@@ -107,7 +107,7 @@ void Weapon::play_draw_sound() {
 		}
 
 		pullingOut = false;
-	});
+		});
 
 	t.detach();
 }
@@ -127,17 +127,16 @@ void Weapon::play_reload_sound() {
 				SDL_Delay(int(reloadTime / 3));
 			} else if (i == 2) {
 				SDL_Delay(10);
-			}
-			else {
+			} else {
 				SDL_Delay(400);
 			}
 		}
-	});
+		});
 
 	t.detach();
 }
 
-Weapon::Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel, int* pointerX, int* pointerY):
+Weapon::Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel, int *pointerX, int *pointerY):
 	MonoBehaviour(renderer), name(name), pos(pos), vel(vel), pointerX(pointerX), pointerY(pointerY)
 {
 	if (name == "Knife") {
@@ -146,8 +145,8 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel, i
 	} else if (name == "AK-47") {
 		magSize = 30, mobility = 215, range = 1000, killReward = 300, price = 2700;
 		baseDamage = 36.0f, armorPenetration = 0.775f, taggingPower = 0.6f,
-		headshotMultiplier = 4.0f, standingInaccuracy = 7.01f, runningInaccuracy = 182.07f,
-		fireRate = 100.0f, reloadTime = 2400.0f;
+			headshotMultiplier = 4.0f, standingInaccuracy = 7.01f, runningInaccuracy = 182.07f,
+			fireRate = 100.0f, reloadTime = 2400.0f;
 		automatic = true;
 		ammo = 30, reserveAmmo = 90;
 
@@ -164,8 +163,8 @@ Weapon::Weapon(SDL_Renderer* renderer, std::string name, Vec2* pos, Vec2* vel, i
 	} else if (name == "Glock-18") {
 		magSize = 20, mobility = 240, range = 400, killReward = 300, price = 200;
 		baseDamage = 30.0f, armorPenetration = 0.47f, taggingPower = 0.5f,
-		headshotMultiplier = 4.0f, standingInaccuracy = 7.6f, runningInaccuracy = 17.6f,
-		fireRate = 50.0f, reloadTime = 2300.0f;
+			headshotMultiplier = 4.0f, standingInaccuracy = 7.6f, runningInaccuracy = 17.6f,
+			fireRate = 50.0f, reloadTime = 2300.0f;
 		automatic = false;
 		ammo = 20, reserveAmmo = 120;
 
@@ -230,7 +229,7 @@ void Weapon::stop_reloading() {
 void Weapon::update() {
 	std::vector<Bullet> tmp;
 
-	for (auto& i : bullets) {
+	for (auto &i : bullets) {
 		i.update();
 
 		if (!i.finished()) {
@@ -240,7 +239,7 @@ void Weapon::update() {
 
 	bullets.clear();
 
-	for (auto& i : tmp) {
+	for (auto &i : tmp) {
 		bullets.push_back(i);
 	}
 }
@@ -251,12 +250,12 @@ void Weapon::fixed_update() {
 }
 
 void Weapon::render() {
-	for (auto& i : bullets) {
+	for (auto &i : bullets) {
 		i.render();
 	}
 }
 
-bool Weapon::poll_bullets(Bullet& bullet) {
+bool Weapon::poll_bullets(Bullet &bullet) {
 	if (bulletQueue.empty()) {
 		return false;
 	}

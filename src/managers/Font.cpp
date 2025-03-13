@@ -10,19 +10,19 @@ void Font::init() {
 }
 
 void Font::destroy() {
-	for (auto& i : fontMap) {
+	for (auto &i : fontMap) {
 		TTF_CloseFont(i.second);
 	}
 
 	TTF_Quit();
 }
 
-TTF_Font* Font::load(std::string filePath, int fontSize) {
+TTF_Font *Font::load(std::string filePath, int fontSize) {
 	if (fontMap.contains({ filePath, fontSize })) {
 		return fontMap[{ filePath, fontSize }];
 	}
 
-	TTF_Font* ptr = TTF_OpenFont(filePath.c_str(), fontSize);
+	TTF_Font *ptr = TTF_OpenFont(filePath.c_str(), fontSize);
 
 	if (ptr == nullptr) {
 		throw std::runtime_error("Failed to load font from " + filePath + ". Error: " + std::string(TTF_GetError()));
@@ -34,7 +34,7 @@ TTF_Font* Font::load(std::string filePath, int fontSize) {
 }
 
 void Font::loadBatch(std::vector<std::pair<std::string, int>> filePaths) {
-	for (auto& i : filePaths) {
+	for (auto &i : filePaths) {
 		load(i.first, i.second);
 	}
 }

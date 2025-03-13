@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-Text::Text(SDL_Renderer* renderer, TTF_Font* font, SDL_Color color):
+Text::Text(SDL_Renderer *renderer, TTF_Font *font, SDL_Color color):
 	MonoBehaviour(renderer), font(font), color(color)
 {
 	if (font == nullptr) {

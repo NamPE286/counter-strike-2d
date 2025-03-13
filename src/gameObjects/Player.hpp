@@ -29,10 +29,10 @@ class Player : public MonoBehaviour {
 	};
 	Vec2 position, velocity, acceleration, direction;
 	SDL_Color color = { 0, 0, 0, 0 };
-	std::vector<Player*>* playerList = nullptr;
+	std::vector<Player *> *playerList = nullptr;
 
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
-	
+
 	int pointerX = 0, pointerY = 0;
 	const int size = 30, borderWidth = 8;
 	float maxSpeed = 0.4f;
@@ -46,25 +46,25 @@ public:
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
 	bool playable = true, helmet = false;
-	Weapon* weapons[3] = { nullptr, nullptr, nullptr };
+	Weapon *weapons[3] = { nullptr, nullptr, nullptr };
 	int weaponSlot = 0;
 	std::string name;
 
-	Player(SDL_Renderer* renderer, std::string name, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);
+	Player(SDL_Renderer *renderer, std::string name, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);
 	~Player();
 
 	void update();
 	void fixed_update();
 	void render();
-	void on_key_down(SDL_Event& event);
-	void on_key_up(SDL_Event& event);
-	void fire(std::vector<Player*>* players);
+	void on_key_down(SDL_Event &event);
+	void on_key_up(SDL_Event &event);
+	void fire(std::vector<Player *> *players);
 	void stop_firing();
 	void set_position(Vec2 newPos);
-	void take_damage(Weapon* w, bool headshot);
+	void take_damage(Weapon *w, bool headshot);
 
 	bool collide(Bullet bullet);
 	bool collide(int pointerX, int pointerY);
 
-	Weapon* get_weapon() const;
+	Weapon *get_weapon() const;
 };

@@ -4,7 +4,7 @@
 #include <map>
 #include "../common.h"
 
-HUD::HUD(SDL_Renderer* renderer, Player* player):
+HUD::HUD(SDL_Renderer *renderer, Player *player):
 	MonoBehaviour(renderer), player(player)
 {
 	if (player->side == PlayerSide::T) {

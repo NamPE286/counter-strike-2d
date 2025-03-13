@@ -44,7 +44,7 @@ void Player::set_position(Vec2 newPos) {
 	position = newPos;
 }
 
-void Player::take_damage(Weapon* w, bool headshot) {
+void Player::take_damage(Weapon *w, bool headshot) {
 	if (w->name == "Knife") {
 		headshot = false;
 	}
@@ -121,8 +121,8 @@ bool Player::collide(Bullet bullet) {
 				return 0;
 			}
 
-			return (val > 0) ? 1 : 2; 
-		};
+			return (val > 0) ? 1 : 2;
+			};
 
 		int o1 = orientation(x1, y1, x2, y2, x3, y3);
 		int o2 = orientation(x1, y1, x2, y2, x4, y4);
@@ -132,13 +132,12 @@ bool Player::collide(Bullet bullet) {
 		if (o1 != o2 && o3 != o4) return true;
 
 		return false;
-	};
+		};
 
 	if (lines_intersect(bullet.x, bullet.y, endX, endY, rect.x, rect.y, rect.x + rect.w, rect.y) ||
 		lines_intersect(bullet.x, bullet.y, endX, endY, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h) ||
 		lines_intersect(bullet.x, bullet.y, endX, endY, rect.x, rect.y, rect.x, rect.y + rect.h) ||
-		lines_intersect(bullet.x, bullet.y, endX, endY, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h))
-	{
+		lines_intersect(bullet.x, bullet.y, endX, endY, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h)) {
 		return true;
 	}
 
@@ -154,10 +153,10 @@ bool Player::collide(int pointerX, int pointerY) {
 	};
 
 	return (pointerX >= rect.x && pointerX <= rect.x + rect.w &&
-			pointerY >= rect.y && pointerY <= rect.y + rect.h);
+		pointerY >= rect.y && pointerY <= rect.y + rect.h);
 }
 
-Player::Player(SDL_Renderer* renderer, std::string name, int side, Vec2 pos,  bool playable):
+Player::Player(SDL_Renderer *renderer, std::string name, int side, Vec2 pos, bool playable):
 	MonoBehaviour(renderer), name(name), position(pos), side(side), playable(playable)
 {
 	if (side == PlayerSide::T) {
@@ -189,7 +188,7 @@ void Player::update() {
 			continue;
 		}
 
-		for (Player* p : *playerList) {
+		for (Player *p : *playerList) {
 			if (p == this || p->hp == 0) {
 				continue;
 			}
@@ -220,7 +219,7 @@ void Player::fixed_update() {
 			footstepDelay -= Time::fixedDeltaTime;
 			footstepDelay = std::max(footstepDelay, -1.0f);
 		}
-	} else if(!keyboard[SDL_SCANCODE_LSHIFT]) {
+	} else if (!keyboard[SDL_SCANCODE_LSHIFT]) {
 		footstepDelay = 360;
 	}
 }
@@ -251,7 +250,7 @@ void Player::render() {
 	}
 }
 
-void Player::on_key_down(SDL_Event& event) {
+void Player::on_key_down(SDL_Event &event) {
 	keyboard[event.key.keysym.scancode] = true;
 
 	if (hp == 0) {
@@ -297,7 +296,7 @@ void Player::on_key_down(SDL_Event& event) {
 	}
 }
 
-void Player::on_key_up(SDL_Event& event) {
+void Player::on_key_up(SDL_Event &event) {
 	keyboard[event.key.keysym.scancode] = false;
 
 	if (hp == 0) {
@@ -335,7 +334,7 @@ void Player::on_key_up(SDL_Event& event) {
 	}
 }
 
-void Player::fire(std::vector<Player*>* players) {
+void Player::fire(std::vector<Player *> *players) {
 	if (hp == 0) {
 		return;
 	}
@@ -352,6 +351,6 @@ void Player::stop_firing() {
 	weapons[weaponSlot]->stop_firing();
 }
 
-Weapon* Player::get_weapon() const {
+Weapon *Player::get_weapon() const {
 	return weapons[weaponSlot];
 }

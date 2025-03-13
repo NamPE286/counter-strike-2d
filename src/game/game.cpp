@@ -58,7 +58,7 @@ Game::~Game() {
 }
 
 void Game::start_game_loop() {
-	std::thread fixedUpdateThread([&](void){
+	std::thread fixedUpdateThread([&](void) {
 		while (running) {
 			auto start = std::chrono::high_resolution_clock().now();
 
@@ -74,7 +74,7 @@ void Game::start_game_loop() {
 				Time::fixedDeltaTime = std::chrono::duration<float, std::chrono::milliseconds::period>(end - start).count();
 			}
 		}
-	});
+		});
 
 	float frameTime = (float)1000 / MAX_FPS;
 
@@ -108,7 +108,7 @@ void Game::stop_game_loop() {
 	running = false;
 }
 
-void Game::event_handler(SDL_Event& event) {
+void Game::event_handler(SDL_Event &event) {
 	if (event.type == SDL_QUIT) {
 		stop_game_loop();
 	}

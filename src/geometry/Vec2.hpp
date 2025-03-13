@@ -9,12 +9,12 @@ public:
 
 	float magnitude() const;
 	Vec2 normalized();
-	float dot(const Vec2& rhs) const;
+	float dot(const Vec2 &rhs) const;
 
-	bool operator==(Vec2 const& rhs);
-	bool operator!=(Vec2 const& rhs);
-	Vec2 operator+(Vec2 const& rhs);
-	Vec2& operator+=(Vec2 const& rhs);
+	bool operator==(Vec2 const &rhs);
+	bool operator!=(Vec2 const &rhs);
+	Vec2 operator+(Vec2 const &rhs);
+	Vec2 &operator+=(Vec2 const &rhs);
 	Vec2 operator*(float rhs);
-	Vec2& operator*=(Vec2 const& rhs);
+	Vec2 &operator*=(Vec2 const &rhs);
 };

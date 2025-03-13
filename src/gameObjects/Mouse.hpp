@@ -9,7 +9,7 @@ class Mouse : public MonoBehaviour {
 	int r = 0, g = 255, b = 0, a = 255;
 
 public:
-	Mouse(SDL_Renderer* renderer);
+	Mouse(SDL_Renderer *renderer);
 
 	void update();
 	void render();
