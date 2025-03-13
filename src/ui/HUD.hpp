@@ -9,6 +9,7 @@
 #include "../common.h"
 #include "../gameObjects/Player.hpp"
 #include "Scoreboard.hpp"
+#include "MiniScoreboard.hpp"
 #include "../game/Match.hpp"
 
 class HUD : public MonoBehaviour {
@@ -17,6 +18,7 @@ class HUD : public MonoBehaviour {
 		*primaryGun = nullptr, *secondaryGun = nullptr, *knife = nullptr, *weaponNameText = nullptr,
 		*primaryGunBindText = nullptr, *secondaryGunBindText = nullptr, *knifeBindText = nullptr;
 	Scoreboard *scoreboard = nullptr;
+	MiniScoreboard *miniScoreboard = nullptr;
 
 	SDL_Color color = { 0, 0, 0, 0 };
 	SDL_Rect healthBarRect = { WINDOW_WIDTH / 2 - 267, WINDOW_HEIGHT - 20, 43, 4 };

@@ -34,6 +34,11 @@ class Match {
 	int reward[7] = { 3250, 3250, 3500, 3500, 800, 300, 300 };
 	int lossBonus[6] = { 1900, 1400, 1900, 2400, 2900, 3400 };
 
+	void start_planting(Player *p);
+	void start_defusing(Player *p, bool kit);
+
+	void T_win(int rewardType);
+	void CT_win(int rewardType);
 public:
 	std::pair<int, int> scores = { 0, 0 };
 	std::pair<int, int> alive = { 0, 0 };
@@ -52,12 +57,9 @@ public:
 	~Match();
 
 	void add_player(Player *player);
-	void T_win(int rewardType);
-	void CT_win(int rewardType);
 
 	// Return true if winner are decided
 	bool update();
 	void fixed_update();
-	void start_planting(Player *p);
-	void start_defusing(Player *p, bool kit);
+
 };

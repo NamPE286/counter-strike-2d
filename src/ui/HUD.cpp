@@ -53,6 +53,7 @@ HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
 	weaponNameText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
 
 	scoreboard = new Scoreboard(renderer, match);
+	miniScoreboard = new MiniScoreboard(renderer, match);
 }
 
 HUD::~HUD() {
@@ -103,6 +104,8 @@ void HUD::update() {
 	}
 
 	healthBarRect.w = 43 * player->hp / 100;
+	scoreboard->update();
+	miniScoreboard->update();
 }
 
 void HUD::render() {
@@ -150,4 +153,6 @@ void HUD::render() {
 	if (keyboard[SDL_SCANCODE_TAB]) {
 		scoreboard->render();
 	}
+
+	miniScoreboard->render();
 }

@@ -126,11 +126,11 @@ bool Match::update() {
 }
 
 void Match::fixed_update() {
-	timeLeft -= Time::fixedDeltaTime;
+	timeLeft -= Time::fixedDeltaTime / 1000;
 	timeLeft = std::max(0.0f, timeLeft);
 
 	if (planting) {
-		plantTimer -= Time::fixedDeltaTime;
+		plantTimer -= Time::fixedDeltaTime / 1000;
 		plantTimer = std::max(0.0f, plantTimer);
 
 		if (plantTimer == 0.0f) {
@@ -140,8 +140,8 @@ void Match::fixed_update() {
 	}
 
 	if (defusing) {
-		defuseTimer -= Time::fixedDeltaTime;
-		defuseTimer = std::max(0.0f, defuseTimer); 
+		defuseTimer -= Time::fixedDeltaTime / 1000;
+		defuseTimer = std::max(0.0f, defuseTimer);
 	}
 
 	if (timeLeft == 0.0f) {
