@@ -33,7 +33,7 @@ void Match::add_player(Player *player) {
 }
 
 void Match::T_win(int rewardType) {
-	winner = Winner::T;
+	winner = PlayerSide::T;
 
 	scores.first++;
 	lossInARow.first = 0;
@@ -56,7 +56,7 @@ void Match::T_win(int rewardType) {
 }
 
 void Match::CT_win(int rewardType) {
-	winner = Winner::CT;
+	winner = PlayerSide::CT;
 
 	scores.second++;
 	lossInARow.first = std::max(lossInARow.first + 1, 5);

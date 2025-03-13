@@ -9,19 +9,23 @@ void Audio::init() {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
 		throw std::runtime_error("Failed to initialize SDL_mixer. Error: " + std::string(Mix_GetError()));
 	}
+
+	if (!(Mix_Init(MIX_INIT_MP3) & MIX_INIT_MP3)) {
+		throw std::runtime_error("Failed to initialize MP#. Error: " + std::string(Mix_GetError()));
+	}
 }
 
 void Audio::destroy() {
-	for (auto &i : mp) {
+	for (auto &i : wavMp) {
 		Mix_FreeChunk(i.second);
 	}
 
 	Mix_Quit();
 }
 
-Mix_Chunk *Audio::load(std::string filePath) {
-	if (mp.contains(filePath)) {
-		return mp[filePath];
+Mix_Chunk *Audio::loadWAV(std::string filePath) {
+	if (wavMp.contains(filePath)) {
+		return wavMp[filePath];
 	}
 
 	std::cout << "Loading " + filePath << '\n';
@@ -32,7 +36,27 @@ Mix_Chunk *Audio::load(std::string filePath) {
 		throw std::runtime_error("Failed to load " + filePath);
 	}
 
-	mp[filePath] = ptr;
+	wavMp[filePath] = ptr;
+
+	std::cout << "Loaded " + filePath << '\n';
+
+	return ptr;
+}
+
+Mix_Music *Audio::loadMusic(std::string filePath) {
+	if (mp3Mp.contains(filePath)) {
+		return mp3Mp[filePath];
+	}
+
+	std::cout << "Loading " + filePath << '\n';
+
+	auto *ptr = Mix_LoadMUS(filePath.c_str());
+
+	if (ptr == nullptr) {
+		throw std::runtime_error("Failed to load " + filePath);
+	}
+
+	mp3Mp[filePath] = ptr;
 
 	std::cout << "Loaded " + filePath << '\n';
 
@@ -41,36 +65,36 @@ Mix_Chunk *Audio::load(std::string filePath) {
 
 void Audio::load_batch(std::vector<std::string> filePaths) {
 	for (auto &filePath : filePaths) {
-		load(filePath);
+		loadWAV(filePath);
 	}
 }
 
 Mix_Chunk *Audio::death() {
-	return load("assets/player/death" + std::to_string(Utils::getRandomRange(1, 6)) + ".wav");
+	return loadWAV("assets/player/death" + std::to_string(Utils::getRandomRange(1, 6)) + ".wav");
 }
 
 Mix_Chunk *Audio::kill() {
-	return load("assets/player/kill_doof_01.wav");
+	return loadWAV("assets/player/kill_doof_01.wav");
 }
 
 Mix_Chunk *Audio::headshot_no_armor() {
-	return load("assets/player/headshot_noarmor_0" + std::to_string(Utils::getRandomRange(1, 5)) + ".wav");
+	return loadWAV("assets/player/headshot_noarmor_0" + std::to_string(Utils::getRandomRange(1, 5)) + ".wav");
 }
 
 Mix_Chunk *Audio::headshot_armor() {
-	return load("assets/player/headshot_armor_flesh.wav");
+	return loadWAV("assets/player/headshot_armor_flesh.wav");
 }
 
 Mix_Chunk *Audio::headshot_armor_dink() {
-	return load("assets/player/headshot_armor_e1.wav");
+	return loadWAV("assets/player/headshot_armor_e1.wav");
 }
 
 Mix_Chunk *Audio::bodyshot_no_armor() {
-	return load("assets/player/player_damagebody_0" + std::to_string(Utils::getRandomRange(1, 5)) + ".wav");
+	return loadWAV("assets/player/player_damagebody_0" + std::to_string(Utils::getRandomRange(1, 5)) + ".wav");
 }
 
 Mix_Chunk *Audio::bodyshot_armor() {
-	return load("assets/player/kevlar_0" + std::to_string(Utils::getRandomRange(1, 5)) + ".wav");
+	return loadWAV("assets/player/kevlar_0" + std::to_string(Utils::getRandomRange(1, 5)) + ".wav");
 }
 
 

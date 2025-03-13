@@ -22,12 +22,6 @@ enum class Phase {
 	POST_ROUND
 };
 
-enum class Winner {
-	NONE,
-	T,
-	CT
-};
-
 class Match {
 	int maxRound = 24, maxPlayer = 5;
 	int roundTime = 105, buyTime = 20, postRoundTime = 7;
@@ -54,7 +48,7 @@ public:
 	bool planting = false, defusing = false;
 	Player *defuser = nullptr;
 	Player *planter = nullptr;
-	Winner winner = Winner::NONE;
+	int winner = PlayerSide::SPECTATOR;
 
 	Match();
 	~Match();

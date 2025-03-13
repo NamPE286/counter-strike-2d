@@ -1,10 +1,12 @@
 #include "GameScene.hpp"
 
-#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
 #include <string>
+#include <thread>
 
 #include "../managers/Font.hpp"
+#include "../managers/Audio.hpp"
 #include "../managers/Time.hpp"
 #include "../common.h"
 
@@ -15,7 +17,8 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	hud = new HUD(renderer, self, &match);
 
 	match.add_player(self);
-	match.add_player(new Player(renderer, "BOT", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
+	match.add_player(new Player(renderer, "BOT A", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
+	match.add_player(new Player(renderer, "BOT B", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2 - 100), false));
 }
 
 GameScene::~GameScene() {
@@ -66,11 +69,29 @@ void GameScene::update() {
 	hud->update();
 	
 	if (match.update()) {
-		if (match.winner == Winner::T) {
+		if (match.winner == PlayerSide::T) {
 			std::cout << "Terrorist win" << '\n';
 		} else {
 			std::cout << "Counter Terrorist win" << '\n';
 		}
+
+		std::thread t([&]() {
+			if (match.winner == self->side) {
+				Mix_PlayMusic(Audio::loadMusic("assets/sounds/music/wonround.mp3"), 0);
+			} else {
+				Mix_PlayMusic(Audio::loadMusic("assets/sounds/music/lostround.mp3"), 0);
+			}
+
+			SDL_Delay(1000);
+
+			if (match.winner == PlayerSide::T) {
+				Mix_PlayChannel(-1, Audio::loadWAV("assets/sounds/terwin.wav"), 0);
+			} else {
+				Mix_PlayChannel(-1, Audio::loadWAV("assets/sounds/ctwin.wav"), 0);
+			}
+		});
+
+		t.detach();
 	}
 }
 

@@ -232,7 +232,7 @@ void Player::fixed_update() {
 	if (velocity.magnitude() > 0 && !keyboard[SDL_SCANCODE_LSHIFT]) {
 		if (footstepDelay <= 0.0f) {
 			footstepDelay = 360;
-			Mix_PlayChannel(-1, Audio::load("assets/player/footsteps/concrete_ct_01.wav"), 0);
+			Mix_PlayChannel(-1, Audio::loadWAV("assets/player/footsteps/concrete_ct_01.wav"), 0);
 		} else {
 			footstepDelay -= Time::fixedDeltaTime;
 			footstepDelay = std::max(footstepDelay, -1.0f);
