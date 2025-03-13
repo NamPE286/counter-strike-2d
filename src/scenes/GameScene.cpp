@@ -1,5 +1,6 @@
 #include "GameScene.hpp"
 
+#include <SDL2/SDL_image.h>
 #include <iostream>
 #include <string>
 
@@ -52,12 +53,22 @@ void GameScene::update() {
 	}
 
 	hud->update();
+	
+	if (match.update()) {
+		if (match.winner == Winner::T) {
+			std::cout << "Terrorist win" << '\n';
+		} else {
+			std::cout << "Counter Terrorist win" << '\n';
+		}
+	}
 }
 
 void GameScene::fixed_update() {
 	for (Player *p : match.players) {
 		p->fixed_update();
 	}
+
+	match.fixed_update();
 }
 
 void GameScene::render() {

@@ -1,6 +1,10 @@
 #include "Match.hpp"
-#include "../managers/Time.hpp"
+
+#include <iostream>
 #include <stdexcept>
+
+#include "../managers/Time.hpp"
+
 
 Match::Match() {}
 
@@ -151,6 +155,8 @@ void Match::fixed_update() {
 			timeLeft = buyTime;
 		}
 	}
+
+	std::cout << alive.first << ' ' << alive.second << '\n';
 }
 
 void Match::start_planting(Player *p) {
