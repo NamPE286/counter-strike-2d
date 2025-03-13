@@ -1,6 +1,7 @@
 #include "HUD.hpp"
 
 #include <string>
+#include <map>
 #include "../common.h"
 
 HUD::HUD(SDL_Renderer* renderer, Player* player):
@@ -26,14 +27,50 @@ HUD::HUD(SDL_Renderer* renderer, Player* player):
 
 	armorText = new Text(renderer, Font::load("assets/fonts/stratum2-medium.ttf", 18), color);
 	armorText->set_position(WINDOW_WIDTH / 2 - 320, WINDOW_HEIGHT - 43);
+
+	primaryGun = new Text(renderer, Font::load("assets/fonts/icon.ttf", 100), color);
+	primaryGun->set_position(WINDOW_WIDTH - 120, WINDOW_HEIGHT - 300);
+
+	secondaryGun = new Text(renderer, Font::load("assets/fonts/icon.ttf", 50), color);
+	secondaryGun->set_position(WINDOW_WIDTH - 70, WINDOW_HEIGHT - 200);
+
+	knife = new Text(renderer, Font::load("assets/fonts/icon.ttf", 100), color);
+	knife->set_position(WINDOW_WIDTH - 120, WINDOW_HEIGHT - 150);
+	knife->set_content("M");
+
+	weaponNameText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
 }
 
 void HUD::update() {
+	std::map<std::string, std::string> mp = {
+		{"AK-47", "A"},
+		{"Glock-18", "K"}
+	};
+
 	ammoText->set_content(std::to_string(player->get_weapon()->ammo));
 	reserveAmmoText->set_content(std::to_string(player->get_weapon()->reserveAmmo));
 	moneyText->set_content("$" + std::to_string(player->money));
 	hpText->set_content(std::to_string(player->hp));
 	armorText->set_content(std::to_string(player->armor));
+
+	if (player->weapons[0] != nullptr) {
+		primaryGun->set_content(mp[player->weapons[0]->name]);
+	} else {
+		primaryGun->set_content("");
+	}
+
+	if (player->weapons[0] != nullptr) {
+		secondaryGun->set_content(mp[player->weapons[1]->name]);
+	} else {
+		secondaryGun->set_content("");
+	}
+
+	if (player->weapons[player->weaponSlot] != nullptr) {
+		weaponNameText->set_content(player->weapons[player->weaponSlot]->name);
+		weaponNameText->set_position(WINDOW_WIDTH - weaponNameText->rect.w - 20, WINDOW_HEIGHT - 70 - 80 * (2 - player->weaponSlot));
+	} else {
+		weaponNameText->set_content("");
+	}
 
 	healthBarRect.w = 43 * player->hp / 100;
 }
@@ -59,6 +96,10 @@ void HUD::render() {
 
 	moneyText->render();
 	hpText->render();
+	primaryGun->render();
+	secondaryGun->render();
+	knife->render();
+	weaponNameText->render();
 
 	if (player->armor > 0) {
 		armorText->render();

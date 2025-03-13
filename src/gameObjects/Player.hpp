@@ -14,8 +14,6 @@
 #include "../managers/Audio.hpp"
 #include "Weapon.hpp"
 
-
-
 enum PlayerSide {
 	T,
 	CT,
@@ -30,7 +28,6 @@ class Player : public MonoBehaviour {
 		{ SDL_SCANCODE_D, Vec2(1, 0) }
 	};
 	Vec2 position, velocity, acceleration, direction;
-	Weapon* weapons[3] = { nullptr, nullptr, nullptr };
 	SDL_Color color = { 0, 0, 0, 0 };
 	std::vector<Player*>* playerList = nullptr;
 
@@ -39,8 +36,6 @@ class Player : public MonoBehaviour {
 	int pointerX = 0, pointerY = 0;
 	const int size = 30, borderWidth = 8;
 	float maxSpeed = 0.4f;
-	int weaponSlot = 0;
-	bool sneaking = false;
 	float footstepDelay = 0;
 
 	void update_position();
@@ -51,6 +46,8 @@ public:
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
 	bool playable = true, helmet = false;
+	Weapon* weapons[3] = { nullptr, nullptr, nullptr };
+	int weaponSlot = 0;
 	std::string name;
 
 	Player(SDL_Renderer* renderer, std::string name, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);

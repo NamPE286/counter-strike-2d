@@ -35,7 +35,7 @@ void Player::change_weapon(int slot) {
 
 	maxSpeed = 0.4f * weapons[weaponSlot]->mobility / 250;
 
-	if (sneaking) {
+	if (keyboard[SDL_SCANCODE_LSHIFT]) {
 		maxSpeed /= 2;
 	}
 }
@@ -243,12 +243,7 @@ void Player::render() {
 		size
 	};
 
-	if (hp == 0) {
-		SDL_SetRenderDrawColor(renderer, 255 / 4, 255 / 4, 255 / 4, 255);
-		SDL_RenderFillRect(renderer, &borderRect);
-		SDL_SetRenderDrawColor(renderer, 255 / 2, 255 / 2, 255 / 2, 255);
-		SDL_RenderFillRect(renderer, &rect);
-	} else {
+	if (hp > 0) {
 		SDL_SetRenderDrawColor(renderer, color.r / 2, color.g / 2, color.b / 2, 255);
 		SDL_RenderFillRect(renderer, &borderRect);
 		SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 255);
