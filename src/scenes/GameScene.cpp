@@ -13,12 +13,13 @@
 GameScene::GameScene(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)
 {
-	self = new Player(renderer, "Me", PlayerSide::T, Vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
+	self = new Player(renderer, "Me", PlayerSide::T, Vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2), true);
 	hud = new HUD(renderer, self, &match);
 
 	match.add_player(self);
-	match.add_player(new Player(renderer, "BOT A", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
-	match.add_player(new Player(renderer, "BOT B", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2 - 100), false));
+	match.add_player(new Player(renderer, "BOT A", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2 - 100), false));
+	match.add_player(new Player(renderer, "BOT B", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
+	match.add_player(new Player(renderer, "BOT C", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2 + 100), false));
 }
 
 GameScene::~GameScene() {
