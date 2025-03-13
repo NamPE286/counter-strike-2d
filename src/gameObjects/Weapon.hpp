@@ -17,6 +17,7 @@ class Weapon : public MonoBehaviour {
 	Vec2 *pos = nullptr, *vel = nullptr;
 	int *pointerX = nullptr, *pointerY = nullptr;
 	int magSize = -1, range = 50;
+	int reserveAmmoBase = -1;
 	float standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
 		fireRate = 400.0f, fireCooldown = -1.0f, reloadTime = 0.0f, reloadCooldown = -1.0f;
 	bool firing = false, reloading = false, pullingOut = true, automatic = true;
@@ -47,6 +48,7 @@ public:
 	void update();
 	void fixed_update();
 	void render();
+	void reset();
 
 	bool poll_bullets(Bullet &bullet);
 };

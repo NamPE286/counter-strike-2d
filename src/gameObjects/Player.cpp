@@ -83,6 +83,7 @@ void Player::take_damage(Weapon *w, bool headshot) {
 		}
 
 		armor = 0, helmet = false;
+		death++;
 	} else {
 		if (headshot) {
 			if (armor > 0 && helmet) {
@@ -97,9 +98,20 @@ void Player::take_damage(Weapon *w, bool headshot) {
 				Mix_PlayChannel(-1, Audio::bodyshot_no_armor(), 0);
 			}
 		}
+
+		armor = 0, helmet = false;
+		death++;
 	}
 
 	std::cout << "Damage taken: " << (int)dmg << ". HP: " << hp << " Armor: " << armor << " Helmet: " << helmet << '\n';
+}
+
+void Player::reset() {
+	for (Weapon *w : weapons) {
+		w->reset();
+	}
+
+	hp = 100;
 }
 
 bool Player::collide(Bullet bullet) {
@@ -198,6 +210,7 @@ void Player::update() {
 
 				if (p->hp == 0) {
 					money += weapons[weaponSlot]->killReward;
+					kill++;
 				}
 			}
 		}

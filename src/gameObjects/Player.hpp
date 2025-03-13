@@ -62,6 +62,7 @@ public:
 	void stop_firing();
 	void set_position(Vec2 newPos);
 	void take_damage(Weapon *w, bool headshot);
+	void reset();
 
 	bool collide(Bullet bullet);
 	bool collide(int pointerX, int pointerY);

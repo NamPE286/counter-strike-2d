@@ -88,12 +88,13 @@ void Match::start() {
 		p->money = 800;
 		p->armor = 0;
 		p->helmet = false;
+		p->reset();
 	}
 }
 
 void Match::reset() {
 	for (Player *p : players) {
-		p->hp = 100;
+		p->reset();
 	}
 }
 

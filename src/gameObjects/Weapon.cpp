@@ -148,7 +148,7 @@ Weapon::Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel, i
 			headshotMultiplier = 4.0f, standingInaccuracy = 7.01f, runningInaccuracy = 182.07f,
 			fireRate = 100.0f, reloadTime = 2400.0f;
 		automatic = true;
-		ammo = 30, reserveAmmo = 90;
+		ammo = 30, reserveAmmo = reserveAmmoBase = 90;
 
 		drawSound = Audio::load("assets/weapons/ak47/ak47_draw.wav");
 		firingSound = Audio::load("assets/weapons/ak47/ak47_01.wav");
@@ -166,7 +166,7 @@ Weapon::Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel, i
 			headshotMultiplier = 4.0f, standingInaccuracy = 7.6f, runningInaccuracy = 17.6f,
 			fireRate = 50.0f, reloadTime = 2300.0f;
 		automatic = false;
-		ammo = 20, reserveAmmo = 120;
+		ammo = 20, reserveAmmo = reserveAmmoBase = 120;
 
 		drawSound = Audio::load("assets/weapons/glock18/glock_draw.wav");
 		firingSound = Audio::load("assets/weapons/glock18/glock_01.wav");
@@ -253,6 +253,11 @@ void Weapon::render() {
 	for (auto &i : bullets) {
 		i.render();
 	}
+}
+
+void Weapon::reset() {
+	ammo = magSize;
+	reserveAmmo = reserveAmmoBase;
 }
 
 bool Weapon::poll_bullets(Bullet &bullet) {
