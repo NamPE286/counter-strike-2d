@@ -2,8 +2,8 @@
 
 #include <stdexcept>
 
-Scoreboard::Scoreboard(SDL_Renderer *renderer):
-	MonoBehaviour(renderer)
+Scoreboard::Scoreboard(SDL_Renderer *renderer, Match *match):
+	MonoBehaviour(renderer), match(match)
 {
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
 

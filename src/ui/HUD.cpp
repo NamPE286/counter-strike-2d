@@ -4,7 +4,7 @@
 #include <map>
 #include "../common.h"
 
-HUD::HUD(SDL_Renderer *renderer, Player *player):
+HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
 	MonoBehaviour(renderer), player(player)
 {
 	if (player->side == PlayerSide::T) {
@@ -52,7 +52,7 @@ HUD::HUD(SDL_Renderer *renderer, Player *player):
 
 	weaponNameText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
 
-	scoreboard = new Scoreboard(renderer);
+	scoreboard = new Scoreboard(renderer, match);
 }
 
 HUD::~HUD() {

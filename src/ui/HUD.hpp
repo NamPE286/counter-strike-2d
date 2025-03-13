@@ -9,6 +9,7 @@
 #include "../common.h"
 #include "../gameObjects/Player.hpp"
 #include "Scoreboard.hpp"
+#include "../game/Match.hpp"
 
 class HUD : public MonoBehaviour {
 	Player *player = nullptr;
@@ -21,7 +22,7 @@ class HUD : public MonoBehaviour {
 	SDL_Rect healthBarRect = { WINDOW_WIDTH / 2 - 267, WINDOW_HEIGHT - 20, 43, 4 };
 
 public:
-	HUD(SDL_Renderer *renderer, Player *player);
+	HUD(SDL_Renderer *renderer, Player *player, Match *match);
 	~HUD();
 
 	void update();

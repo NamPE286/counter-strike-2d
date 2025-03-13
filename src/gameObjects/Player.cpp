@@ -195,6 +195,10 @@ void Player::update() {
 
 			if (p->collide(bullet)) {
 				p->take_damage(weapons[weaponSlot], p->collide(pointerX, pointerY));
+
+				if (p->hp == 0) {
+					money += weapons[weaponSlot]->killReward;
+				}
 			}
 		}
 	}

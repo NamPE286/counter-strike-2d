@@ -155,8 +155,6 @@ void Match::fixed_update() {
 			timeLeft = buyTime;
 		}
 	}
-
-	std::cout << alive.first << ' ' << alive.second << '\n';
 }
 
 void Match::start_planting(Player *p) {
