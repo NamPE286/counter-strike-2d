@@ -82,6 +82,15 @@ void Match::CT_win(int rewardType) {
 	timeLeft = postRoundTime;
 }
 
+void Match::start() {
+	for (Player *p : players) {
+		p->hp = 100;
+		p->money = 800;
+		p->armor = 0;
+		p->helmet = false;
+	}
+}
+
 void Match::reset() {
 	for (Player *p : players) {
 		p->hp = 100;
@@ -154,7 +163,7 @@ void Match::fixed_update() {
 
 	if (timeLeft == 0.0f) {
 		if (phase == Phase::WARMUP) {
-			reset();
+			start();
 
 			phase = Phase::BUY;
 			timeLeft = buyTime;

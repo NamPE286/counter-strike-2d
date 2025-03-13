@@ -23,17 +23,24 @@ GameScene::~GameScene() {
 }
 
 void GameScene::event_handler(SDL_Event &event) {
-	if (match.phase == Phase::BUY) {
-		return;
-	}
+	if (match.phase != Phase::BUY || 
+		(
+			event.key.keysym.scancode != SDL_SCANCODE_W &&
+			event.key.keysym.scancode != SDL_SCANCODE_A &&
+			event.key.keysym.scancode != SDL_SCANCODE_S &&
+			event.key.keysym.scancode != SDL_SCANCODE_D
+		)
+	) 
+	{
+		for (Player *p : match.players) {
+			if (!p->playable) {
+				continue;
+			}
 
-	for (Player *p : match.players) {
-		if (!p->playable) {
-			continue;
+			p->event_handler(event);
 		}
-
-		p->event_handler(event);
 	}
+
 
 	switch (event.type) {
 	case SDL_KEYDOWN:
@@ -84,7 +91,9 @@ void GameScene::render() {
 }
 
 void GameScene::on_mouse_button_down(SDL_Event &event) {
-	self->fire(&match.players);
+	if (match.phase != Phase::BUY) {
+		self->fire(&match.players);
+	}
 }
 
 void GameScene::on_mouse_button_up(SDL_Event &event) {

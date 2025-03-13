@@ -40,6 +40,7 @@ class Match {
 	void T_win(int rewardType);
 	void CT_win(int rewardType);
 
+	void start();
 	void reset();
 public:
 	std::pair<int, int> scores = { 0, 0 };
