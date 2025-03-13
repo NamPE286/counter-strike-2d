@@ -14,7 +14,7 @@ GameScene::GameScene(SDL_Renderer* renderer):
 	players.push_back(new Player(renderer, "BOT", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
 
 	self = players[0];
-	hud = new HUD(renderer, self, self->side);
+	hud = new HUD(renderer, self);
 }
 
 GameScene::~GameScene() {

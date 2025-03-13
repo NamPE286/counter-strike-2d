@@ -10,13 +10,12 @@
 
 class HUD : public MonoBehaviour {
 	Player* player = nullptr;
-	Text *ammoText = nullptr, *reserveAmmoText = nullptr, *moneyText = nullptr, *hpText = nullptr;
+	Text *ammoText = nullptr, *reserveAmmoText = nullptr, *moneyText = nullptr, *hpText = nullptr, * armorText = nullptr;
 	SDL_Color color = { 0, 0, 0, 0 };
 	SDL_Rect healthBarRect = { WINDOW_WIDTH / 2 - 267, WINDOW_HEIGHT - 20, 43, 4 };
-	int side = PlayerSide::T;
 
 public:
-	HUD(SDL_Renderer* renderer, Player* player, int side);
+	HUD(SDL_Renderer* renderer, Player* player);
 
 	void update();
 	void render();

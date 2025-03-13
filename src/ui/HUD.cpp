@@ -3,12 +3,12 @@
 #include <string>
 #include "../common.h"
 
-HUD::HUD(SDL_Renderer* renderer, Player* player, int side):
-	MonoBehaviour(renderer), player(player), side(side)
+HUD::HUD(SDL_Renderer* renderer, Player* player):
+	MonoBehaviour(renderer), player(player)
 {
-	if (side == PlayerSide::T) {
+	if (player->side == PlayerSide::T) {
 		color = { 255, 205, 100, 255 };
-	} else if (side == PlayerSide::CT) {
+	} else if (player->side == PlayerSide::CT) {
 		color = { 154, 203, 249, 255 };
 	}
 
@@ -23,6 +23,9 @@ HUD::HUD(SDL_Renderer* renderer, Player* player, int side):
 
 	hpText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 32), color);
 	hpText->set_position(WINDOW_WIDTH / 2 - 268, WINDOW_HEIGHT - 53);
+
+	armorText = new Text(renderer, Font::load("assets/fonts/stratum2-medium.ttf", 18), color);
+	armorText->set_position(WINDOW_WIDTH / 2 - 320, WINDOW_HEIGHT - 43);
 }
 
 void HUD::update() {
@@ -30,12 +33,18 @@ void HUD::update() {
 	reserveAmmoText->set_content(std::to_string(player->get_weapon()->reserveAmmo));
 	moneyText->set_content("$" + std::to_string(player->money));
 	hpText->set_content(std::to_string(player->hp));
+	armorText->set_content(std::to_string(player->armor));
 
 	healthBarRect.w = 43 * player->hp / 100;
 }
 
 void HUD::render() {
-	SDL_Rect ammoSep = {ammoText->rect.x + 58, ammoText->rect.y + 12, 2, 21};
+	if (player->hp == 0) {
+		return;
+	}
+
+	SDL_Rect ammoSep = { ammoText->rect.x + 58, ammoText->rect.y + 12, 2, 21 };
+	SDL_Rect helmetRect = { WINDOW_WIDTH / 2 - 311, WINDOW_HEIGHT - 48, 7, 5 };
 
 	if (player->get_weapon()->ammo != -1) {
 		ammoText->render();
@@ -50,4 +59,12 @@ void HUD::render() {
 
 	moneyText->render();
 	hpText->render();
+
+	if (player->armor > 0) {
+		armorText->render();
+
+		if (player->helmet) {
+			SDL_RenderFillRect(renderer, &helmetRect);
+		}
+	}
 }
