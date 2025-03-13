@@ -261,11 +261,11 @@ void Player::on_key_down(SDL_Event &event) {
 		return;
 	}
 
-	if (event.key.keysym.scancode == SDL_SCANCODE_1) {
+	if (event.key.keysym.scancode == SDL_SCANCODE_1 && weaponSlot != 1) {
 		change_weapon(0);
-	} else if (event.key.keysym.scancode == SDL_SCANCODE_2) {
+	} else if (event.key.keysym.scancode == SDL_SCANCODE_2 && weaponSlot != 2) {
 		change_weapon(1);
-	} else if (event.key.keysym.scancode == SDL_SCANCODE_3) {
+	} else if (event.key.keysym.scancode == SDL_SCANCODE_3 && weaponSlot != 3) {
 		change_weapon(2);
 	} else if (event.key.keysym.scancode == SDL_SCANCODE_R) {
 		weapons[weaponSlot]->reload();

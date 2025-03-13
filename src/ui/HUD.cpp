@@ -29,14 +29,26 @@ HUD::HUD(SDL_Renderer *renderer, Player *player):
 	armorText->set_position(WINDOW_WIDTH / 2 - 320, WINDOW_HEIGHT - 43);
 
 	primaryGun = new Text(renderer, Font::load("assets/fonts/icon.ttf", 100), color);
-	primaryGun->set_position(WINDOW_WIDTH - 120, WINDOW_HEIGHT - 300);
+	primaryGun->set_position(WINDOW_WIDTH - 140, WINDOW_HEIGHT - 300);
+
+	primaryGunBindText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
+	primaryGunBindText->set_position(WINDOW_WIDTH - 25, WINDOW_HEIGHT - 280);
+	primaryGunBindText->set_content("1");
 
 	secondaryGun = new Text(renderer, Font::load("assets/fonts/icon.ttf", 50), color);
-	secondaryGun->set_position(WINDOW_WIDTH - 70, WINDOW_HEIGHT - 200);
+	secondaryGun->set_position(WINDOW_WIDTH - 90, WINDOW_HEIGHT - 200);
+
+	secondaryGunBindText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
+	secondaryGunBindText->set_position(WINDOW_WIDTH - 25, WINDOW_HEIGHT - 205);
+	secondaryGunBindText->set_content("2");
 
 	knife = new Text(renderer, Font::load("assets/fonts/icon.ttf", 100), color);
-	knife->set_position(WINDOW_WIDTH - 120, WINDOW_HEIGHT - 150);
+	knife->set_position(WINDOW_WIDTH - 140, WINDOW_HEIGHT - 150);
 	knife->set_content("M");
+
+	knifeBindText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
+	knifeBindText->set_position(WINDOW_WIDTH - 25, WINDOW_HEIGHT - 130);
+	knifeBindText->set_content("3");
 
 	weaponNameText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
 }
@@ -67,7 +79,7 @@ void HUD::update() {
 
 	if (player->weapons[player->weaponSlot] != nullptr) {
 		weaponNameText->set_content(player->weapons[player->weaponSlot]->name);
-		weaponNameText->set_position(WINDOW_WIDTH - weaponNameText->rect.w - 20, WINDOW_HEIGHT - 70 - 80 * (2 - player->weaponSlot));
+		weaponNameText->set_position(WINDOW_WIDTH - weaponNameText->rect.w - 40, WINDOW_HEIGHT - 70 - 80 * (2 - player->weaponSlot));
 	} else {
 		weaponNameText->set_content("");
 	}
@@ -96,9 +108,15 @@ void HUD::render() {
 
 	moneyText->render();
 	hpText->render();
+
 	primaryGun->render();
 	secondaryGun->render();
 	knife->render();
+
+	primaryGunBindText->render();
+	secondaryGunBindText->render();
+	knifeBindText->render();
+
 	weaponNameText->render();
 
 	if (player->armor > 0) {
