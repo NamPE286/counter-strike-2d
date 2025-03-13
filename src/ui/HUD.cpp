@@ -51,6 +51,8 @@ HUD::HUD(SDL_Renderer *renderer, Player *player):
 	knifeBindText->set_content("3");
 
 	weaponNameText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
+
+	scoreboard = new Scoreboard(renderer);
 }
 
 HUD::~HUD() {
@@ -66,6 +68,7 @@ HUD::~HUD() {
 	delete primaryGunBindText;
 	delete secondaryGunBindText;
 	delete knifeBindText;
+	delete scoreboard;
 }
 
 void HUD::update() {
@@ -103,6 +106,8 @@ void HUD::update() {
 }
 
 void HUD::render() {
+	const auto keyboard = SDL_GetKeyboardState(0);
+
 	if (player->hp == 0) {
 		return;
 	}
@@ -140,5 +145,9 @@ void HUD::render() {
 		if (player->helmet) {
 			SDL_RenderFillRect(renderer, &helmetRect);
 		}
+	}
+
+	if (keyboard[SDL_SCANCODE_TAB]) {
+		scoreboard->render();
 	}
 }

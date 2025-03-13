@@ -10,6 +10,8 @@ Scoreboard::Scoreboard(SDL_Renderer *renderer):
 	if (!texture) {
 		throw std::runtime_error("Failed to create scoreboard texture");
 	}
+
+	SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 }
 
 Scoreboard::~Scoreboard() {
@@ -19,14 +21,14 @@ Scoreboard::~Scoreboard() {
 void Scoreboard::render() {
 	SDL_SetRenderTarget(renderer, texture);
 
-	SDL_SetRenderDrawColor(renderer, 16, 16, 16, 155);
+	SDL_SetRenderDrawColor(renderer, 16, 16, 16, 200);
 	SDL_RenderClear(renderer);
 
 	SDL_SetRenderTarget(renderer, nullptr);
 	
 	SDL_Rect rect = {
-		WINDOW_WIDTH - w / 2,
-		WINDOW_HEIGHT - h / 2,
+		(WINDOW_WIDTH - w) / 2,
+		(WINDOW_HEIGHT - h) / 2,
 		w, h
 	};
 

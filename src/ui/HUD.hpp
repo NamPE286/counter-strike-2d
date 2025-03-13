@@ -15,6 +15,7 @@ class HUD : public MonoBehaviour {
 	Text *ammoText = nullptr, *reserveAmmoText = nullptr, *moneyText = nullptr, *hpText = nullptr, *armorText = nullptr,
 		*primaryGun = nullptr, *secondaryGun = nullptr, *knife = nullptr, *weaponNameText = nullptr,
 		*primaryGunBindText = nullptr, *secondaryGunBindText = nullptr, *knifeBindText = nullptr;
+	Scoreboard *scoreboard = nullptr;
 
 	SDL_Color color = { 0, 0, 0, 0 };
 	SDL_Rect healthBarRect = { WINDOW_WIDTH / 2 - 267, WINDOW_HEIGHT - 20, 43, 4 };
