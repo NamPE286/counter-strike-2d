@@ -7,9 +7,10 @@
 #include "../ui/HUD.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../gameObjects/Player.hpp"
+#include "../game/Match.hpp"
 
 class GameScene : public MonoBehaviour {
-	std::vector<Player *> players;
+	Match match;
 	Player *self = nullptr;
 	HUD *hud = nullptr;
 

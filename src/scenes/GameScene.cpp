@@ -10,23 +10,19 @@
 GameScene::GameScene(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)
 {
-	players.push_back(new Player(renderer, "Me", PlayerSide::T, Vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)));
-	players.push_back(new Player(renderer, "BOT", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
-
-	self = players[0];
+	self = new Player(renderer, "Me", PlayerSide::T, Vec2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
 	hud = new HUD(renderer, self);
+
+	match.add_player(self);
+	match.add_player(new Player(renderer, "BOT", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
 }
 
 GameScene::~GameScene() {
-	for (Player *p : players) {
-		delete p;
-	}
-
 	delete hud;
 }
 
 void GameScene::event_handler(SDL_Event &event) {
-	for (Player *p : players) {
+	for (Player *p : match.players) {
 		if (!p->playable) {
 			continue;
 		}
@@ -51,7 +47,7 @@ void GameScene::event_handler(SDL_Event &event) {
 }
 
 void GameScene::update() {
-	for (Player *p : players) {
+	for (Player *p : match.players) {
 		p->update();
 	}
 
@@ -59,13 +55,13 @@ void GameScene::update() {
 }
 
 void GameScene::fixed_update() {
-	for (Player *p : players) {
+	for (Player *p : match.players) {
 		p->fixed_update();
 	}
 }
 
 void GameScene::render() {
-	for (Player *p : players) {
+	for (Player *p : match.players) {
 		p->render();
 	}
 
@@ -73,7 +69,7 @@ void GameScene::render() {
 }
 
 void GameScene::on_mouse_button_down(SDL_Event &event) {
-	self->fire(&players);
+	self->fire(&match.players);
 }
 
 void GameScene::on_mouse_button_up(SDL_Event &event) {
