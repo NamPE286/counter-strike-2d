@@ -21,6 +21,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 
 	map = new Map(renderer, "assets/tilemaps/test.tmx");
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, map->w, map->h);
+	camera = new PlayerCamera(renderer, 960, 540, texture, self);
 
 	if (!texture) {
 		throw std::runtime_error("Failed to create texture: " + std::string(SDL_GetError()));
@@ -30,6 +31,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 GameScene::~GameScene() {
 	delete hud;
 	delete map;
+	delete camera;
 
 	SDL_DestroyTexture(texture);
 }
@@ -74,6 +76,7 @@ void GameScene::update() {
 		p->update();
 	}
 
+	camera->update();
 	map->collision_handler(self);
 	hud->update();
 	
@@ -125,9 +128,7 @@ void GameScene::render() {
 
 	SDL_SetRenderTarget(renderer, nullptr);
 
-	SDL_Rect rect = { (int)self->position.x - 500, (int)self->position.y - 281, 1000, 562};
-	SDL_RenderCopy(renderer, texture, &rect, nullptr);
-
+	camera->render();
 	hud->render();
 }
 
