@@ -35,11 +35,13 @@ class Player : public MonoBehaviour {
 
 	int pointerX = 0, pointerY = 0;
 	const int size = 25, borderWidth = 6;
+	const int radius = 30;
 	float maxSpeed = 0.4f;
 	float footstepDelay = 0;
 
 	void update_position();
 	void change_weapon(int slot);
+	
 
 public:
 	int hp = 100, armor = 0, money = 800;

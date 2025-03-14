@@ -17,10 +17,8 @@ static void *SDL_tex_loader(const char *path) {
 }
 
 void Map::set_color(int color) {
-	{
-		tmx_col_bytes col = tmx_col_to_bytes(color);
-		SDL_SetRenderDrawColor(renderer, col.r, col.g, col.b, col.a);
-	}
+	tmx_col_bytes col = tmx_col_to_bytes(color);
+	SDL_SetRenderDrawColor(renderer, col.r, col.g, col.b, col.a);
 }
 
 void Map::render_all_layers(tmx_layer *layers) {
