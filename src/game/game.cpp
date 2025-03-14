@@ -40,7 +40,7 @@ Game::Game() {
 	Font::init();
 	Scene::init(renderer);
 
-	mouse = new Mouse(renderer);
+	mouse = new Pointer(renderer);
 
 	Scene::stack.emplace(new GameScene(renderer));
 }

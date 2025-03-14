@@ -2,13 +2,13 @@
 
 #include <SDL2/SDL.h>
 
-#include "../gameObjects/Mouse.hpp"
+#include "../gameObjects/Pointer.hpp"
 #include "../managers/Scene.hpp"
 
 class Game {
 	SDL_Window *window = nullptr;
 	SDL_Renderer *renderer = nullptr;
-	Mouse *mouse = nullptr;
+	Pointer *mouse = nullptr;
 	bool running = true;
 
 public:

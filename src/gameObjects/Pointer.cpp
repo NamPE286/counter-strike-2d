@@ -1,16 +1,16 @@
-#include "Mouse.hpp"
+#include "Pointer.hpp"
 
-Mouse::Mouse(SDL_Renderer *renderer):
+Pointer::Pointer(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)
 {
 	SDL_ShowCursor(0);
 }
 
-void Mouse::update() {
+void Pointer::update() {
 	SDL_GetMouseState(&x, &y);
 }
 
-void Mouse::render() {
+void Pointer::render() {
 	SDL_Rect arr[4] = {
 		{x - h / 2 - gap / 2, y - w / 2, h / 2, w},
 		{x + gap / 2, y - w / 2, h / 2, w},
