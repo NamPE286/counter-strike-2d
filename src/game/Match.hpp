@@ -44,7 +44,7 @@ public:
 	std::pair< std::vector<Player *>, std::vector<Player *>> team;
 	Phase phase = Phase::WARMUP;
 	int round = 1;
-	float timeLeft = 5, defuseTimer = 10, plantTimer = 3;
+	float timeLeft = 999, defuseTimer = 10, plantTimer = 3;
 	bool planting = false, defusing = false;
 	Player *defuser = nullptr;
 	Player *planter = nullptr;
