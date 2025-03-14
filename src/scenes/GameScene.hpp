@@ -11,6 +11,7 @@
 #include "../game/Map.hpp"
 
 class GameScene : public MonoBehaviour {
+	SDL_Texture *texture = nullptr;
 	Match match;
 	Player *self = nullptr;
 	HUD *hud = nullptr;

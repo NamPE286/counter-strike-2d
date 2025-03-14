@@ -21,6 +21,8 @@ class Map : public MonoBehaviour {
 	void render_polygon(double **points, double x, double y, int pointsc);
 
 public:
+	int w = 0, h = 0;
+
 	Map(SDL_Renderer* renderer, std::string filePath);
 	~Map();
 

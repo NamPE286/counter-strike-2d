@@ -20,11 +20,19 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	match.add_player(new Player(renderer, "BOT A", PlayerSide::CT, Vec2(650, 500), false));
 
 	map = new Map(renderer, "assets/tilemaps/test.tmx");
+
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, map->w, map->h);
+
+	if (!texture) {
+		throw std::runtime_error("Failed to create texture: " + std::string(SDL_GetError()));
+	}
 }
 
 GameScene::~GameScene() {
 	delete hud;
 	delete map;
+
+	SDL_DestroyTexture(texture);
 }
 
 void GameScene::event_handler(SDL_Event &event) {
@@ -106,11 +114,20 @@ void GameScene::fixed_update() {
 }
 
 void GameScene::render() {
+	SDL_SetRenderTarget(renderer, texture);
+	SDL_SetRenderDrawColor(renderer, 137, 137, 137, 255);
+	SDL_RenderClear(renderer);
+
 	map->render();
 
 	for (Player *p : match.players) {
 		p->render();
 	}
+
+	SDL_SetRenderTarget(renderer, nullptr);
+
+	SDL_Rect rect = { (int)self->position.x - 500, (int)self->position.y - 281, 1000, 562};
+	SDL_RenderCopy(renderer, texture, &rect, nullptr);
 
 	hud->render();
 }

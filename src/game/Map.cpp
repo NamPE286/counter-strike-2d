@@ -139,6 +139,8 @@ Map::Map(SDL_Renderer *renderer, std::string filePath):
 		tmx_perror("Cannot load map");
 		throw std::runtime_error("Failed to load tilemap " + filePath);
 	}
+
+	w = map->width * map->tile_width, h = map->height * map->tile_height;
 }
 
 Map::~Map() {
