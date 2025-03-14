@@ -34,7 +34,7 @@ class Player : public MonoBehaviour {
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
 
 	int pointerX = 0, pointerY = 0;
-	const int size = 30, borderWidth = 8;
+	const int size = 25, borderWidth = 6;
 	float maxSpeed = 0.4f;
 	float footstepDelay = 0;
 
