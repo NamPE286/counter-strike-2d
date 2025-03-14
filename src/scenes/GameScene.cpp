@@ -48,7 +48,6 @@ void GameScene::event_handler(SDL_Event &event) {
 		}
 	}
 
-
 	switch (event.type) {
 	case SDL_KEYDOWN:
 		on_key_down(event);
@@ -108,6 +107,8 @@ void GameScene::fixed_update() {
 }
 
 void GameScene::render() {
+	map->render();
+
 	for (Player *p : match.players) {
 		p->render();
 	}
