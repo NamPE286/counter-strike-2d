@@ -52,7 +52,7 @@ void Match::T_win(int rewardType) {
 	}
 
 	phase = Phase::POST_ROUND;
-	timeLeft = postRoundTime;
+	timeLeft = (float)postRoundTime;
 }
 
 void Match::CT_win(int rewardType) {
@@ -79,7 +79,7 @@ void Match::CT_win(int rewardType) {
 	}
 
 	phase = Phase::POST_ROUND;
-	timeLeft = postRoundTime;
+	timeLeft = (float)postRoundTime;
 }
 
 void Match::start() {
@@ -145,7 +145,7 @@ bool Match::update() {
 
 void Match::fixed_update() {
 	timeLeft -= Time::fixedDeltaTime / 1000;
-	timeLeft = std::max(0.0f, timeLeft);
+	timeLeft = (float)std::max(0.0f, timeLeft);
 
 	if (planting) {
 		plantTimer -= Time::fixedDeltaTime / 1000;
@@ -167,15 +167,15 @@ void Match::fixed_update() {
 			start();
 
 			phase = Phase::BUY;
-			timeLeft = buyTime;
+			timeLeft = (float)buyTime;
 		} else if (phase == Phase::BUY) {
 			phase = Phase::PRE_PLANT;
-			timeLeft = roundTime;
+			timeLeft = (float)roundTime;
 		} else if (phase == Phase::POST_ROUND) {
 			reset();
 
 			phase = Phase::BUY;
-			timeLeft = buyTime;
+			timeLeft = (float)buyTime;
 		}
 	}
 }
