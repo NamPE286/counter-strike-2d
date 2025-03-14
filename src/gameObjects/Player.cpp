@@ -310,11 +310,13 @@ void Player::on_key_down(SDL_Event &event) {
 		maxSpeed /= 2;
 	} else {
 		if (keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
+			velocity.x = 0;
 			acceleration.x *= -1;
 			return;
 		}
 
 		if (keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_S]) {
+			velocity.y = 0;
 			acceleration.y *= -1;
 			return;
 		}

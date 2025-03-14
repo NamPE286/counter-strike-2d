@@ -27,7 +27,6 @@ class Player : public MonoBehaviour {
 		{ SDL_SCANCODE_S, Vec2(0, 1) },
 		{ SDL_SCANCODE_D, Vec2(1, 0) }
 	};
-	Vec2 velocity, acceleration, direction;
 	SDL_Color color = { 0, 0, 0, 0 };
 	std::vector<Player *> *playerList = nullptr;
 
@@ -44,7 +43,7 @@ class Player : public MonoBehaviour {
 public:
 	const int size = 25, borderWidth = 6;
 
-	Vec2 position;
+	Vec2 position, velocity, acceleration, direction;
 	int hp = 100, armor = 0, money = 800;
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
