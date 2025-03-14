@@ -133,7 +133,7 @@ void Game::fixed_update() {
 }
 
 void Game::render() {
-	SDL_SetRenderDrawColor(renderer, 100, 0, 50, 255);
+	SDL_SetRenderDrawColor(renderer, 137, 137, 137, 255);
 	SDL_RenderClear(renderer);
 
 	Scene::render();
