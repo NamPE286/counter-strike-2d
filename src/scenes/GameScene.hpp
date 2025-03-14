@@ -8,11 +8,13 @@
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../gameObjects/Player.hpp"
 #include "../game/Match.hpp"
+#include "../game/Map.hpp"
 
 class GameScene : public MonoBehaviour {
 	Match match;
 	Player *self = nullptr;
 	HUD *hud = nullptr;
+	Map *map = nullptr;
 
 public:
 	GameScene(SDL_Renderer *renderer);

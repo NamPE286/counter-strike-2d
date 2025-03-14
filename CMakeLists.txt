@@ -6,17 +6,22 @@ if (POLICY CMP0141)
 endif()
 
 project (main)
-add_executable (main "src/main.cpp"  "src/game/Game.cpp" "src/common.h" "src/behaviours/MonoBehaviour.cpp" "src/gameObjects/Player.cpp" "src/scenes/GameScene.cpp"  "src/managers/Time.cpp" "src/geometry/Vec2.cpp" "src/gameObjects/Mouse.cpp" "src/gameObjects/Weapon.cpp" "src/gameObjects/Bullet.cpp" "src/utilities/Utils.cpp" "src/managers/Audio.cpp" "src/managers/Scene.cpp" "src/managers/Font.cpp" "src/ui/Text.cpp" "src/ui/HUD.cpp" "src/cameras/PlayerCamera.cpp" "src/ui/Scoreboard.cpp" "src/ui/MiniScoreboard.cpp" "src/game/Match.cpp")
+add_executable (main "src/main.cpp"  "src/game/Game.cpp" "src/common.h" "src/behaviours/MonoBehaviour.cpp" "src/gameObjects/Player.cpp" "src/scenes/GameScene.cpp"  "src/managers/Time.cpp" "src/geometry/Vec2.cpp" "src/gameObjects/Mouse.cpp" "src/gameObjects/Weapon.cpp" "src/gameObjects/Bullet.cpp" "src/utilities/Utils.cpp" "src/managers/Audio.cpp" "src/managers/Scene.cpp" "src/managers/Font.cpp" "src/ui/Text.cpp" "src/ui/HUD.cpp" "src/cameras/PlayerCamera.cpp" "src/ui/Scoreboard.cpp" "src/ui/MiniScoreboard.cpp" "src/game/Match.cpp" "src/game/Map.cpp")
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET main PROPERTY CXX_STANDARD 20)
 endif()
 
+include(${CMAKE_TOOLCHAIN_FILE})
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
+
 find_package(SDL2 CONFIG REQUIRED)
 find_package(SDL2_ttf CONFIG REQUIRED)
 find_package(SDL2_image CONFIG REQUIRED)
 find_package(SDL2_mixer CONFIG REQUIRED)
+find_package(tmxlite REQUIRED)
 
 target_link_libraries(main
     PRIVATE
@@ -25,4 +30,5 @@ target_link_libraries(main
     $<IF:$<TARGET_EXISTS:SDL2_ttf::SDL2_ttf>,SDL2_ttf::SDL2_ttf,SDL2_ttf::SDL2_ttf-static>
     $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
     $<IF:$<TARGET_EXISTS:SDL2_mixer::SDL2_mixer>,SDL2_mixer::SDL2_mixer,SDL2_mixer::SDL2_mixer-static>
+    tmxlite
 )
