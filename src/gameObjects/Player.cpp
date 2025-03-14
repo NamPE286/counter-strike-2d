@@ -210,9 +210,9 @@ Player::Player(SDL_Renderer *renderer, std::string name, int side, Vec2 pos, boo
 		color = { 154, 203, 249, 255 };
 	}
 
-	weapons[0] = new Weapon(renderer, "AK-47", &position, &velocity, &pointerX, &pointerY);
-	weapons[1] = new Weapon(renderer, "Glock-18", &position, &velocity, &pointerX, &pointerY);
-	weapons[2] = new Weapon(renderer, "Knife", &position, &velocity, &pointerX, &pointerY);
+	weapons[0] = new Weapon(renderer, "AK-47", &position, &velocity);
+	weapons[1] = new Weapon(renderer, "Glock-18", &position, &velocity);
+	weapons[2] = new Weapon(renderer, "Knife", &position, &velocity);
 
 	change_weapon(0);
 }
@@ -255,8 +255,6 @@ void Player::update() {
 }
 
 void Player::fixed_update() {
-	SDL_GetMouseState(&pointerX, &pointerY);
-
 	for (int i = 0; i < 3; i++) {
 		weapons[i]->fixed_update();
 	}

@@ -5,6 +5,7 @@
 #include <stdexcept>
 
 #include "../managers/Time.hpp"
+#include "../managers/Mouse.hpp"
 #include "../utilities/Utils.hpp"
 
 void Weapon::fixed_update_fire() {
@@ -15,7 +16,7 @@ void Weapon::fixed_update_fire() {
 		return;
 	}
 
-	int x = *pointerX, y = *pointerY;
+	int x = Mouse::x, y = Mouse::y;
 	float variance = 0.0f;
 
 	if (*vel == Vec2(0, 0)) {
@@ -136,8 +137,8 @@ void Weapon::play_reload_sound() {
 	t.detach();
 }
 
-Weapon::Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel, int *pointerX, int *pointerY):
-	MonoBehaviour(renderer), name(name), pos(pos), vel(vel), pointerX(pointerX), pointerY(pointerY)
+Weapon::Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel):
+	MonoBehaviour(renderer), name(name), pos(pos), vel(vel)
 {
 	if (name == "Knife") {
 		drawSound = Audio::loadWAV("assets/weapons/knife/knife_deploy1.wav");

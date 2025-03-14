@@ -31,8 +31,6 @@ class Player : public MonoBehaviour {
 	std::vector<Player *> *playerList = nullptr;
 
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
-
-	int pointerX = 0, pointerY = 0;
 	float maxSpeed = 0.4f;
 	float footstepDelay = 0;
 
