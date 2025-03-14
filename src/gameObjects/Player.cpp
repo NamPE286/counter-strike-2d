@@ -323,7 +323,12 @@ void Player::on_key_up(SDL_Event &event) {
 
 	if (event.key.keysym.scancode == SDL_SCANCODE_LSHIFT) {
 		maxSpeed *= 2;
-	} else {
+	} else if (
+		event.key.keysym.scancode == SDL_SCANCODE_W ||
+		event.key.keysym.scancode == SDL_SCANCODE_S ||
+		event.key.keysym.scancode == SDL_SCANCODE_A ||
+		event.key.keysym.scancode == SDL_SCANCODE_D
+		) {
 		const auto keyboard = SDL_GetKeyboardState(0);
 
 		if (directionMap[event.key.keysym.scancode].x != 0 && velocity.x != 0) {
