@@ -40,3 +40,10 @@ std::string Utils::getClockString(int m, int s) {
 
 	return a + ":" + b;
 }
+
+bool Utils::isPointInsideRect(const SDL_Point &point, const SDL_Rect &rect) {
+	return (point.x >= rect.x) &&
+		(point.x < rect.x + rect.w) &&
+		(point.y >= rect.y) &&
+		(point.y < rect.y + rect.h);
+}

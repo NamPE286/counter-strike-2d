@@ -25,5 +25,5 @@ public:
 	~Map();
 
 	void render();
-	bool is_collide(Player *p);
+	void collision_handler(Player *p);
 };

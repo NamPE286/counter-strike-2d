@@ -6,6 +6,8 @@
 #include <vector>
 #include <utility>
 
+#include "../utilities/Utils.hpp"
+
 SDL_Renderer *_renderer = nullptr;
 
 static void *SDL_tex_loader(const char *path) {
@@ -148,7 +150,7 @@ void Map::render() {
 	render_all_layers(map->ly_head);
 }
 
-bool Map::is_collide(Player *p) {
+void Map::collision_handler(Player *p) {
 	tmx_layer *layer = map->ly_head;
 	std::vector<std::pair<int, int>> corners = { {0, 0}, {0, 1}, {1, 0}, {1, 1} };
 	SDL_Rect playerRect = { static_cast<int>(p->position.x) - p->size / 2,
@@ -161,18 +163,41 @@ bool Map::is_collide(Player *p) {
 		int y = (playerRect.y + b * playerRect.h) / map->tile_height;
 		int gid = (layer->content.gids[(y * map->width) + x]) & TMX_FLIP_BITS_REMOVAL;
 		tmx_tile *tile = map->tiles[gid];
+		int cnt = 0;
 
 		if (tile->collision != nullptr) {
-			SDL_Rect collisionRect = { playerRect.x + tile->collision->x,
-										playerRect.y + tile->collision->y,
-										tile->collision->width,
-										tile->collision->height };
+			cnt++;
+			SDL_Rect collisionRect = { x * (int)map->tile_width + (int)tile->collision->x,
+										y * (int)map->tile_height + (int)tile->collision->y,
+										(int)tile->collision->width,
+										(int)tile->collision->height };
 
 			if (SDL_HasIntersection(&playerRect, &collisionRect)) {
-				return true;
+				p->position = p->prevPosition;
+
+				if (p->velocity.x > 0) {
+					playerRect.x -= 20;
+				} else if (p->velocity.x < 0) {
+					playerRect.x += 20;
+				}
+
+				if (p->velocity.x != 0.0f && !SDL_HasIntersection(&playerRect, &collisionRect)) {
+					p->stop_movement_x();
+					return;
+				}
+
+				if (p->velocity.y > 0) {
+					playerRect.y -= 20;
+				} else if (p->velocity.y < 0) {
+					playerRect.y += 20;
+				}
+
+				if (p->velocity.y != 0.0f && !SDL_HasIntersection(&playerRect, &collisionRect)) {
+					p->stop_movement_y();
+				}
+
+				return;
 			}
 		}
 	}
-
-	return false;
 }

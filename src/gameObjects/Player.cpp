@@ -7,6 +7,7 @@
 #include "../managers/Audio.hpp"
 
 void Player::update_position() {
+	prevPosition = position;
 	velocity += acceleration * Time::deltaTime * 0.5;
 	position += velocity * Time::deltaTime;
 	velocity += acceleration * Time::deltaTime * 0.5;
@@ -113,6 +114,18 @@ void Player::reset() {
 
 	velocity = acceleration = direction = Vec2(0, 0);
 	hp = 100;
+}
+
+void Player::stop_movement() {
+	velocity = acceleration = direction = Vec2(0, 0);
+}
+
+void Player::stop_movement_x() {
+	velocity.x = acceleration.x = direction.x = 0;
+}
+
+void Player::stop_movement_y() {
+	velocity.y = acceleration.y = direction.y = 0;
 }
 
 bool Player::collide(Bullet bullet) {

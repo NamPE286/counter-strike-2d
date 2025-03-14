@@ -38,12 +38,11 @@ class Player : public MonoBehaviour {
 
 	void update_position();
 	void change_weapon(int slot);
-	
 
 public:
 	const int size = 25, borderWidth = 6;
 
-	Vec2 position, velocity, acceleration, direction;
+	Vec2 position, velocity, acceleration, direction, prevPosition;
 	int hp = 100, armor = 0, money = 800;
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
@@ -65,6 +64,9 @@ public:
 	void set_position(Vec2 newPos);
 	void take_damage(Weapon *w, bool headshot);
 	void reset();
+	void stop_movement();
+	void stop_movement_x();
+	void stop_movement_y();
 
 	bool collide(Bullet bullet);
 	
