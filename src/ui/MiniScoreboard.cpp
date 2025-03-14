@@ -1,5 +1,7 @@
 #include "MiniScoreboard.hpp"
 
+#include <cmath>
+
 #include "../managers/Font.hpp"
 #include "../utilities/Utils.hpp"
 #include "../common.h"
@@ -25,7 +27,7 @@ MiniScoreboard::MiniScoreboard(SDL_Renderer *renderer, Match *match):
 
 void MiniScoreboard::update() {
 	int m = static_cast<int>(match->timeLeft) / 60;
-	int s = static_cast<int>(match->timeLeft) % 60;
+	int s = static_cast<int>(std::ceil(match->timeLeft)) % 60;
 
 	if (match->phase == Phase::WARMUP) {
 		timerText->set_content("");

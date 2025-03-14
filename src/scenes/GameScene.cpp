@@ -21,7 +21,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	match.add_player(new Player(renderer, "BOT B", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2), false));
 	match.add_player(new Player(renderer, "BOT C", PlayerSide::CT, Vec2(WINDOW_WIDTH / 2 + 200, WINDOW_HEIGHT / 2 + 100), false));
 
-	map = new Map(renderer, "assets/tilemaps/test.tmx");
+	//map = new Map(renderer, "assets/tilemaps/test.tmx");
 }
 
 GameScene::~GameScene() {
