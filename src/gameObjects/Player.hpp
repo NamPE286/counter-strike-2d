@@ -27,15 +27,13 @@ class Player : public MonoBehaviour {
 		{ SDL_SCANCODE_S, Vec2(0, 1) },
 		{ SDL_SCANCODE_D, Vec2(1, 0) }
 	};
-	Vec2 position, velocity, acceleration, direction;
+	Vec2 velocity, acceleration, direction;
 	SDL_Color color = { 0, 0, 0, 0 };
 	std::vector<Player *> *playerList = nullptr;
 
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
 
 	int pointerX = 0, pointerY = 0;
-	const int size = 25, borderWidth = 6;
-	const int radius = 30;
 	float maxSpeed = 0.4f;
 	float footstepDelay = 0;
 
@@ -44,6 +42,9 @@ class Player : public MonoBehaviour {
 	
 
 public:
+	const int size = 25, borderWidth = 6;
+
+	Vec2 position;
 	int hp = 100, armor = 0, money = 800;
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;

@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <tmx.h>
+#include <vector>
+#include <utility>
 
 SDL_Renderer *_renderer = nullptr;
 
@@ -24,7 +26,6 @@ void Map::set_color(int color) {
 void Map::render_all_layers(tmx_layer *layers) {
 	while (layers) {
 		if (layers->visible) {
-
 			if (layers->type == L_GROUP) {
 				render_all_layers(layers->content.group_head);
 			} else if (layers->type == L_OBJGR) {
@@ -48,7 +49,7 @@ void Map::render_image_layer(tmx_image *image) {
 	SDL_RenderCopy(renderer, texture, NULL, &dim);
 }
 
-void Map::render_layer(tmx_layer * layer) {
+void Map::render_layer(tmx_layer *layer) {
 	unsigned long i, j;
 	unsigned int gid, x, y, w, h, flags;
 	float op;
@@ -59,6 +60,7 @@ void Map::render_layer(tmx_layer * layer) {
 	for (i = 0; i < map->height; i++) {
 		for (j = 0; j < map->width; j++) {
 			gid = (layer->content.gids[(i * map->width) + j]) & TMX_FLIP_BITS_REMOVAL;
+
 			if (map->tiles[gid] != NULL) {
 				ts = map->tiles[gid]->tileset;
 				im = map->tiles[gid]->image;
@@ -89,7 +91,7 @@ void Map::render_tile(void *image, unsigned int sx, unsigned int sy, unsigned in
 	SDL_RenderCopy(renderer, (SDL_Texture *)image, &src_rect, &dest_rect);
 }
 
-void Map::render_objects(tmx_object_group * objgr) {
+void Map::render_objects(tmx_object_group *objgr) {
 	SDL_Rect rect;
 	set_color(objgr->color);
 	tmx_object *head = objgr->head;
@@ -144,4 +146,33 @@ Map::~Map() {
 void Map::render() {
 	set_color(map->backgroundcolor);
 	render_all_layers(map->ly_head);
+}
+
+bool Map::is_collide(Player *p) {
+	tmx_layer *layer = map->ly_head;
+	std::vector<std::pair<int, int>> corners = { {0, 0}, {0, 1}, {1, 0}, {1, 1} };
+	SDL_Rect playerRect = { static_cast<int>(p->position.x) - p->size / 2,
+							static_cast<int>(p->position.y) - p->size / 2,
+							p->size,
+							p->size };
+
+	for (auto &[a, b] : corners) {
+		int x = (playerRect.x + a * playerRect.w) / map->tile_width;
+		int y = (playerRect.y + b * playerRect.h) / map->tile_height;
+		int gid = (layer->content.gids[(y * map->width) + x]) & TMX_FLIP_BITS_REMOVAL;
+		tmx_tile *tile = map->tiles[gid];
+
+		if (tile->collision != nullptr) {
+			SDL_Rect collisionRect = { playerRect.x + tile->collision->x,
+										playerRect.y + tile->collision->y,
+										tile->collision->width,
+										tile->collision->height };
+
+			if (SDL_HasIntersection(&playerRect, &collisionRect)) {
+				return true;
+			}
+		}
+	}
+
+	return false;
 }

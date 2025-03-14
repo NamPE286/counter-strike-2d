@@ -67,6 +67,10 @@ void GameScene::update() {
 		p->update();
 	}
 
+	if (map->is_collide(self)) {
+		std::cout << "collide" << '\n';
+	}
+
 	hud->update();
 	
 	if (match.update()) {

@@ -159,10 +159,10 @@ bool Player::collide(Bullet bullet) {
 
 bool Player::collide(int pointerX, int pointerY) {
 	SDL_Rect rect = {
-		(int)position.x - 15 / 2,
-		(int)position.y - 15 / 2,
-		15,
-		15
+		(int)position.x - 10 / 2,
+		(int)position.y - 10 / 2,
+		10,
+		10
 	};
 
 	return (pointerX >= rect.x && pointerX <= rect.x + rect.w &&

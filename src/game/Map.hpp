@@ -6,6 +6,7 @@
 #include <tmx.h>
 
 #include "../behaviours/MonoBehaviour.hpp"
+#include "../gameObjects/Player.hpp"
 
 class Map : public MonoBehaviour {
 	tmx_map *map = nullptr;
@@ -24,4 +25,5 @@ public:
 	~Map();
 
 	void render();
+	bool is_collide(Player *p);
 };
