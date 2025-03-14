@@ -157,16 +157,35 @@ bool Player::collide(Bullet bullet) {
 	return false;
 }
 
-bool Player::collide(int pointerX, int pointerY) {
-	SDL_Rect rect = {
-		(int)position.x - 10 / 2,
-		(int)position.y - 10 / 2,
-		10,
-		10
-	};
+float Player::distance(Bullet bullet) {
+	float endX = static_cast<float>(bullet.x + bullet.length * cos(bullet.angle));
+	float endY = static_cast<float>(bullet.y + bullet.length * sin(bullet.angle));
 
-	return (pointerX >= rect.x && pointerX <= rect.x + rect.w &&
-		pointerY >= rect.y && pointerY <= rect.y + rect.h);
+	float A = position.x - static_cast<float>(bullet.x);
+	float B = position.y - static_cast<float>(bullet.y);
+	float C = endX - static_cast<float>(bullet.x);
+	float D = endY - static_cast<float>(bullet.y);
+
+	float dot = A * C + B * D;
+	float len_sq = C * C + D * D;
+	float param = (len_sq != 0) ? dot / len_sq : -1;
+
+	float xx, yy;
+
+	if (param < 0) {
+		xx = static_cast<float>(bullet.x);
+		yy = static_cast<float>(bullet.y);
+	} else if (param > 1) {
+		xx = endX;
+		yy = endY;
+	} else {
+		xx = static_cast<float>(bullet.x) + param * C;
+		yy = static_cast<float>(bullet.y) + param * D;
+	}
+
+	float dx = position.x - xx;
+	float dy = position.y - yy;
+	return sqrt(dx * dx + dy * dy);
 }
 
 Player::Player(SDL_Renderer *renderer, std::string name, int side, Vec2 pos, bool playable):
@@ -207,7 +226,7 @@ void Player::update() {
 			}
 
 			if (p->collide(bullet)) {
-				p->take_damage(weapons[weaponSlot], p->collide(pointerX, pointerY));
+				p->take_damage(weapons[weaponSlot], p->distance(bullet) < 3.7f);
 
 				if (p->hp == 0) {
 					money += weapons[weaponSlot]->killReward;

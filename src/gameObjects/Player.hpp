@@ -68,7 +68,8 @@ public:
 	void reset();
 
 	bool collide(Bullet bullet);
-	bool collide(int pointerX, int pointerY);
+	
+	float distance(Bullet bullet);
 
 	Weapon *get_weapon() const;
 };
