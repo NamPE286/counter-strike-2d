@@ -7,6 +7,7 @@
 #include "../managers/Time.hpp"
 #include "../managers/Mouse.hpp"
 #include "../utilities/Utils.hpp"
+#include "../scenes/GameScene.hpp"
 
 void Weapon::fixed_update_fire() {
 	fireCooldown -= Time::fixedDeltaTime;
@@ -32,24 +33,18 @@ void Weapon::fixed_update_fire() {
 
 	if (automatic) {
 		if (ammo > 0) {
-			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
-			bulletQueue.push(bullets.back());
-			play_firing_sound(ammo <= magSize * 20 / 100);
+			add_bullet((int)pos->x, (int)pos->y, angle, range);
 
 			fireCooldown = fireRate;
 			ammo--;
 		} else if (ammo == -1) {
-			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
-			bulletQueue.push(bullets.back());
-			play_firing_sound(false);
+			add_bullet((int)pos->x, (int)pos->y, angle, range);
 
 			fireCooldown = fireRate;
 		}
 	} else {
 		if (ammo > 0) {
-			bullets.emplace_back(renderer, angle, (int)pos->x, (int)pos->y, range);
-			bulletQueue.push(bullets.back());
-			play_firing_sound(ammo <= magSize * 20 / 100);
+			add_bullet((int)pos->x, (int)pos->y, angle, range);
 
 			fireCooldown = fireRate;
 			firing = false;
@@ -137,6 +132,12 @@ void Weapon::play_reload_sound() {
 	t.detach();
 }
 
+void Weapon::add_bullet(int x, int y, float angle, int range) {
+	bullets.emplace_back(renderer, angle, x, y, range);
+	bulletQueue.push(bullets.back());
+	play_firing_sound(ammo <= magSize * 20 / 100);
+}
+
 Weapon::Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel):
 	MonoBehaviour(renderer), name(name), pos(pos), vel(vel)
 {
@@ -193,7 +194,9 @@ void Weapon::equip(bool playSound) {
 	}
 }
 
-void Weapon::fire() {
+void Weapon::fire(GameScene *scene) {
+	target = scene;
+
 	if (reloading || pullingOut) {
 		return;
 	}

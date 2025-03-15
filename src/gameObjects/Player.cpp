@@ -396,7 +396,7 @@ void Player::fire(GameScene *scene) {
 	}
 
 	target = scene;
-	weapons[weaponSlot]->fire();
+	weapons[weaponSlot]->fire(scene);
 }
 
 void Player::stop_firing() {

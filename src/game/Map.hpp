@@ -28,4 +28,5 @@ public:
 
 	void render();
 	void collision_handler(Player *p);
+	float distance(Bullet bullet);
 };

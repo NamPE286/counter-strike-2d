@@ -13,6 +13,8 @@
 #include "../geometry/Vec2.hpp"
 #include "../managers/Audio.hpp"
 
+class GameScene;
+
 class Weapon : public MonoBehaviour {
 	Vec2 *pos = nullptr, *vel = nullptr;
 	int magSize = -1, range = 50;
@@ -24,13 +26,14 @@ class Weapon : public MonoBehaviour {
 	std::vector<Mix_Chunk *> reloadSound;
 	std::vector<Bullet> bullets;
 	std::queue<Bullet> bulletQueue;
+	GameScene *target = nullptr;
 
 	void fixed_update_fire();
 	void fixed_update_reload();
 	void play_firing_sound(bool lowAmmo);
 	void play_draw_sound();
 	void play_reload_sound();
-
+	void add_bullet(int x, int y, float angle, int range);
 public:
 	std::string name = "Knife";
 	float baseDamage = 25.0f, armorPenetration = 0.85f, taggingPower = 0.0f, headshotMultiplier = 1.0f;
@@ -40,7 +43,7 @@ public:
 	Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel);
 
 	void equip(bool playSound);
-	void fire();
+	void fire(GameScene *scene);
 	void stop_firing();
 	void reload();
 	void stop_reloading();

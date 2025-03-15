@@ -203,3 +203,29 @@ void Map::collision_handler(Player *p) {
 		}
 	}
 }
+
+float Map::distance(Bullet bullet) {
+	int deltaX = static_cast<int>(cos(bullet.angle) * 10);
+	int deltaY = static_cast<int>(sin(bullet.angle) * 10);
+
+	for (int i = 0; i <= bullet.length; i += 10) {
+		int x = bullet.x + i * deltaX;
+		int y = bullet.y + i * deltaY;
+
+		int tileX = x / map->tile_width;
+		int tileY = y / map->tile_height;
+
+		if (tileX < 0 || tileX > (int)map->width || tileY < 0 || tileY > (int)map->height) {
+			return bullet.length;
+		}
+
+		int gid = (map->ly_head->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL;
+		tmx_tile *tile = map->tiles[gid];
+
+		if (tile && tile->collision) {
+			return sqrt(pow(x - tileX * map->tile_width, 2) + pow(y - tileY * map->tile_height, 2));
+		}
+	}
+
+	return bullet.length;
+}
