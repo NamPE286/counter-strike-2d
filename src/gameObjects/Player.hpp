@@ -14,6 +14,8 @@
 #include "../managers/Audio.hpp"
 #include "Weapon.hpp"
 
+class GameScene;
+
 enum PlayerSide {
 	T,
 	CT,
@@ -28,7 +30,7 @@ class Player : public MonoBehaviour {
 		{ SDL_SCANCODE_D, Vec2(1, 0) }
 	};
 	SDL_Color color = { 0, 0, 0, 0 };
-	std::vector<Player *> *playerList = nullptr;
+	GameScene *target = nullptr;
 
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
 	float maxSpeed = 0.4f;
@@ -57,7 +59,7 @@ public:
 	void render();
 	void on_key_down(SDL_Event &event);
 	void on_key_up(SDL_Event &event);
-	void fire(std::vector<Player *> *players);
+	void fire(GameScene *scene);
 	void stop_firing();
 	void set_position(Vec2 newPos);
 	void take_damage(Weapon *w, bool headshot);

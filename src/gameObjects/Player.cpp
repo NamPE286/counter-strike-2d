@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "../scenes/GameScene.hpp"
 
 #include <iostream>
 
@@ -229,11 +230,11 @@ void Player::update() {
 	Bullet bullet(renderer);
 
 	while (weapons[weaponSlot]->poll_bullets(bullet)) {
-		if (playerList == nullptr) {
+		if (target == nullptr) {
 			continue;
 		}
 
-		for (Player *p : *playerList) {
+		for (Player *p : target->match.players) {
 			if (p == this || p->hp == 0) {
 				continue;
 			}
@@ -389,12 +390,12 @@ void Player::on_key_up(SDL_Event &event) {
 	}
 }
 
-void Player::fire(std::vector<Player *> *players) {
+void Player::fire(GameScene *scene) {
 	if (hp == 0) {
 		return;
 	}
 
-	playerList = players;
+	target = scene;
 	weapons[weaponSlot]->fire();
 }
 

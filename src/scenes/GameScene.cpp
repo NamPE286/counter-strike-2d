@@ -134,7 +134,7 @@ void GameScene::render() {
 
 void GameScene::on_mouse_button_down(SDL_Event &event) {
 	if (match.phase != Phase::BUY) {
-		self->fire(&match.players);
+		self->fire(this);
 	}
 }
 
