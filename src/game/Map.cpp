@@ -205,7 +205,7 @@ void Map::collision_handler(Player *p) {
 }
 
 float Map::distance(Bullet bullet) {
-	for (int i = 0; i <= bullet.length; i += 32) {
+	for (int i = 0; i <= bullet.length; i += 16) {
 		int x = bullet.x + int((float)i * cos(bullet.angle));
 		int y = bullet.y + int((float)i * sin(bullet.angle));
 
