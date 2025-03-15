@@ -136,7 +136,7 @@ void Weapon::add_bullet(int x, int y, float angle, int range) {
 	Bullet tmp(renderer, angle, x, y, range);
 	tmp.length = target->map->distance(tmp);
 
-	bullets.push_back(tmp);
+	bullets.emplace_back(std::make_shared<Bullet>(tmp));
 	bulletQueue.push(tmp);
 
 	play_firing_sound(ammo <= magSize * 20 / 100);
@@ -235,12 +235,12 @@ void Weapon::stop_reloading() {
 }
 
 void Weapon::update() {
-	std::vector<Bullet> tmp;
+	std::vector<std::shared_ptr<Bullet>> tmp;
 
 	for (auto &i : bullets) {
-		i.update();
+		i->update();
 
-		if (!i.finished()) {
+		if (!i->finished()) {
 			tmp.push_back(i);
 		}
 	}
@@ -259,7 +259,7 @@ void Weapon::fixed_update() {
 
 void Weapon::render() {
 	for (auto &i : bullets) {
-		i.render();
+		i->render();
 	}
 }
 

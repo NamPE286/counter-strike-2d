@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <thread>
 #include <queue>
+#include <memory>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 
@@ -24,7 +25,7 @@ class Weapon : public MonoBehaviour {
 	bool firing = false, reloading = false, pullingOut = true, automatic = true;
 	Mix_Chunk *drawSound = nullptr, *firingSound = nullptr, *pullSound = nullptr;
 	std::vector<Mix_Chunk *> reloadSound;
-	std::vector<Bullet> bullets;
+	std::vector<std::shared_ptr<Bullet>> bullets;
 	std::queue<Bullet> bulletQueue;
 	GameScene *target = nullptr;
 
