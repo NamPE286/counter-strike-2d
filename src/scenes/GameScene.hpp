@@ -12,12 +12,14 @@
 
 class GameScene : public MonoBehaviour {
 	SDL_Texture *texture = nullptr;
-	Match match;
 	Player *self = nullptr;
+	PlayerCamera *camera = nullptr;
 	HUD *hud = nullptr;
-	Map *map = nullptr;
 
 public:
+	Match match;
+	Map *map = nullptr;
+
 	GameScene(SDL_Renderer *renderer);
 	~GameScene();
 
