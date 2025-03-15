@@ -133,8 +133,12 @@ void Weapon::play_reload_sound() {
 }
 
 void Weapon::add_bullet(int x, int y, float angle, int range) {
-	bullets.emplace_back(renderer, angle, x, y, range);
-	bulletQueue.push(bullets.back());
+	Bullet tmp(renderer, angle, x, y, range);
+	tmp.length = target->map->distance(tmp);
+
+	bullets.push_back(tmp);
+	bulletQueue.push(tmp);
+
 	play_firing_sound(ammo <= magSize * 20 / 100);
 }
 

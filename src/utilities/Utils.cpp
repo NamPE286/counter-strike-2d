@@ -47,3 +47,80 @@ bool Utils::isPointInsideRect(const SDL_Point &point, const SDL_Rect &rect) {
 		(point.y >= rect.y) &&
 		(point.y < rect.y + rect.h);
 }
+
+SDL_Point Utils::getIntersection(int x, int y, float angle, SDL_Rect rect) {
+	SDL_Point intersection = { 0, 0 };
+	float dx = std::cos(angle);
+	float dy = std::sin(angle);
+	float t_min = FLT_MAX;
+	bool found = false;
+
+	if (std::fabs(dx) > 1e-6f) {
+		float t = (rect.x - x) / dx;
+		if (t > 0) {
+			float iy = y + dy * t;
+			if (iy >= rect.y && iy <= rect.y + rect.h) {
+				if (t < t_min) {
+					t_min = t;
+					intersection.x = rect.x;
+					intersection.y = static_cast<int>(iy);
+					found = true;
+				}
+			}
+		}
+	}
+
+	if (std::fabs(dx) > 1e-6f) {
+		float t = (rect.x + rect.w - x) / dx;
+		if (t > 0) {
+			float iy = y + dy * t;
+			if (iy >= rect.y && iy <= rect.y + rect.h) {
+				if (t < t_min) {
+					t_min = t;
+					intersection.x = rect.x + rect.w;
+					intersection.y = static_cast<int>(iy);
+					found = true;
+				}
+			}
+		}
+	}
+
+	if (std::fabs(dy) > 1e-6f) {
+		float t = (rect.y - y) / dy;
+		if (t > 0) {
+			float ix = x + dx * t;
+			if (ix >= rect.x && ix <= rect.x + rect.w) {
+				if (t < t_min) {
+					t_min = t;
+					intersection.x = static_cast<int>(ix);
+					intersection.y = rect.y;
+					found = true;
+				}
+			}
+		}
+	}
+
+	if (std::fabs(dy) > 1e-6f) {
+		float t = (rect.y + rect.h - y) / dy;
+		if (t > 0) {
+			float ix = x + dx * t;
+			if (ix >= rect.x && ix <= rect.x + rect.w) {
+				if (t < t_min) {
+					t_min = t;
+					intersection.x = static_cast<int>(ix);
+					intersection.y = rect.y + rect.h;
+					found = true;
+				}
+			}
+		}
+	}
+
+	return intersection;
+}
+
+int Utils::getDistance(SDL_Point a, SDL_Point b) {
+	int deltaX = b.x - a.x;
+	int deltaY = b.y - a.y;
+
+	return static_cast<int>(std::sqrt(deltaX * deltaX + deltaY * deltaY));
+}

@@ -9,4 +9,6 @@ namespace Utils {
 	int getRandomRange(int start, int end);
 	std::string getClockString(int m, int s);
 	static bool isPointInsideRect(const SDL_Point &point, const SDL_Rect &rect);
+	SDL_Point getIntersection(int x, int y, float angle, SDL_Rect rect);
+	int getDistance(SDL_Point a, SDL_Point b);
 }

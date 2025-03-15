@@ -205,17 +205,14 @@ void Map::collision_handler(Player *p) {
 }
 
 float Map::distance(Bullet bullet) {
-	int deltaX = static_cast<int>(cos(bullet.angle) * 10);
-	int deltaY = static_cast<int>(sin(bullet.angle) * 10);
-
-	for (int i = 0; i <= bullet.length; i += 10) {
-		int x = bullet.x + i * deltaX;
-		int y = bullet.y + i * deltaY;
+	for (int i = 0; i <= bullet.length; i += 32) {
+		int x = bullet.x + int((float)i * cos(bullet.angle));
+		int y = bullet.y + int((float)i * sin(bullet.angle));
 
 		int tileX = x / map->tile_width;
 		int tileY = y / map->tile_height;
 
-		if (tileX < 0 || tileX > (int)map->width || tileY < 0 || tileY > (int)map->height) {
+		if (tileX < 0 || tileX >= (int)map->width || tileY < 0 || tileY >= (int)map->height) {
 			return bullet.length;
 		}
 
@@ -223,7 +220,12 @@ float Map::distance(Bullet bullet) {
 		tmx_tile *tile = map->tiles[gid];
 
 		if (tile && tile->collision) {
-			return sqrt(pow(x - tileX * map->tile_width, 2) + pow(y - tileY * map->tile_height, 2));
+			SDL_Rect collisionRect = { tileX * (int)map->tile_width + (int)tile->collision->x,
+										tileY * (int)map->tile_height + (int)tile->collision->y,
+										(int)tile->collision->width,
+										(int)tile->collision->height };
+
+			return Utils::getDistance({ bullet.x, bullet.y }, Utils::getIntersection(bullet.x, bullet.y, bullet.angle, collisionRect));
 		}
 	}
 
