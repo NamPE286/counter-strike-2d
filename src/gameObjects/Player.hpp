@@ -12,6 +12,7 @@
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../geometry/Vec2.hpp"
 #include "../managers/Audio.hpp"
+#include "../game/Map.hpp"
 #include "Weapon.hpp"
 
 enum PlayerSide {
@@ -28,7 +29,8 @@ class Player : public MonoBehaviour {
 		{ SDL_SCANCODE_D, Vec2(1, 0) }
 	};
 	SDL_Color color = { 0, 0, 0, 0 };
-	std::vector<Player *> *playerList = nullptr;
+	std::vector<Player *> *targets = nullptr;
+	Map *map = nullptr;
 
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
 	float maxSpeed = 0.4f;

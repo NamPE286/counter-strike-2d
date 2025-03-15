@@ -229,11 +229,11 @@ void Player::update() {
 	Bullet bullet(renderer);
 
 	while (weapons[weaponSlot]->poll_bullets(bullet)) {
-		if (playerList == nullptr) {
+		if (targets == nullptr) {
 			continue;
 		}
 
-		for (Player *p : *playerList) {
+		for (Player *p : *targets) {
 			if (p == this || p->hp == 0) {
 				continue;
 			}
@@ -394,7 +394,7 @@ void Player::fire(std::vector<Player *> *players) {
 		return;
 	}
 
-	playerList = players;
+	targets = players;
 	weapons[weaponSlot]->fire();
 }
 
