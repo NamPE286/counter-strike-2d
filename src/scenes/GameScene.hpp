@@ -9,14 +9,11 @@
 #include "../gameObjects/Player.hpp"
 #include "../game/Match.hpp"
 #include "../game/Map.hpp"
-#include "../cameras/PlayerCamera.hpp"
 
 class GameScene : public MonoBehaviour {
 	SDL_Texture *texture = nullptr;
 	Match match;
 	Player *self = nullptr;
-	PlayerCamera *camera = nullptr;
-	
 	HUD *hud = nullptr;
 	Map *map = nullptr;
 
