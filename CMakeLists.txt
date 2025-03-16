@@ -5,6 +5,11 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
+if (MSVC AND WIN32 AND NOT MSVC_VERSION VERSION_LESS 142)
+    target_link_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:/INCREMENTAL>)
+    target_compile_options(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:/ZI>)
+endif()
+
 project (main)
 add_executable (main "src/main.cpp"  "src/game/Game.cpp" "src/common.h" "src/behaviours/MonoBehaviour.cpp" "src/gameObjects/Player.cpp" "src/scenes/GameScene.cpp"  "src/managers/Time.cpp" "src/geometry/Vec2.cpp" "src/gameObjects/Pointer.cpp" "src/gameObjects/Weapon.cpp" "src/gameObjects/Bullet.cpp" "src/utilities/Utils.cpp" "src/managers/Audio.cpp" "src/managers/Scene.cpp" "src/managers/Font.cpp" "src/ui/Text.cpp" "src/ui/HUD.cpp" "src/cameras/PlayerCamera.cpp" "src/ui/Scoreboard.cpp" "src/ui/MiniScoreboard.cpp" "src/game/Match.cpp" "src/game/Map.cpp" "src/managers/Mouse.cpp")
 file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})

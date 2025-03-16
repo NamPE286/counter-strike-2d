@@ -5,6 +5,8 @@
 #include <tmx.h>
 #include <vector>
 #include <utility>
+#include <algorithm>
+#include <set>
 
 #include "../utilities/Utils.hpp"
 
@@ -126,6 +128,42 @@ void Map::render_polygon(double **points, double x, double y, int pointsc) {
 	}
 }
 
+void Map::calc_corner_points() {
+	cornerPoints.clear();
+
+	std::set<std::pair<int, int>> s;
+
+	for (int y = 0; y < map->height; ++y) {
+		for (int x = 0; x < map->width; ++x) {
+			int gid = (map->ly_head->content.gids[(y * map->width) + x]) & TMX_FLIP_BITS_REMOVAL;
+			tmx_tile *tile = map->tiles[gid];
+
+			if (tile && tile->collision) {
+				int tileX = x * map->tile_width;
+				int tileY = y * map->tile_height;
+
+				s.emplace(tileX, tileY);
+				s.emplace(tileX + map->tile_width, tileY);
+				s.emplace(tileX, tileY + map->tile_height);
+				s.emplace(tileX + map->tile_width, tileY + map->tile_height);
+			}
+		}
+	}
+
+	for (auto& [x, y] : s) {
+		std::vector<bool> v = {
+			s.contains({x, y - map->tile_height}),
+			s.contains({x - map->tile_width, y}),
+			s.contains({x + map->tile_width, y}),
+			s.contains({x, y + map->tile_height})
+		};
+
+		if (std::count(v.begin(), v.end(), true) == 2) {
+			cornerPoints.push_back({ x, y });
+		}
+	}
+}
+
 tmx_tile *Map::get_tile(int x, int y) {
 	int tileX = x / map->tile_width;
 	int tileY = y / map->tile_height;
@@ -154,6 +192,7 @@ Map::Map(SDL_Renderer *renderer, std::string filePath):
 	}
 
 	w = map->width * map->tile_width, h = map->height * map->tile_height;
+	calc_corner_points();
 }
 
 Map::~Map() {
@@ -163,6 +202,22 @@ Map::~Map() {
 void Map::render() {
 	set_color(map->backgroundcolor);
 	render_all_layers(map->ly_head);
+}
+
+void Map::render_shadow(Player *p) {
+	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+	for (SDL_Point point : cornerPoints) {
+		int dx = point.x - static_cast<int>(p->position.x);
+		int dy = point.y - static_cast<int>(p->position.y);
+		float angle = atan2(dy, dx);
+		int length = distance((int)p->position.x, (int)p->position.y, angle, 1000);
+		SDL_Point end = {
+			static_cast<int>(p->position.x + length * cos(angle)),
+			static_cast<int>(p->position.y + length * sin(angle))
+		};
+
+		SDL_RenderDrawLine(renderer, (int)p->position.x, (int)p->position.y, end.x, end.y);
+	}
 }
 
 void Map::collision_handler(Player *p) {
@@ -218,7 +273,7 @@ void Map::collision_handler(Player *p) {
 }
 
 float Map::distance(int originX, int originY, float angle, int length) {
-	for (int i = 0; i <= length; i += 16) {
+	for (int i = 0; i <= length; i += 10) {
 		int x = originX + int((float)i * cos(angle));
 		int y = originY + int((float)i * sin(angle));
 		auto *tile = get_tile(x, y);

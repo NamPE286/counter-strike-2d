@@ -17,7 +17,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	hud = new HUD(renderer, self, &match);
 
 	match.add_player(self);
-	match.add_player(new Player(renderer, "BOT A", PlayerSide::CT, Vec2(30 * 32, 32 * 32), false));
+	match.add_player(new Player(renderer, "BOT A", PlayerSide::CT, Vec2(32 * 32, 36 * 32), false));
 
 	map = new Map(renderer, "assets/tilemaps/test.tmx");
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, map->w, map->h);
@@ -74,10 +74,10 @@ void GameScene::event_handler(SDL_Event &event) {
 void GameScene::update() {
 	for (Player *p : match.players) {
 		p->update();
+		map->collision_handler(p);
 	}
 
 	camera->update();
-	map->collision_handler(self);
 	hud->update();
 	
 	if (match.update()) {
@@ -121,6 +121,7 @@ void GameScene::render() {
 	SDL_RenderClear(renderer);
 
 	map->render();
+	map->render_shadow(self);
 
 	for (Player *p : match.players) {
 		p->render();

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <tmx.h>
@@ -10,6 +11,7 @@
 
 class Map : public MonoBehaviour {
 	tmx_map *map = nullptr;
+	std::vector<SDL_Point> cornerPoints;
 
 	void set_color(int color);
 	void render_all_layers(tmx_layer *layers);
@@ -19,6 +21,7 @@ class Map : public MonoBehaviour {
 	void render_objects(tmx_object_group *objgr);
 	void render_polyline(double **points, double x, double y, int pointsc);
 	void render_polygon(double **points, double x, double y, int pointsc);
+	void calc_corner_points();
 	tmx_tile* get_tile(int x, int y);
 
 public:
@@ -28,6 +31,7 @@ public:
 	~Map();
 
 	void render();
+	void render_shadow(Player *p);
 	void collision_handler(Player *p);
 	float distance(int originX, int originY, float angle, int length = INT_MAX);
 };
