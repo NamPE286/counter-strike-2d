@@ -161,9 +161,8 @@ void Map::calc_corner_points() {
 			s.contains({x - map->tile_width, y - map->tile_height}),
 			s.contains({x - map->tile_width, y + map->tile_height}),
 		};
-		int cnt = std::count(v.begin(), v.end(), true);
 
-		if (cnt == 4 || cnt == 8) {
+		if (std::count(v.begin(), v.begin() + 4, true) == 2 || std::count(v.begin() + 4, v.end(), true) == 3) {
 			cornerPoints.push_back({ x, y });
 		}
 	}
