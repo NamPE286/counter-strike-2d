@@ -33,5 +33,5 @@ public:
 	void render();
 	void render_shadow(Player *p);
 	void collision_handler(Player *p);
-	float distance(int originX, int originY, float angle, int length = INT_MAX);
+	int distance(int originX, int originY, float angle, int length = INT_MAX);
 };

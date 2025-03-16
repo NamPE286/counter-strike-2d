@@ -133,8 +133,8 @@ void Map::calc_corner_points() {
 
 	std::set<std::pair<int, int>> s;
 
-	for (int y = 0; y < map->height; ++y) {
-		for (int x = 0; x < map->width; ++x) {
+	for (int y = 0; y < (int)map->height; ++y) {
+		for (int x = 0; x < (int)map->width; ++x) {
 			int gid = (map->ly_head->content.gids[(y * map->width) + x]) & TMX_FLIP_BITS_REMOVAL;
 			tmx_tile *tile = map->tiles[gid];
 
@@ -150,15 +150,20 @@ void Map::calc_corner_points() {
 		}
 	}
 
-	for (auto& [x, y] : s) {
+	for (auto &[x, y] : s) {
 		std::vector<bool> v = {
 			s.contains({x, y - map->tile_height}),
 			s.contains({x - map->tile_width, y}),
 			s.contains({x + map->tile_width, y}),
-			s.contains({x, y + map->tile_height})
+			s.contains({x, y + map->tile_height}),
+			s.contains({x + map->tile_width, y - map->tile_height}),
+			s.contains({x + map->tile_width, y + map->tile_height}),
+			s.contains({x - map->tile_width, y - map->tile_height}),
+			s.contains({x - map->tile_width, y + map->tile_height}),
 		};
+		int cnt = std::count(v.begin(), v.end(), true);
 
-		if (std::count(v.begin(), v.end(), true) == 2) {
+		if (cnt == 4 || cnt == 8) {
 			cornerPoints.push_back({ x, y });
 		}
 	}
@@ -208,25 +213,40 @@ void Map::render_shadow(Player *p) {
 	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
 
 	std::vector<SDL_Point> points;
-	std::vector<float> offsets = { -0.001, 0, 0.001 };
+	std::vector<float> offsets = { -0.01f, 0, 0.01f };
 
 	for (SDL_Point point : cornerPoints) {
 		for (float offset : offsets) {
 			int dx = point.x - static_cast<int>(p->position.x);
 			int dy = point.y - static_cast<int>(p->position.y);
-			float angle = atan2(dy, dx);
-			int length = distance((int)p->position.x, (int)p->position.y, angle, 1000);
+			float angle = (float)atan2(dy, dx);
+			int length = distance((int)p->position.x, (int)p->position.y, angle + offset, 1000);
 			SDL_Point end = {
 				static_cast<int>(p->position.x + length * cos(angle + offset)),
 				static_cast<int>(p->position.y + length * sin(angle + offset))
 			};
 
-			points.push_back(end);
+			points.push_back({ end.x, end.y });
 			SDL_RenderDrawLine(renderer, (int)p->position.x, (int)p->position.y, end.x, end.y);
 		}
 	}
 
+	std::sort(points.begin(), points.end(), [&](const SDL_Point &a, const SDL_Point &b) -> bool {
+		float angle_a = std::atan2(static_cast<float>(a.y) - p->position.y, static_cast<float>(a.x) - p->position.x);
+		float angle_b = std::atan2(static_cast<float>(b.y) - p->position.y, static_cast<float>(b.x) - p->position.x);
 
+		return angle_a < angle_b;
+	});
+
+	for (size_t i = 1; i < points.size(); i++) {
+		SDL_Point a = { (int)p->position.x, (int)p->position.y }, b = points[i - 1], c = points[i];
+		SDL_Vertex vertices[3] = {
+				{ SDL_FPoint{ (float)a.x, (float)a.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } },
+				{ SDL_FPoint{ (float)b.x, (float)b.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } },
+				{ SDL_FPoint{ (float)c.x, (float)c.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } }
+		};
+		SDL_RenderGeometry(renderer, nullptr, vertices, 3, nullptr, 0);
+	}
 }
 
 void Map::collision_handler(Player *p) {
@@ -281,8 +301,8 @@ void Map::collision_handler(Player *p) {
 	}
 }
 
-float Map::distance(int originX, int originY, float angle, int length) {
-	for (int i = 0; i <= length; i += 10) {
+int Map::distance(int originX, int originY, float angle, int length) {
+	for (int i = 0; i <= length; i += 1) {
 		int x = originX + int((float)i * cos(angle));
 		int y = originY + int((float)i * sin(angle));
 		auto *tile = get_tile(x, y);
@@ -290,11 +310,12 @@ float Map::distance(int originX, int originY, float angle, int length) {
 		if (tile && tile->collision) {
 			int tileX = x / map->tile_width;
 			int tileY = y / map->tile_height;
+			int offset = 1;
 
-			SDL_Rect collisionRect = { tileX * (int)map->tile_width + (int)tile->collision->x,
-										tileY * (int)map->tile_height + (int)tile->collision->y,
-										(int)tile->collision->width,
-										(int)tile->collision->height };
+			SDL_Rect collisionRect = { tileX * (int)map->tile_width - offset,
+										tileY * (int)map->tile_height - offset,
+										(int)map->tile_width + 2 * offset,
+										(int)map->tile_height + 2 * offset };
 
 			return Utils::getDistance({ originX, originY }, Utils::getIntersection(originX, originY, angle, collisionRect));
 		}

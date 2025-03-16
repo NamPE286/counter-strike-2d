@@ -128,3 +128,38 @@ int Utils::getDistance(SDL_Point a, SDL_Point b) {
 float Utils::cross_product(Vec2 a, Vec2 b, Vec2 c) {
 	return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
 }
+
+std::vector<SDL_Point> Utils::convex_hull(std::vector<SDL_Point> points) {
+	if (points.size() < 3)
+		return points;
+
+	std::sort(points.begin(), points.end(), [](const SDL_Point &a, const SDL_Point &b) {
+		return a.x < b.x || (a.x == b.x && a.y < b.y);
+		});
+
+	auto cross = [](const SDL_Point &O, const SDL_Point &A, const SDL_Point &B) -> int {
+		return (A.x - O.x) * (B.y - O.y) - (A.y - O.y) * (B.x - O.x);
+		};
+
+	std::vector<SDL_Point> hull;
+
+	for (const auto &p : points) {
+		while (hull.size() >= 2 && cross(hull[hull.size() - 2], hull[hull.size() - 1], p) <= 0)
+			hull.pop_back();
+		hull.push_back(p);
+	}
+
+	size_t t = hull.size() + 1;
+
+	for (auto it = points.rbegin(); it != points.rend(); ++it) {
+		const auto &p = *it;
+		while (hull.size() >= t && cross(hull[hull.size() - 2], hull[hull.size() - 1], p) <= 0)
+			hull.pop_back();
+		hull.push_back(p);
+	}
+
+	hull.pop_back();
+
+	return hull;
+}
+
