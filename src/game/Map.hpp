@@ -22,6 +22,7 @@ class Map : public MonoBehaviour {
 	void render_polyline(double **points, double x, double y, int pointsc);
 	void render_polygon(double **points, double x, double y, int pointsc);
 	void calc_corner_points();
+	bool RayIntersectsRect(float originX, float originY, float dirX, float dirY, const SDL_Rect &rect, float &tEnter, float &tExit);
 	tmx_tile* get_tile(int x, int y);
 
 public:
@@ -31,7 +32,7 @@ public:
 	~Map();
 
 	void render();
-	void render_shadow(Player *p);
+	void render_visible_area(Player *p);
 	void collision_handler(Player *p);
-	int distance(int originX, int originY, float angle, int length = INT_MAX);
+	int distance(float originX, float originY, float angle, int length = INT_MAX, int step = 0);
 };

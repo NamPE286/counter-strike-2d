@@ -121,7 +121,7 @@ void GameScene::render() {
 	SDL_RenderClear(renderer);
 
 	map->render();
-	map->render_shadow(self);
+	map->render_visible_area(self);
 
 	for (Player *p : match.players) {
 		p->render();

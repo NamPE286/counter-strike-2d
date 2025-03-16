@@ -162,10 +162,20 @@ void Map::calc_corner_points() {
 			s.contains({x - map->tile_width, y + map->tile_height}),
 		};
 
-		if (std::count(v.begin(), v.begin() + 4, true) == 2 || std::count(v.begin() + 4, v.end(), true) == 3) {
+		int a = (int)std::count(v.begin(), v.begin() + 4, true);
+		int b = (int)std::count(v.begin() + 4, v.end(), true);
+
+		if (a == 2) {
+			cornerPoints.push_back({ x, y });
+		} else if (a == 4 && b == 3) {
 			cornerPoints.push_back({ x, y });
 		}
 	}
+
+	cornerPoints.push_back({ 0, 0 });
+	cornerPoints.push_back({ int(map->width * map->tile_width), 0 });
+	cornerPoints.push_back({ 0, int(map->height * map->tile_height) });
+	cornerPoints.push_back({ int(map->width * map->tile_width), int(map->height * map->tile_height) });
 }
 
 tmx_tile *Map::get_tile(int x, int y) {
@@ -208,42 +218,50 @@ void Map::render() {
 	render_all_layers(map->ly_head);
 }
 
-void Map::render_shadow(Player *p) {
-	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
+void Map::render_visible_area(Player *p) {
+	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 100);
 
-	std::vector<SDL_Point> points;
-	std::vector<float> offsets = { -0.01f, 0, 0.01f };
+	std::vector<SDL_FPoint> points;
+	std::vector<float> offsets = { -0.05, 0, 0.05 };
 
 	for (SDL_Point point : cornerPoints) {
 		for (float offset : offsets) {
 			int dx = point.x - static_cast<int>(p->position.x);
 			int dy = point.y - static_cast<int>(p->position.y);
-			float angle = (float)atan2(dy, dx);
-			int length = distance((int)p->position.x, (int)p->position.y, angle + offset, 1000);
-			SDL_Point end = {
-				static_cast<int>(p->position.x + length * cos(angle + offset)),
-				static_cast<int>(p->position.y + length * sin(angle + offset))
+			float angle = (float)atan2(dy, dx) + offset;
+			int length = distance(p->position.x, p->position.y, angle, 800);
+
+			if (offset == 0) {
+				length = std::min(length, Utils::getDistance({ (int)p->position.x, (int)p->position.y }, point));
+			}
+
+			SDL_FPoint end = {
+				p->position.x + (float)length * cos(angle),
+				p->position.y + (float)length * sin(angle)
 			};
 
-			points.push_back({ end.x, end.y });
-			SDL_RenderDrawLine(renderer, (int)p->position.x, (int)p->position.y, end.x, end.y);
+			points.push_back(end);
+
+			SDL_RenderDrawLine(renderer, (int)p->position.x, (int)p->position.y, (int)end.x, (int)end.y);
 		}
 	}
 
-	std::sort(points.begin(), points.end(), [&](const SDL_Point &a, const SDL_Point &b) -> bool {
-		float angle_a = std::atan2(static_cast<float>(a.y) - p->position.y, static_cast<float>(a.x) - p->position.x);
-		float angle_b = std::atan2(static_cast<float>(b.y) - p->position.y, static_cast<float>(b.x) - p->position.x);
-
-		return angle_a < angle_b;
+	std::sort(points.begin(), points.end(), [&](const SDL_FPoint &a, const SDL_FPoint &b) {
+		float angleA = atan2(a.y - p->position.y, a.x - p->position.x);
+		float angleB = atan2(b.y - p->position.y, b.x - p->position.x);
+		return angleA < angleB;
 	});
 
+	points.push_back(points[0]);
+
 	for (size_t i = 1; i < points.size(); i++) {
-		SDL_Point a = { (int)p->position.x, (int)p->position.y }, b = points[i - 1], c = points[i];
+		SDL_FPoint a = { p->position.x, p->position.y }, b = points[i - 1], c = points[i];
 		SDL_Vertex vertices[3] = {
-				{ SDL_FPoint{ (float)a.x, (float)a.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } },
-				{ SDL_FPoint{ (float)b.x, (float)b.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } },
-				{ SDL_FPoint{ (float)c.x, (float)c.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } }
+			{ SDL_FPoint{ (float)a.x, (float)a.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } },
+			{ SDL_FPoint{ (float)b.x, (float)b.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } },
+			{ SDL_FPoint{ (float)c.x, (float)c.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } }
 		};
+		
 		SDL_RenderGeometry(renderer, nullptr, vertices, 3, nullptr, 0);
 	}
 }
@@ -300,25 +318,59 @@ void Map::collision_handler(Player *p) {
 	}
 }
 
-int Map::distance(int originX, int originY, float angle, int length) {
-	for (int i = 0; i <= length; i += 1) {
-		int x = originX + int((float)i * cos(angle));
-		int y = originY + int((float)i * sin(angle));
-		auto *tile = get_tile(x, y);
+int Map::distance(float originX, float originY, float angle, int length, int step) {
+	float dx = cos(angle);
+	float dy = sin(angle);
+	float minDistance = static_cast<float>(length);
 
-		if (tile && tile->collision) {
-			int tileX = x / map->tile_width;
-			int tileY = y / map->tile_height;
-			int offset = 1;
+	for (int tileY = 0; tileY < static_cast<int>(map->height); ++tileY) {
+		for (int tileX = 0; tileX < static_cast<int>(map->width); ++tileX) {
+			tmx_tile *tile = map->tiles[(map->ly_head->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL];
 
-			SDL_Rect collisionRect = { tileX * (int)map->tile_width - offset,
-										tileY * (int)map->tile_height - offset,
-										(int)map->tile_width + 2 * offset,
-										(int)map->tile_height + 2 * offset };
+			if (tile && tile->collision) {
+				SDL_Rect tileRect = {
+					tileX * static_cast<int>(map->tile_width),
+					tileY * static_cast<int>(map->tile_height),
+					static_cast<int>(map->tile_width),
+					static_cast<int>(map->tile_height)
+				};
 
-			return Utils::getDistance({ originX, originY }, Utils::getIntersection(originX, originY, angle, collisionRect));
+				float tEnter, tExit;
+
+				if (RayIntersectsRect(originX, originY, dx, dy, tileRect, tEnter, tExit)) {
+					if (tEnter >= 0.0f && tEnter < minDistance) {
+						minDistance = tEnter;
+					}
+				}
+			}
 		}
 	}
 
-	return length;
+	return static_cast<int>(minDistance);
+}
+
+bool Map::RayIntersectsRect(float originX, float originY, float dirX, float dirY, const SDL_Rect &rect, float &tEnter, float &tExit) {
+	float tMin = (rect.x - originX) / dirX;
+	float tMax = ((rect.x + rect.w) - originX) / dirX;
+
+	if (tMin > tMax) std::swap(tMin, tMax);
+
+	float tyMin = (rect.y - originY) / dirY;
+	float tyMax = ((rect.y + rect.h) - originY) / dirY;
+
+	if (tyMin > tyMax) std::swap(tyMin, tyMax);
+
+	if ((tMin > tyMax) || (tyMin > tMax))
+		return false;
+
+	if (tyMin > tMin)
+		tMin = tyMin;
+
+	if (tyMax < tMax)
+		tMax = tyMax;
+
+	tEnter = tMin;
+	tExit = tMax;
+
+	return tEnter <= tExit && tExit >= 0.0f;
 }
