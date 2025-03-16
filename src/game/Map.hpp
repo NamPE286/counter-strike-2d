@@ -19,6 +19,7 @@ class Map : public MonoBehaviour {
 	void render_objects(tmx_object_group *objgr);
 	void render_polyline(double **points, double x, double y, int pointsc);
 	void render_polygon(double **points, double x, double y, int pointsc);
+	tmx_tile* get_tile(int x, int y);
 
 public:
 	int w = 0, h = 0;

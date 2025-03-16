@@ -126,6 +126,19 @@ void Map::render_polygon(double **points, double x, double y, int pointsc) {
 	}
 }
 
+tmx_tile *Map::get_tile(int x, int y) {
+	int tileX = x / map->tile_width;
+	int tileY = y / map->tile_height;
+
+	if (tileX < 0 || tileX >= (int)map->width || tileY < 0 || tileY >= (int)map->height) {
+		return nullptr;
+	}
+
+	int gid = (map->ly_head->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL;
+
+	return map->tiles[gid];
+}
+
 Map::Map(SDL_Renderer *renderer, std::string filePath):
 	MonoBehaviour(renderer)
 {
@@ -208,18 +221,12 @@ float Map::distance(int originX, int originY, float angle, int length) {
 	for (int i = 0; i <= length; i += 16) {
 		int x = originX + int((float)i * cos(angle));
 		int y = originY + int((float)i * sin(angle));
-
-		int tileX = x / map->tile_width;
-		int tileY = y / map->tile_height;
-
-		if (tileX < 0 || tileX >= (int)map->width || tileY < 0 || tileY >= (int)map->height) {
-			return length;
-		}
-
-		int gid = (map->ly_head->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL;
-		tmx_tile *tile = map->tiles[gid];
+		auto *tile = get_tile(x, y);
 
 		if (tile && tile->collision) {
+			int tileX = x / map->tile_width;
+			int tileY = y / map->tile_height;
+
 			SDL_Rect collisionRect = { tileX * (int)map->tile_width + (int)tile->collision->x,
 										tileY * (int)map->tile_height + (int)tile->collision->y,
 										(int)tile->collision->width,
