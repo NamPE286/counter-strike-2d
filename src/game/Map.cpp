@@ -241,8 +241,6 @@ void Map::render_visible_area(Player *p) {
 			};
 
 			points.push_back(end);
-
-			SDL_RenderDrawLine(renderer, (int)p->position.x, (int)p->position.y, (int)end.x, (int)end.y);
 		}
 	}
 
