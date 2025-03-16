@@ -206,18 +206,27 @@ void Map::render() {
 
 void Map::render_shadow(Player *p) {
 	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
-	for (SDL_Point point : cornerPoints) {
-		int dx = point.x - static_cast<int>(p->position.x);
-		int dy = point.y - static_cast<int>(p->position.y);
-		float angle = atan2(dy, dx);
-		int length = distance((int)p->position.x, (int)p->position.y, angle, 1000);
-		SDL_Point end = {
-			static_cast<int>(p->position.x + length * cos(angle)),
-			static_cast<int>(p->position.y + length * sin(angle))
-		};
 
-		SDL_RenderDrawLine(renderer, (int)p->position.x, (int)p->position.y, end.x, end.y);
+	std::vector<SDL_Point> points;
+	std::vector<float> offsets = { -0.001, 0, 0.001 };
+
+	for (SDL_Point point : cornerPoints) {
+		for (float offset : offsets) {
+			int dx = point.x - static_cast<int>(p->position.x);
+			int dy = point.y - static_cast<int>(p->position.y);
+			float angle = atan2(dy, dx);
+			int length = distance((int)p->position.x, (int)p->position.y, angle, 1000);
+			SDL_Point end = {
+				static_cast<int>(p->position.x + length * cos(angle + offset)),
+				static_cast<int>(p->position.y + length * sin(angle + offset))
+			};
+
+			points.push_back(end);
+			SDL_RenderDrawLine(renderer, (int)p->position.x, (int)p->position.y, end.x, end.y);
+		}
 	}
+
+
 }
 
 void Map::collision_handler(Player *p) {

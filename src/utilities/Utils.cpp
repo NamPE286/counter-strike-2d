@@ -124,3 +124,7 @@ int Utils::getDistance(SDL_Point a, SDL_Point b) {
 
 	return static_cast<int>(std::sqrt(deltaX * deltaX + deltaY * deltaY));
 }
+
+float Utils::cross_product(Vec2 a, Vec2 b, Vec2 c) {
+	return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+}
