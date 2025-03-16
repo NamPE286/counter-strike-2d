@@ -28,5 +28,5 @@ public:
 
 	void render();
 	void collision_handler(Player *p);
-	float distance(Bullet bullet);
+	float distance(int originX, int originY, float angle, int length = INT_MAX);
 };

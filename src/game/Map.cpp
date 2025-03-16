@@ -204,16 +204,16 @@ void Map::collision_handler(Player *p) {
 	}
 }
 
-float Map::distance(Bullet bullet) {
-	for (int i = 0; i <= bullet.length; i += 16) {
-		int x = bullet.x + int((float)i * cos(bullet.angle));
-		int y = bullet.y + int((float)i * sin(bullet.angle));
+float Map::distance(int originX, int originY, float angle, int length) {
+	for (int i = 0; i <= length; i += 16) {
+		int x = originX + int((float)i * cos(angle));
+		int y = originY + int((float)i * sin(angle));
 
 		int tileX = x / map->tile_width;
 		int tileY = y / map->tile_height;
 
 		if (tileX < 0 || tileX >= (int)map->width || tileY < 0 || tileY >= (int)map->height) {
-			return bullet.length;
+			return length;
 		}
 
 		int gid = (map->ly_head->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL;
@@ -225,9 +225,9 @@ float Map::distance(Bullet bullet) {
 										(int)tile->collision->width,
 										(int)tile->collision->height };
 
-			return Utils::getDistance({ bullet.x, bullet.y }, Utils::getIntersection(bullet.x, bullet.y, bullet.angle, collisionRect));
+			return Utils::getDistance({ originX, originY }, Utils::getIntersection(originX, originY, angle, collisionRect));
 		}
 	}
 
-	return bullet.length;
+	return length;
 }
