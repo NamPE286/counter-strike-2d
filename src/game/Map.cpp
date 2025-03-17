@@ -227,30 +227,66 @@ void Map::render() {
 		SDL_SetRenderTarget(renderer, tmp);
 	}
 
+	SDL_RenderClear(renderer);
 	SDL_RenderCopy(renderer, texture, 0, 0);
 }
 
 void Map::render_visible_area(Player *p) {
 	std::vector<SDL_FPoint> points;
-	std::vector<float> offsets = { -0.05, 0, 0.05 };
+	std::vector<float> offsets = { -0.05f, 0.0f, 0.05f };
 
 	for (SDL_Point point : cornerPoints) {
 		for (float offset : offsets) {
 			int dx = point.x - static_cast<int>(p->position.x);
 			int dy = point.y - static_cast<int>(p->position.y);
-			float angle = (float)atan2(dy, dx) + offset;
-			int length = distance(p->position.x, p->position.y, angle, 1000);
+			float angle = static_cast<float>(atan2(dy, dx)) + offset;
+			int maxLength;
 
-			if (offset == 0) {
-				length = std::min(length, Utils::getDistance({ (int)p->position.x, (int)p->position.y }, point));
+			float rayDirX = cos(angle);
+			float rayDirY = sin(angle);
+			float tMin = 0.0f, tMax = std::numeric_limits<float>::max();
+
+			if (rayDirX != 0.0f) {
+				float tx1 = (0.0f - p->position.x) / rayDirX;
+				float tx2 = (static_cast<float>(w) - p->position.x) / rayDirX;
+				float tMinX = std::min(tx1, tx2);
+				float tMaxX = std::max(tx1, tx2);
+				tMin = std::max(tMin, tMinX);
+				tMax = std::min(tMax, tMaxX);
+			} else if (p->position.x <= 0.0f || p->position.x >= static_cast<float>(w)) {
+				continue;
+			}
+
+			if (rayDirY != 0.0f) {
+				float ty1 = (0.0f - p->position.y) / rayDirY;
+				float ty2 = (static_cast<float>(h) - p->position.y) / rayDirY;
+				float tMinY = std::min(ty1, ty2);
+				float tMaxY = std::max(ty1, ty2);
+				tMin = std::max(tMin, tMinY);
+				tMax = std::min(tMax, tMaxY);
+			} else if (p->position.y <= 0.0f || p->position.y >= static_cast<float>(h)) {
+				continue;
+			}
+
+			if (tMax < tMin) {
+				continue;
+			}
+
+			maxLength = static_cast<int>(tMax);
+
+			int length = distance(p->position.x, p->position.y, angle, maxLength);
+
+			if (offset == 0.0f) {
+				length = std::min(length, Utils::getDistance({ static_cast<int>(p->position.x), static_cast<int>(p->position.y) }, point));
 			}
 
 			SDL_FPoint end = {
-				p->position.x + (float)length * cos(angle),
-				p->position.y + (float)length * sin(angle)
+				p->position.x + static_cast<float>(length) * cos(angle),
+				p->position.y + static_cast<float>(length) * sin(angle)
 			};
 
 			points.push_back(end);
+			SDL_RenderDrawLine(renderer, static_cast<int>(p->position.x), static_cast<int>(p->position.y), static_cast<int>(end.x), static_cast<int>(end.y));
 		}
 	}
 
@@ -265,16 +301,16 @@ void Map::render_visible_area(Player *p) {
 	SDL_Color bgColor = { 0, 255, 255, 255 };
 
 	for (size_t i = 1; i < points.size(); i++) {
-		SDL_FPoint center = { p->position.x, p->position.y };
+		SDL_FPoint a = { p->position.x, p->position.y };
 		SDL_FPoint b = points[i - 1];
 		SDL_FPoint c = points[i];
 
-		vertices.emplace_back(center, bgColor, SDL_FPoint{ 0, 0 });
-		vertices.emplace_back(b, bgColor, SDL_FPoint{ 0, 0 });
-		vertices.emplace_back(c, bgColor, SDL_FPoint{ 0, 0 });
+		vertices.emplace_back(a, bgColor, SDL_FPoint{ a.x / (float)w, a.y / (float)h });
+		vertices.emplace_back(b, bgColor, SDL_FPoint{ b.x / (float)w, b.y / (float)h });
+		vertices.emplace_back(c, bgColor, SDL_FPoint{ c.x / (float)w, c.y / (float)h });
 	}
 
-	SDL_RenderGeometry(renderer, nullptr, vertices.data(), static_cast<int>(vertices.size()), nullptr, 0);
+	SDL_RenderGeometry(renderer, texture, vertices.data(), static_cast<int>(vertices.size()), nullptr, 0);
 }
 
 void Map::collision_handler(Player *p) {
