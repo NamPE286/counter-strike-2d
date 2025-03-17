@@ -117,15 +117,13 @@ void GameScene::fixed_update() {
 
 void GameScene::render() {
 	SDL_SetRenderTarget(renderer, texture);
-	SDL_SetRenderDrawColor(renderer, 137, 137, 137, 255);
-	SDL_RenderClear(renderer);
-
 	map->render();
-	map->render_visible_area(self);
 
 	for (Player *p : match.players) {
 		p->render();
 	}
+
+	map->render_visible_area(self);
 
 	SDL_SetRenderTarget(renderer, nullptr);
 

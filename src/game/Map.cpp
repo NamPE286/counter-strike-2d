@@ -231,8 +231,6 @@ void Map::render() {
 }
 
 void Map::render_visible_area(Player *p) {
-	SDL_SetRenderDrawColor(renderer, 0, 255, 255, 100);
-
 	std::vector<SDL_FPoint> points;
 	std::vector<float> offsets = { -0.05, 0, 0.05 };
 
@@ -264,16 +262,19 @@ void Map::render_visible_area(Player *p) {
 	points.push_back(points[0]);
 
 	std::vector<SDL_Vertex> vertices;
+	SDL_Color bgColor = { 0, 255, 255, 255 };
 
 	for (size_t i = 1; i < points.size(); i++) {
-		SDL_FPoint a = { p->position.x, p->position.y }, b = points[i - 1], c = points[i];
-		
-		vertices.emplace_back(a, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 });
-		vertices.emplace_back(b, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 });
-		vertices.emplace_back(c, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 });
+		SDL_FPoint center = { p->position.x, p->position.y };
+		SDL_FPoint b = points[i - 1];
+		SDL_FPoint c = points[i];
+
+		vertices.emplace_back(center, bgColor, SDL_FPoint{ 0, 0 });
+		vertices.emplace_back(b, bgColor, SDL_FPoint{ 0, 0 });
+		vertices.emplace_back(c, bgColor, SDL_FPoint{ 0, 0 });
 	}
 
-	SDL_RenderGeometry(renderer, nullptr, vertices.data(), (int)vertices.size(), nullptr, 0);
+	SDL_RenderGeometry(renderer, nullptr, vertices.data(), static_cast<int>(vertices.size()), nullptr, 0);
 }
 
 void Map::collision_handler(Player *p) {
