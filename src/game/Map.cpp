@@ -206,6 +206,8 @@ Map::Map(SDL_Renderer *renderer, std::string filePath):
 	}
 
 	w = map->width * map->tile_width, h = map->height * map->tile_height;
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
+
 	calc_corner_points();
 }
 
@@ -214,24 +216,21 @@ Map::~Map() {
 }
 
 void Map::render() {
-	if (texture == nullptr) {
-		auto *tmp = SDL_GetRenderTarget(renderer);
-		texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
-		SDL_SetRenderTarget(renderer, texture);
+	auto *tmp = SDL_GetRenderTarget(renderer);
 
-		SDL_SetRenderDrawColor(renderer, 137, 137, 137, 255);
-		SDL_RenderClear(renderer);
-		set_color(map->backgroundcolor);
-		render_all_layers(map->ly_head);
+	SDL_SetRenderTarget(renderer, texture);
 
-		SDL_SetRenderTarget(renderer, tmp);
-	}
-
+	SDL_SetRenderDrawColor(renderer, 137, 137, 137, 255);
 	SDL_RenderClear(renderer);
+	set_color(map->backgroundcolor);
+	render_all_layers(map->ly_head);
+
+	SDL_SetRenderTarget(renderer, tmp);
+
 	SDL_RenderCopy(renderer, texture, 0, 0);
 }
 
-void Map::render_visible_area(Player *p) {
+void Map::render_visible_area(Player* p, std::vector<Player*> &players) {
 	std::vector<SDL_FPoint> points;
 	std::vector<float> offsets = { -0.05f, 0.0f, 0.05f };
 
@@ -309,6 +308,15 @@ void Map::render_visible_area(Player *p) {
 		vertices.emplace_back(c, bgColor, SDL_FPoint{ c.x / (float)w, c.y / (float)h });
 	}
 
+	auto *tmp = SDL_GetRenderTarget(renderer);
+
+	SDL_SetRenderTarget(renderer, texture);
+
+	for (auto *p : players) {
+		p->render();
+	}
+
+	SDL_SetRenderTarget(renderer, tmp);
 	SDL_RenderGeometry(renderer, texture, vertices.data(), static_cast<int>(vertices.size()), nullptr, 0);
 }
 

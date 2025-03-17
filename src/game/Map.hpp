@@ -33,7 +33,7 @@ public:
 	~Map();
 
 	void render();
-	void render_visible_area(Player *p);
+	void render_visible_area(Player* p, std::vector<Player*> &players);
 	void collision_handler(Player *p);
 	int distance(float originX, float originY, float angle, int length = INT_MAX, int step = 0);
 };

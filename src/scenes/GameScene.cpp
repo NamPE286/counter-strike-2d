@@ -117,13 +117,9 @@ void GameScene::fixed_update() {
 
 void GameScene::render() {
 	SDL_SetRenderTarget(renderer, texture);
+
 	map->render();
-
-	for (Player *p : match.players) {
-		p->render();
-	}
-
-	map->render_visible_area(self);
+	map->render_visible_area(self, match.players);
 
 	SDL_SetRenderTarget(renderer, nullptr);
 
