@@ -296,7 +296,7 @@ void Map::render_visible_area(Player* p, std::vector<Player*> &players) {
 	points.push_back(points[0]);
 
 	std::vector<SDL_Vertex> vertices;
-	SDL_Color bgColor = { 0, 255, 255, 255 };
+	SDL_Color bgColor = { 255, 255, 255, 255 };
 
 	for (size_t i = 1; i < points.size(); i++) {
 		SDL_FPoint a = { p->position.x, p->position.y };
