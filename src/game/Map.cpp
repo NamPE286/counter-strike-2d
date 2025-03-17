@@ -227,6 +227,7 @@ void Map::render() {
 
 	SDL_SetRenderTarget(renderer, tmp);
 
+	SDL_SetTextureColorMod(texture, 220, 220, 220);
 	SDL_RenderCopy(renderer, texture, 0, 0);
 }
 
