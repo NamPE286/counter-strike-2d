@@ -286,7 +286,6 @@ void Map::render_visible_area(Player *p) {
 			};
 
 			points.push_back(end);
-			SDL_RenderDrawLine(renderer, static_cast<int>(p->position.x), static_cast<int>(p->position.y), static_cast<int>(end.x), static_cast<int>(end.y));
 		}
 	}
 
