@@ -214,8 +214,20 @@ Map::~Map() {
 }
 
 void Map::render() {
-	set_color(map->backgroundcolor);
-	render_all_layers(map->ly_head);
+	if (texture == nullptr) {
+		auto *tmp = SDL_GetRenderTarget(renderer);
+		texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
+		SDL_SetRenderTarget(renderer, texture);
+
+		SDL_SetRenderDrawColor(renderer, 137, 137, 137, 255);
+		SDL_RenderClear(renderer);
+		set_color(map->backgroundcolor);
+		render_all_layers(map->ly_head);
+
+		SDL_SetRenderTarget(renderer, tmp);
+	}
+
+	SDL_RenderCopy(renderer, texture, 0, 0);
 }
 
 void Map::render_visible_area(Player *p) {
