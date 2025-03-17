@@ -229,7 +229,7 @@ void Map::render_visible_area(Player *p) {
 			int dx = point.x - static_cast<int>(p->position.x);
 			int dy = point.y - static_cast<int>(p->position.y);
 			float angle = (float)atan2(dy, dx) + offset;
-			int length = distance(p->position.x, p->position.y, angle, 800);
+			int length = distance(p->position.x, p->position.y, angle, 1000);
 
 			if (offset == 0) {
 				length = std::min(length, Utils::getDistance({ (int)p->position.x, (int)p->position.y }, point));
@@ -249,19 +249,19 @@ void Map::render_visible_area(Player *p) {
 		float angleB = atan2(b.y - p->position.y, b.x - p->position.x);
 		return angleA < angleB;
 	});
-
 	points.push_back(points[0]);
+
+	std::vector<SDL_Vertex> vertices;
 
 	for (size_t i = 1; i < points.size(); i++) {
 		SDL_FPoint a = { p->position.x, p->position.y }, b = points[i - 1], c = points[i];
-		SDL_Vertex vertices[3] = {
-			{ SDL_FPoint{ (float)a.x, (float)a.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } },
-			{ SDL_FPoint{ (float)b.x, (float)b.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } },
-			{ SDL_FPoint{ (float)c.x, (float)c.y }, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 } }
-		};
 		
-		SDL_RenderGeometry(renderer, nullptr, vertices, 3, nullptr, 0);
+		vertices.emplace_back(a, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 });
+		vertices.emplace_back(b, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 });
+		vertices.emplace_back(c, SDL_Color{ 0, 255, 255, 255 }, SDL_FPoint{ 0, 0 });
 	}
+
+	SDL_RenderGeometry(renderer, nullptr, vertices.data(), (int)vertices.size(), nullptr, 0);
 }
 
 void Map::collision_handler(Player *p) {
