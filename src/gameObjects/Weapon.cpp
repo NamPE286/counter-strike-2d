@@ -139,7 +139,7 @@ void Weapon::add_bullet(int x, int y, float angle, int range) {
 	bullets.emplace_back(std::make_shared<Bullet>(tmp));
 	bulletQueue.push(tmp);
 
-	play_firing_sound(ammo <= magSize * 20 / 100);
+	play_firing_sound(ammo != -1 && ammo <= magSize * 20 / 100);
 }
 
 Weapon::Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel):

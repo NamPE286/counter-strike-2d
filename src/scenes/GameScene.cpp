@@ -13,11 +13,11 @@
 GameScene::GameScene(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)
 {
-	self = new Player(renderer, "Me", PlayerSide::T, Vec2(22 * 32, 23 * 32), true);
+	self = new Player(renderer, "Me", PlayerSide::T, Vec2(16 * 32, 21 * 32), true);
 	hud = new HUD(renderer, self, &match);
 
 	match.add_player(self);
-	match.add_player(new Player(renderer, "BOT A", PlayerSide::CT, Vec2(32 * 32, 36 * 32), false));
+	match.add_player(new Player(renderer, "BOT A", PlayerSide::CT, Vec2(26 * 32, 32 * 32), false));
 
 	map = new Map(renderer, "assets/tilemaps/test.tmx");
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, map->w, map->h);
