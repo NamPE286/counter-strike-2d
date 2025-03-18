@@ -19,9 +19,6 @@ class Map : public MonoBehaviour {
 	void render_image_layer(tmx_image *image);
 	void render_layer(tmx_layer *layer);
 	void render_tile(void *image, unsigned int sx, unsigned int sy, unsigned int sw, unsigned int sh, unsigned int dx, unsigned int dy, float opacity, unsigned int flags);
-	void render_objects(tmx_object_group *objgr);
-	void render_polyline(double **points, double x, double y, int pointsc);
-	void render_polygon(double **points, double x, double y, int pointsc);
 	void calc_corner_points();
 	bool RayIntersectsRect(float originX, float originY, float dirX, float dirY, const SDL_Rect &rect, float &tEnter, float &tExit);
 	tmx_tile* get_tile(int x, int y);
@@ -36,4 +33,5 @@ public:
 	void render_visible_area(Player* p, std::vector<Player*> &players);
 	void collision_handler(Player *p);
 	int distance(float originX, float originY, float angle, int length = INT_MAX, int step = 0);
+	
 };
