@@ -9,6 +9,7 @@
 #include <set>
 
 #include "../utilities/Utils.hpp"
+#include "../managers/Mouse.hpp"
 
 SDL_Renderer *_renderer = nullptr;
 
@@ -211,10 +212,18 @@ void Map::render() {
 }
 
 void Map::render_visible_area(Player* p, std::vector<Player*> &players) {
-	std::vector<SDL_FPoint> points;
-	std::vector<float> offsets = { -0.05f, 0.0f, 0.05f };
+	std::vector<SDL_Point> pointTmp = cornerPoints;
+	std::vector<std::pair<float, float>> points;
+	std::vector<float> offsets = { 0.0f, -0.05f, 0.05f };
+	float mouseAngle = Utils::getAngle((int)p->position.x, (int)p->position.y, Mouse::x, Mouse::y);
+	float fov = 2.35619;
 
-	for (SDL_Point point : cornerPoints) {
+	pointTmp.push_back({ int(p->position.x + 10000.0f * cos(mouseAngle - fov / 2)), int(p->position.y + 10000.0f * sin(mouseAngle - fov / 2)) });
+	pointTmp.push_back({ int(p->position.x + 10000.0f * cos(mouseAngle + fov / 2)), int(p->position.y + 10000.0f * sin(mouseAngle + fov / 2)) });
+
+	std::reverse(pointTmp.begin(), pointTmp.end());
+
+	for (SDL_Point point : pointTmp) {
 		for (float offset : offsets) {
 			int dx = point.x - static_cast<int>(p->position.x);
 			int dy = point.y - static_cast<int>(p->position.y);
@@ -259,29 +268,49 @@ void Map::render_visible_area(Player* p, std::vector<Player*> &players) {
 				length = std::min(length, Utils::getDistance({ static_cast<int>(p->position.x), static_cast<int>(p->position.y) }, point));
 			}
 
-			SDL_FPoint end = {
+			std::pair<float, float> end = {
 				p->position.x + static_cast<float>(length) * cos(angle),
 				p->position.y + static_cast<float>(length) * sin(angle)
 			};
 
 			points.push_back(end);
+
+			if (points.size() <= 6) {
+				break;
+			}
 		}
 	}
 
-	std::sort(points.begin(), points.end(), [&](const SDL_FPoint &a, const SDL_FPoint &b) {
-		float angleA = atan2(a.y - p->position.y, a.x - p->position.x);
-		float angleB = atan2(b.y - p->position.y, b.x - p->position.x);
-		return angleA < angleB;
+	std::pair<float, float> r0 = points[0];
+	std::pair<float, float> r1 = points[1];
+
+	std::sort(points.begin(), points.end(), [&](const std::pair<float, float> &a, const std::pair<float, float> &b) {
+		return Utils::cross_product({ p->position.x, p->position.y }, {a.first, a.second}, {b.first, b.second}) > 0;
 	});
-	points.push_back(points[0]);
+
+	auto it1 = std::find(points.begin(), points.end(), r0);
+	auto it2 = std::find(points.begin(), points.end(), r1);
+
+	if (it1 > it2) {
+		points.erase(it1 + 1, points.end());
+		points.erase(points.begin(), it2);
+	} else {
+		points.erase(it1 + 1, it2);
+
+		it1 = std::find(points.begin(), points.end(), r0);
+		it2 = std::find(points.begin(), points.end(), r1);
+
+		std::reverse(points.begin(), it1 + 1);
+		std::reverse(it2, points.end());
+	}
 
 	std::vector<SDL_Vertex> vertices;
 	SDL_Color bgColor = { 255, 255, 255, 255 };
 
 	for (size_t i = 1; i < points.size(); i++) {
 		SDL_FPoint a = { p->position.x, p->position.y };
-		SDL_FPoint b = points[i - 1];
-		SDL_FPoint c = points[i];
+		SDL_FPoint b = { points[i - 1].first, points[i - 1].second };
+		SDL_FPoint c = { points[i].first, points[i].second };
 
 		vertices.emplace_back(a, bgColor, SDL_FPoint{ a.x / (float)w, a.y / (float)h });
 		vertices.emplace_back(b, bgColor, SDL_FPoint{ b.x / (float)w, b.y / (float)h });
@@ -298,6 +327,10 @@ void Map::render_visible_area(Player* p, std::vector<Player*> &players) {
 
 	SDL_SetRenderTarget(renderer, tmp);
 	SDL_RenderGeometry(renderer, texture, vertices.data(), static_cast<int>(vertices.size()), nullptr, 0);
+
+	for (auto &i : points) {
+		SDL_RenderDrawLine(renderer, static_cast<int>(p->position.x), static_cast<int>(p->position.y), static_cast<int>(i.first), static_cast<int>(i.second));
+	}
 }
 
 void Map::collision_handler(Player *p) {
