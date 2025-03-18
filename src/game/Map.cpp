@@ -211,7 +211,7 @@ void Map::render() {
 	SDL_RenderCopy(renderer, texture, 0, 0);
 }
 
-void Map::render_visible_area(Player* p, std::vector<Player*> &players) {
+void Map::render_visible_area(Player* p, std::vector<Player*> &players, bool renderLine) {
 	std::vector<SDL_Point> pointTmp = cornerPoints;
 	std::vector<std::pair<float, float>> points;
 	std::vector<float> offsets = { 0.0f, -0.05f, 0.05f };
@@ -327,6 +327,12 @@ void Map::render_visible_area(Player* p, std::vector<Player*> &players) {
 
 	SDL_SetRenderTarget(renderer, tmp);
 	SDL_RenderGeometry(renderer, texture, vertices.data(), static_cast<int>(vertices.size()), nullptr, 0);
+
+	p->render();
+
+	if (!renderLine) {
+		return;
+	}
 
 	for (auto &i : points) {
 		SDL_RenderDrawLine(renderer, static_cast<int>(p->position.x), static_cast<int>(p->position.y), static_cast<int>(i.first), static_cast<int>(i.second));
