@@ -22,6 +22,7 @@ class Map : public MonoBehaviour {
 	void calc_corner_points();
 	bool RayIntersectsRect(float originX, float originY, float dirX, float dirY, const SDL_Rect &rect, float &tEnter, float &tExit);
 	tmx_tile* get_tile(int x, int y);
+	tmx_layer *get_layer(int type);
 
 public:
 	int w = 0, h = 0;
@@ -33,5 +34,6 @@ public:
 	void render_visible_area(Player* p, std::vector<Player*> &players);
 	void collision_handler(Player *p);
 	int distance(float originX, float originY, float angle, int length = INT_MAX, int step = 0);
-	
+	tmx_object *get_spawn(int side);
+	tmx_object *get_bombsite(int index);
 };

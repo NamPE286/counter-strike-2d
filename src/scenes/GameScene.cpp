@@ -8,19 +8,38 @@
 #include "../managers/Font.hpp"
 #include "../managers/Audio.hpp"
 #include "../managers/Time.hpp"
+#include "../utilities/Utils.hpp"
 #include "../common.h"
 
 GameScene::GameScene(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)
 {
-	self = new Player(renderer, "Me", PlayerSide::T, Vec2(16 * 32, 21 * 32), true);
+	map = new Map(renderer, "assets/tilemaps/test.tmx");
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, map->w, map->h);
+
+	auto *TSpawn = map->get_spawn(PlayerSide::T);
+	auto *CTSpawn = map->get_spawn(PlayerSide::CT);
+
+	self = new Player(
+		renderer, 
+		"Me", 
+		PlayerSide::T,
+		Vec2(
+			(float)Utils::getRandomRange((int)TSpawn->x, int(TSpawn->x + TSpawn->width)),
+			(float)Utils::getRandomRange((int)TSpawn->y, int(TSpawn->y + TSpawn->height))),
+		true);
 	hud = new HUD(renderer, self, &match);
 
 	match.add_player(self);
-	match.add_player(new Player(renderer, "BOT A", PlayerSide::CT, Vec2(26 * 32, 32 * 32), false));
+	match.add_player(new Player(
+		renderer,
+		"BOT A",
+		PlayerSide::CT, 
+		Vec2(
+			(float)Utils::getRandomRange((int)CTSpawn->x, int(CTSpawn->x + CTSpawn->width)),
+			(float)Utils::getRandomRange((int)CTSpawn->y, int(CTSpawn->y + CTSpawn->height))), 
+		false));
 
-	map = new Map(renderer, "assets/tilemaps/test.tmx");
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, map->w, map->h);
 	camera = new PlayerCamera(renderer, 960, 540, texture, self);
 
 	if (!texture) {

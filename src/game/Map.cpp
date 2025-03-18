@@ -156,6 +156,20 @@ tmx_tile *Map::get_tile(int x, int y) {
 	return map->tiles[gid];
 }
 
+tmx_layer *Map::get_layer(int type) {
+	tmx_layer *layer = map->ly_head;
+
+	while (layer) {
+		if (layer->type == type) {
+			return layer;
+		}
+
+		layer = layer->next;
+	}
+
+	return nullptr;
+}
+
 Map::Map(SDL_Renderer *renderer, std::string filePath):
 	MonoBehaviour(renderer)
 {
@@ -367,6 +381,41 @@ int Map::distance(float originX, float originY, float angle, int length, int ste
 	}
 
 	return static_cast<int>(minDistance);
+}
+
+tmx_object *Map::get_spawn(int side) {
+	auto *objgr = get_layer(L_OBJGR)->content.objgr;
+	auto *obj = objgr->head;
+
+	while (obj) {
+		if (side == PlayerSide::T && std::string(obj->name) == "T Spawn") {
+			return obj;
+		}
+
+		if (side == PlayerSide::CT && std::string(obj->name) == "CT Spawn") {
+			return obj;
+		}
+
+		obj = obj->next;
+	}
+
+	return nullptr;
+}
+
+tmx_object *Map::get_bombsite(int index) {
+	auto *objgr = get_layer(L_OBJGR)->content.objgr;
+	auto *obj = objgr->head;
+	std::string s = "Bombsite " + ('A' + index);
+
+	while (obj) {
+		if (std::string(obj->name) == s) {
+			return obj;
+		}
+
+		obj = obj->next;
+	}
+
+	return nullptr;
 }
 
 bool Map::RayIntersectsRect(float originX, float originY, float dirX, float dirY, const SDL_Rect &rect, float &tEnter, float &tExit) {
