@@ -32,8 +32,6 @@ void Map::render_all_layers(tmx_layer *layers) {
 		if (layers->visible) {
 			if (layers->type == L_GROUP) {
 				render_all_layers(layers->content.group_head);
-			} else if (layers->type == L_OBJGR) {
-				render_objects(layers->content.objgr);
 			} else if (layers->type == L_IMAGE) {
 				render_image_layer(layers->content.image);
 			} else if (layers->type == L_LAYER) {
@@ -93,39 +91,6 @@ void Map::render_tile(void *image, unsigned int sx, unsigned int sy, unsigned in
 	dest_rect.x = dx;
 	dest_rect.y = dy;
 	SDL_RenderCopy(renderer, (SDL_Texture *)image, &src_rect, &dest_rect);
-}
-
-void Map::render_objects(tmx_object_group *objgr) {
-	SDL_Rect rect;
-	set_color(objgr->color);
-	tmx_object *head = objgr->head;
-	while (head) {
-		if (head->visible) {
-			if (head->obj_type == OT_SQUARE) {
-				rect.x = (int)head->x;  rect.y = (int)head->y;
-				rect.w = (int)head->width;  rect.h = (int)head->height;
-				SDL_RenderDrawRect(renderer, &rect);
-			} else if (head->obj_type == OT_POLYGON) {
-				render_polygon(head->content.shape->points, head->x, head->y, head->content.shape->points_len);
-			} else if (head->obj_type == OT_POLYLINE) {
-				render_polyline(head->content.shape->points, head->x, head->y, head->content.shape->points_len);
-			}
-		}
-		head = head->next;
-	}
-}
-
-void Map::render_polyline(double **points, double x, double y, int pointsc) {
-	for (int i = 1; i < pointsc; i++) {
-		SDL_RenderDrawLine(renderer, int(x + points[i - 1][0]), int(y + points[i - 1][1]), int(x + points[i][0]), int(y + points[i][1]));
-	}
-}
-
-void Map::render_polygon(double **points, double x, double y, int pointsc) {
-	render_polyline(points, x, y, pointsc);
-	if (pointsc > 2) {
-		SDL_RenderDrawLine(renderer, int(x + points[0][0]), int(y + points[0][1]), int(x + points[pointsc - 1][0]), int(y + points[pointsc - 1][1]));
-	}
 }
 
 void Map::calc_corner_points() {
