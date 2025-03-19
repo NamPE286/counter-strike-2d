@@ -15,9 +15,9 @@
 #include "../managers/Audio.hpp"
 
 class GameScene;
+class Player;
 
 class Weapon : public MonoBehaviour {
-	Vec2 *pos = nullptr, *vel = nullptr;
 	int magSize = -1, range = 50;
 	int reserveAmmoBase = -1;
 	float standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
@@ -28,6 +28,7 @@ class Weapon : public MonoBehaviour {
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	std::queue<Bullet> bulletQueue;
 	GameScene *target = nullptr;
+	Player *owner = nullptr;
 
 	void fixed_update_fire();
 	void fixed_update_reload();
@@ -41,7 +42,7 @@ public:
 	int ammo = -1, reserveAmmo = -1;
 	int price = 0, mobility = 250, killReward = 1500;
 
-	Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel);
+	Weapon(SDL_Renderer *renderer, std::string name, Player *owner);
 
 	void equip(bool playSound);
 	void fire(GameScene *scene);

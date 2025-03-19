@@ -8,6 +8,7 @@
 #include "../managers/Mouse.hpp"
 #include "../utilities/Utils.hpp"
 #include "../scenes/GameScene.hpp"
+#include "Player.hpp"
 
 void Weapon::fixed_update_fire() {
 	fireCooldown -= Time::fixedDeltaTime;
@@ -20,7 +21,7 @@ void Weapon::fixed_update_fire() {
 	int x = Mouse::x, y = Mouse::y;
 	float variance = 0.0f;
 
-	if (*vel == Vec2(0, 0)) {
+	if (owner->velocity == Vec2(0, 0)) {
 		variance = standingInaccuracy;
 	} else {
 		variance = runningInaccuracy;
@@ -29,22 +30,22 @@ void Weapon::fixed_update_fire() {
 	x += (int)Utils::getRandom(variance);
 	y += (int)Utils::getRandom(variance);
 
-	float angle = Utils::getAngle((int)pos->x, (int)pos->y, x, y);
+	float angle = Utils::getAngle((int)owner->position.x, (int)owner->position.y, x, y);
 
 	if (automatic) {
 		if (ammo > 0) {
-			add_bullet((int)pos->x, (int)pos->y, angle, range);
+			add_bullet((int)owner->position.x, (int)owner->position.y, angle, range);
 
 			fireCooldown = fireRate;
 			ammo--;
 		} else if (ammo == -1) {
-			add_bullet((int)pos->x, (int)pos->y, angle, range);
+			add_bullet((int)owner->position.x, (int)owner->position.y, angle, range);
 
 			fireCooldown = fireRate;
 		}
 	} else {
 		if (ammo > 0) {
-			add_bullet((int)pos->x, (int)pos->y, angle, range);
+			add_bullet((int)owner->position.x, (int)owner->position.y, angle, range);
 
 			fireCooldown = fireRate;
 			firing = false;
@@ -142,8 +143,8 @@ void Weapon::add_bullet(int x, int y, float angle, int range) {
 	play_firing_sound(ammo != -1 && ammo <= magSize * 20 / 100);
 }
 
-Weapon::Weapon(SDL_Renderer *renderer, std::string name, Vec2 *pos, Vec2 *vel):
-	MonoBehaviour(renderer), name(name), pos(pos), vel(vel)
+Weapon::Weapon(SDL_Renderer *renderer, std::string name, Player *owner):
+	MonoBehaviour(renderer), name(name), owner(owner)
 {
 	if (name == "Knife") {
 		drawSound = Audio::loadWAV("assets/weapons/knife/knife_deploy1.wav");
