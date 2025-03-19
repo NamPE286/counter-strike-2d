@@ -68,7 +68,7 @@ void Player::take_damage(Weapon *w, bool headshot) {
 
 	if (hp == 0) {
 		Mix_PlayChannel(-1, Audio::kill(), 0);
-		Mix_PlayChannel(-1, Audio::death(), 0);
+		Audio::playWAV(Audio::death(), position);
 
 		if (headshot) {
 			if (armor > 0 && helmet) {

@@ -69,6 +69,16 @@ void Audio::load_batch(std::vector<std::string> filePaths) {
 	}
 }
 
+void Audio::playWAV(Mix_Chunk *chunk, Vec2 src, int channel) {
+	channel = Mix_PlayChannel(channel, chunk, 0);
+
+	if (channel == -1) {
+		return;
+	}
+
+
+}
+
 Mix_Chunk *Audio::death() {
 	return loadWAV("assets/player/death" + std::to_string(Utils::getRandomRange(1, 6)) + ".wav");
 }

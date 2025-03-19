@@ -45,6 +45,8 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	if (!texture) {
 		throw std::runtime_error("Failed to create texture: " + std::string(SDL_GetError()));
 	}
+
+	Audio::dest = &self->position;
 }
 
 GameScene::~GameScene() {
