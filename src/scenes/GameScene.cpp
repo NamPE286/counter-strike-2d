@@ -22,6 +22,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 
 	self = new Player(
 		renderer, 
+		this,
 		"Me", 
 		PlayerSide::T,
 		Vec2(
@@ -33,6 +34,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	match.add_player(self);
 	match.add_player(new Player(
 		renderer,
+		this,
 		"BOT A",
 		PlayerSide::CT, 
 		Vec2(
@@ -150,7 +152,7 @@ void GameScene::render() {
 
 void GameScene::on_mouse_button_down(SDL_Event &event) {
 	if (match.phase != Phase::BUY) {
-		self->fire(this);
+		self->fire();
 	}
 }
 

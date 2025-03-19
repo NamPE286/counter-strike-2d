@@ -86,10 +86,10 @@ void Weapon::fixed_update_reload() {
 
 void Weapon::play_firing_sound(bool lowAmmo) {
 	Mix_HaltChannel(1);
-	Mix_PlayChannel(1, firingSound, 0);
+	Audio::playWAV(firingSound, owner->position, 1);
 
 	if (lowAmmo) {
-		Mix_PlayChannel(-1, Audio::loadWAV("assets/weapons/lowammo_01.wav"), 0);
+		Audio::playWAV(Audio::loadWAV("assets/weapons/lowammo_01.wav"), owner->position);
 	}
 }
 
@@ -143,8 +143,8 @@ void Weapon::add_bullet(int x, int y, float angle, int range) {
 	play_firing_sound(ammo != -1 && ammo <= magSize * 20 / 100);
 }
 
-Weapon::Weapon(SDL_Renderer *renderer, std::string name, Player *owner):
-	MonoBehaviour(renderer), name(name), owner(owner)
+Weapon::Weapon(SDL_Renderer *renderer, std::string name, Player *owner, GameScene *scene):
+	MonoBehaviour(renderer), name(name), owner(owner), target(scene)
 {
 	if (name == "Knife") {
 		drawSound = Audio::loadWAV("assets/weapons/knife/knife_deploy1.wav");
@@ -199,9 +199,7 @@ void Weapon::equip(bool playSound) {
 	}
 }
 
-void Weapon::fire(GameScene *scene) {
-	target = scene;
-
+void Weapon::fire() {
 	if (reloading || pullingOut) {
 		return;
 	}
@@ -227,6 +225,7 @@ void Weapon::reload() {
 
 	reloading = true;
 	reloadCooldown = reloadTime;
+
 	play_reload_sound();
 }
 

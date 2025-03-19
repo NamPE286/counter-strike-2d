@@ -51,7 +51,7 @@ public:
 	int weaponSlot = 0;
 	std::string name;
 
-	Player(SDL_Renderer *renderer, std::string name, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);
+	Player(SDL_Renderer *renderer, GameScene *scene, std::string name, int side = PlayerSide::T, Vec2 pos = Vec2(0, 0), bool playable = true);
 	~Player();
 
 	void update();
@@ -59,7 +59,7 @@ public:
 	void render();
 	void on_key_down(SDL_Event &event);
 	void on_key_up(SDL_Event &event);
-	void fire(GameScene *scene);
+	void fire();
 	void stop_firing();
 	void set_position(Vec2 newPos);
 	void take_damage(Weapon *w, bool headshot);

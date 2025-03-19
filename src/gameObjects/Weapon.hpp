@@ -42,10 +42,10 @@ public:
 	int ammo = -1, reserveAmmo = -1;
 	int price = 0, mobility = 250, killReward = 1500;
 
-	Weapon(SDL_Renderer *renderer, std::string name, Player *owner);
+	Weapon(SDL_Renderer *renderer, std::string name, Player *owner, GameScene *scene);
 
 	void equip(bool playSound);
-	void fire(GameScene *scene);
+	void fire();
 	void stop_firing();
 	void reload();
 	void stop_reloading();

@@ -202,8 +202,8 @@ float Player::distance(Bullet bullet) {
 	return sqrt(dx * dx + dy * dy);
 }
 
-Player::Player(SDL_Renderer *renderer, std::string name, int side, Vec2 pos, bool playable):
-	MonoBehaviour(renderer), name(name), position(pos), side(side), playable(playable)
+Player::Player(SDL_Renderer *renderer, GameScene *scene, std::string name, int side, Vec2 pos, bool playable):
+	MonoBehaviour(renderer), name(name), position(pos), side(side), playable(playable), target(scene)
 {
 	if (side == PlayerSide::T) {
 		color = { 255, 205, 100, 255 };
@@ -211,9 +211,9 @@ Player::Player(SDL_Renderer *renderer, std::string name, int side, Vec2 pos, boo
 		color = { 154, 203, 249, 255 };
 	}
 
-	weapons[0] = new Weapon(renderer, "AK-47", this);
-	weapons[1] = new Weapon(renderer, "Glock-18", this);
-	weapons[2] = new Weapon(renderer, "Knife", this);
+	weapons[0] = new Weapon(renderer, "AK-47", this, scene);
+	weapons[1] = new Weapon(renderer, "Glock-18", this, scene);
+	weapons[2] = new Weapon(renderer, "Knife", this, scene);
 
 	change_weapon(0);
 }
@@ -390,13 +390,12 @@ void Player::on_key_up(SDL_Event &event) {
 	}
 }
 
-void Player::fire(GameScene *scene) {
+void Player::fire() {
 	if (hp == 0) {
 		return;
 	}
 
-	target = scene;
-	weapons[weaponSlot]->fire(scene);
+	weapons[weaponSlot]->fire();
 }
 
 void Player::stop_firing() {
