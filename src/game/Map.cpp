@@ -197,18 +197,23 @@ Map::~Map() {
 }
 
 void Map::render() {
-	auto *tmp = SDL_GetRenderTarget(renderer);
+	if (mapTexture == nullptr) {
+		mapTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
 
-	SDL_SetRenderTarget(renderer, texture);
+		auto *tmp = SDL_GetRenderTarget(renderer);
 
-	set_color(map->backgroundcolor);
-	SDL_RenderClear(renderer);
-	render_all_layers(map->ly_head);
+		SDL_SetRenderTarget(renderer, mapTexture);
 
-	SDL_SetRenderTarget(renderer, tmp);
+		set_color(map->backgroundcolor);
+		SDL_RenderClear(renderer);
+		render_all_layers(map->ly_head);
 
-	SDL_SetTextureColorMod(texture, 220, 220, 220);
-	SDL_RenderCopy(renderer, texture, 0, 0);
+		SDL_SetRenderTarget(renderer, tmp);
+	}
+
+	SDL_SetTextureColorMod(mapTexture, 220, 220, 220);
+	SDL_RenderCopy(renderer, mapTexture, 0, 0);
+	SDL_SetTextureColorMod(mapTexture, 255, 255, 255);
 }
 
 void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool renderLine) {
@@ -320,6 +325,7 @@ void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool re
 	auto *tmp = SDL_GetRenderTarget(renderer);
 
 	SDL_SetRenderTarget(renderer, texture);
+	SDL_RenderCopy(renderer, mapTexture, nullptr, nullptr);
 
 	for (auto *p : players) {
 		p->render();

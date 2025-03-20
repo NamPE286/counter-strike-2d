@@ -11,7 +11,7 @@
 
 class Map : public MonoBehaviour {
 	tmx_map *map = nullptr;
-	SDL_Texture *texture = nullptr;
+	SDL_Texture *mapTexture = nullptr, *texture = nullptr;
 	std::vector<SDL_Point> cornerPoints;
 
 	void set_color(int color);
