@@ -58,12 +58,12 @@
 </data>
  </layer>
  <objectgroup id="2" name="Spawn">
-  <object id="3" name="T Spawn" x="448.333" y="642.333" width="126" height="123"/>
-  <object id="4" name="CT Spawn" x="800.333" y="995.333" width="127" height="123"/>
+  <object id="3" name="T" x="448.333" y="642.333" width="126" height="123"/>
+  <object id="4" name="CT" x="800.333" y="995.333" width="127" height="123"/>
  </objectgroup>
  <objectgroup id="3" name="Bombsite">
-  <object id="9" name="Bombsite A" x="542.667" y="1090" width="125.333" height="125.333"/>
-  <object id="10" name="Bombsite B" x="993.333" y="768.665" width="126.667" height="126.667"/>
+  <object id="9" name="A" x="544" y="1090" width="125.333" height="125.333"/>
+  <object id="10" name="B" x="993.333" y="768.665" width="126.667" height="126.667"/>
  </objectgroup>
- <objectgroup id="4" name="Callout"/>
+ <objectgroup id="4" name="Callout" visible="0"/>
 </map>

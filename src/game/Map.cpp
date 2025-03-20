@@ -426,11 +426,11 @@ tmx_object *Map::get_spawn(int side) {
 	auto *obj = objgr->head;
 
 	while (obj) {
-		if (side == PlayerSide::T && std::string(obj->name) == "T Spawn") {
+		if (side == PlayerSide::T && std::string(obj->name) == "T") {
 			return obj;
 		}
 
-		if (side == PlayerSide::CT && std::string(obj->name) == "CT Spawn") {
+		if (side == PlayerSide::CT && std::string(obj->name) == "CT") {
 			return obj;
 		}
 
@@ -443,10 +443,9 @@ tmx_object *Map::get_spawn(int side) {
 tmx_object *Map::get_bombsite(int index) {
 	auto *objgr = get_layer("Bombsite")->content.objgr;
 	auto *obj = objgr->head;
-	std::string s = "Bombsite " + ('A' + index);
 
 	while (obj) {
-		if (std::string(obj->name) == s) {
+		if (std::string(obj->name)[0] == ('A' + index)) {
 			return obj;
 		}
 
