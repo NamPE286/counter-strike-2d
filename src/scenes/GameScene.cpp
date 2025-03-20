@@ -104,7 +104,13 @@ void GameScene::update() {
 
 	camera->update();
 	hud->update();
-	
+
+	auto *obj = map->get_callout(self->position.x, self->position.y);
+
+	if (obj != nullptr) {
+		hud->update_callout(obj->name);
+	}
+
 	if (match.update()) {
 		if (match.winner == PlayerSide::T) {
 			std::cout << "Terrorist win" << '\n';

@@ -2,6 +2,8 @@
 
 #include <string>
 #include <map>
+#include <iostream>
+
 #include "../common.h"
 
 HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
@@ -51,6 +53,10 @@ HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
 	knifeBindText->set_content("3");
 
 	weaponNameText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
+
+	calloutText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 20), color);
+	calloutText->set_position(10, 10);
+	calloutText->set_content("Test");
 
 	scoreboard = new Scoreboard(renderer, match);
 	miniScoreboard = new MiniScoreboard(renderer, match);
@@ -108,6 +114,10 @@ void HUD::update() {
 	miniScoreboard->update();
 }
 
+void HUD::update_callout(std::string s) {
+	calloutText->set_content(s);
+}
+
 void HUD::render() {
 	const auto keyboard = SDL_GetKeyboardState(0);
 
@@ -129,18 +139,17 @@ void HUD::render() {
 	SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, 255);
 	SDL_RenderFillRect(renderer, &healthBarRect);
 
-	moneyText->render();
-	hpText->render();
-
 	primaryGun->render();
 	secondaryGun->render();
 	knife->render();
 
+	moneyText->render();
+	hpText->render();
 	primaryGunBindText->render();
 	secondaryGunBindText->render();
 	knifeBindText->render();
-
 	weaponNameText->render();
+	calloutText->render();
 
 	if (player->armor > 0) {
 		armorText->render();

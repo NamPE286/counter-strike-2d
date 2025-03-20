@@ -16,7 +16,8 @@ class HUD : public MonoBehaviour {
 	Player *player = nullptr;
 	Text *ammoText = nullptr, *reserveAmmoText = nullptr, *moneyText = nullptr, *hpText = nullptr, *armorText = nullptr,
 		*primaryGun = nullptr, *secondaryGun = nullptr, *knife = nullptr, *weaponNameText = nullptr,
-		*primaryGunBindText = nullptr, *secondaryGunBindText = nullptr, *knifeBindText = nullptr;
+		*primaryGunBindText = nullptr, *secondaryGunBindText = nullptr, *knifeBindText = nullptr,
+		*calloutText = nullptr;
 	Scoreboard *scoreboard = nullptr;
 	MiniScoreboard *miniScoreboard = nullptr;
 
@@ -27,6 +28,8 @@ public:
 	HUD(SDL_Renderer *renderer, Player *player, Match *match);
 	~HUD();
 
+
 	void update();
+	void update_callout(std::string s);
 	void render();
 };
