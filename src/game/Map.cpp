@@ -98,10 +98,11 @@ void Map::calc_corner_points() {
 	cornerPoints.clear();
 
 	std::set<std::pair<int, int>> s;
+	auto *layer = get_layer("Wall");
 
 	for (int y = 0; y < (int)map->height; ++y) {
 		for (int x = 0; x < (int)map->width; ++x) {
-			int gid = (map->ly_head->content.gids[(y * map->width) + x]) & TMX_FLIP_BITS_REMOVAL;
+			int gid = (layer->content.gids[(y * map->width) + x]) & TMX_FLIP_BITS_REMOVAL;
 			tmx_tile *tile = map->tiles[gid];
 
 			if (tile && tile->collision) {
@@ -210,7 +211,7 @@ void Map::render() {
 	SDL_RenderCopy(renderer, texture, 0, 0);
 }
 
-void Map::render_visible_area(Player* p, std::vector<Player*> &players, bool renderLine) {
+void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool renderLine) {
 	std::vector<SDL_Point> pointTmp = cornerPoints;
 	std::vector<std::pair<float, float>> points;
 	std::vector<float> offsets = { 0.0f, -0.05f, 0.05f };
@@ -284,8 +285,8 @@ void Map::render_visible_area(Player* p, std::vector<Player*> &players, bool ren
 	std::pair<float, float> r1 = points[1];
 
 	std::sort(points.begin(), points.end(), [&](const std::pair<float, float> &a, const std::pair<float, float> &b) {
-		return Utils::cross_product({ p->position.x, p->position.y }, {a.first, a.second}, {b.first, b.second}) > 0;
-	});
+		return Utils::cross_product({ p->position.x, p->position.y }, { a.first, a.second }, { b.first, b.second }) > 0;
+		});
 
 	auto it1 = std::find(points.begin(), points.end(), r0);
 	auto it2 = std::find(points.begin(), points.end(), r1);
@@ -339,7 +340,7 @@ void Map::render_visible_area(Player* p, std::vector<Player*> &players, bool ren
 }
 
 void Map::collision_handler(Player *p) {
-	tmx_layer *layer = map->ly_head;
+	tmx_layer *layer = get_layer("Wall");
 	std::vector<std::pair<int, int>> corners = { {0, 0}, {0, 1}, {1, 0}, {1, 1} };
 	SDL_Rect playerRect = { static_cast<int>(p->position.x) - p->size / 2,
 							static_cast<int>(p->position.y) - p->size / 2,
@@ -353,51 +354,55 @@ void Map::collision_handler(Player *p) {
 		tmx_tile *tile = map->tiles[gid];
 		int cnt = 0;
 
-		if (tile->collision != nullptr) {
-			cnt++;
-			SDL_Rect collisionRect = { x * (int)map->tile_width + (int)tile->collision->x,
-										y * (int)map->tile_height + (int)tile->collision->y,
-										(int)tile->collision->width,
-										(int)tile->collision->height };
+		if (tile == nullptr || tile->collision == nullptr) {
+			continue;
+		}
 
-			if (SDL_HasIntersection(&playerRect, &collisionRect)) {
-				p->position = p->prevPosition;
+		cnt++;
+		SDL_Rect collisionRect = { x * (int)map->tile_width,
+									y * (int)map->tile_height,
+									(int)map->tile_width,
+									(int)map->tile_height };
 
-				if (p->velocity.x > 0) {
-					playerRect.x -= 20;
-				} else if (p->velocity.x < 0) {
-					playerRect.x += 20;
-				}
+		if (SDL_HasIntersection(&playerRect, &collisionRect)) {
+			p->position = p->prevPosition;
 
-				if (p->velocity.x != 0.0f && !SDL_HasIntersection(&playerRect, &collisionRect)) {
-					p->stop_movement_x();
-					return;
-				}
+			if (p->velocity.x > 0) {
+				playerRect.x -= 20;
+			} else if (p->velocity.x < 0) {
+				playerRect.x += 20;
+			}
 
-				if (p->velocity.y > 0) {
-					playerRect.y -= 20;
-				} else if (p->velocity.y < 0) {
-					playerRect.y += 20;
-				}
-
-				if (p->velocity.y != 0.0f && !SDL_HasIntersection(&playerRect, &collisionRect)) {
-					p->stop_movement_y();
-				}
-
+			if (p->velocity.x != 0.0f && !SDL_HasIntersection(&playerRect, &collisionRect)) {
+				p->stop_movement_x();
 				return;
 			}
+
+			if (p->velocity.y > 0) {
+				playerRect.y -= 20;
+			} else if (p->velocity.y < 0) {
+				playerRect.y += 20;
+			}
+
+			if (p->velocity.y != 0.0f && !SDL_HasIntersection(&playerRect, &collisionRect)) {
+				p->stop_movement_y();
+			}
+
+			return;
 		}
+
 	}
 }
 
 int Map::distance(float originX, float originY, float angle, int length, int step) {
+	auto *layer = get_layer("Wall");
 	float dx = cos(angle);
 	float dy = sin(angle);
 	float minDistance = static_cast<float>(length);
 
 	for (int tileY = 0; tileY < static_cast<int>(map->height); ++tileY) {
 		for (int tileX = 0; tileX < static_cast<int>(map->width); ++tileX) {
-			tmx_tile *tile = map->tiles[(map->ly_head->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL];
+			tmx_tile *tile = map->tiles[(layer->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL];
 
 			if (tile && tile->collision) {
 				SDL_Rect tileRect = {
