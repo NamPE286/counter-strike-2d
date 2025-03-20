@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#898989" nextlayerid="6" nextobjectid="15">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#898989" nextlayerid="6" nextobjectid="68">
  <tileset firstgid="1" source="tilesets/grass.tsx"/>
  <tileset firstgid="65" source="tilesets/plant.tsx"/>
  <tileset firstgid="321" source="tilesets/plant_shadow.tsx"/>
@@ -218,8 +218,11 @@
  </layer>
  <objectgroup id="2" name="Spawn">
   <object id="6" name="T" x="1528.67" y="2265" width="143.333" height="47.3333"/>
+  <object id="63" name="CT" x="1569" y="545" width="318" height="30"/>
  </objectgroup>
- <objectgroup id="4" name="Bombsite"/>
+ <objectgroup id="4" name="Bombsite">
+  <object id="27" name="B" x="2242" y="1312" width="189.333" height="95.3333"/>
+ </objectgroup>
  <objectgroup id="3" name="Callout">
   <object id="7" name="T Start" x="1504" y="1986.33" width="192" height="348"/>
   <object id="8" name="Tunnel" x="1697.33" y="2048.33" width="414.667" height="64"/>
@@ -227,5 +230,39 @@
   <object id="10" name="Ruins" x="2272.67" y="1825" width="158" height="158.667"/>
   <object id="12" name="Ruins" x="2207.33" y="1921.67" width="65.3333" height="62"/>
   <object id="13" name="Ruins" x="2304" y="1729.67" width="95.3333" height="94"/>
+  <object id="15" name="T Side Lower" x="2210" y="1632" width="222.667" height="94.6667"/>
+  <object id="16" name="T Side Lower" x="2208.67" y="1600" width="63.3333" height="32"/>
+  <object id="17" name="Ramp" x="2432" y="1536" width="94.6667" height="190"/>
+  <object id="18" name="Ramp" x="2433.33" y="1472" width="61.3333" height="62.6667"/>
+  <object id="20" name="Bombsite B" x="2240.67" y="1246.67" width="254" height="224"/>
+  <object id="23" name="Bombsite B" x="2208" y="1440" width="32" height="30.5"/>
+  <object id="24" name="Bombsite B" x="2240" y="1471" width="63.5" height="33"/>
+  <object id="26" name="Alley" x="2016.67" y="1056" width="543.333" height="63.3333"/>
+  <object id="28" name="Side Entrance" x="2080.67" y="1249.33" width="126" height="158"/>
+  <object id="30" name="Side Entrance" x="2207.33" y="1280" width="33.3333" height="32"/>
+  <object id="31" name="Side Entrance" x="1889.33" y="1504.67" width="287.333" height="126"/>
+  <object id="32" name="Side Entrance" x="2111.33" y="1408" width="64.6667" height="63.3333"/>
+  <object id="33" name="Side Entrance" x="2144" y="1472" width="32" height="33.3333"/>
+  <object id="34" name="Side Entrance" x="1920" y="1630.67" width="127.333" height="32.6667"/>
+  <object id="35" name="Side Entrance" x="1952.67" y="1664" width="64" height="33.3333"/>
+  <object id="37" name="T Side Upper" x="1826.67" y="1696" width="349.333" height="64.6667"/>
+  <object id="38" name="T Side Upper" x="2175.33" y="1696" width="33.3333" height="31.3333"/>
+  <object id="40" name="T Side Upper" x="1696.67" y="1662.67" width="128" height="96.6667"/>
+  <object id="41" name="Middle" x="1473" y="1377" width="223" height="414"/>
+  <object id="42" name="Bombsite B" x="2240.67" y="1120.67" width="63.3333" height="126"/>
+  <object id="44" name="Bombsite B" x="2434" y="1119.33" width="125.333" height="192.667"/>
+  <object id="45" name="Middle" x="1696.5" y="1377.5" width="62.5" height="95.5"/>
+  <object id="49" name="Top of Mid" x="1536" y="1281" width="96" height="95"/>
+  <object id="50" name="House" x="1505.5" y="1184.33" width="158.667" height="95.3333"/>
+  <object id="52" name="Alley" x="1952" y="1056" width="64" height="160.667"/>
+  <object id="54" name="House" x="1729.33" y="1056.67" width="158.667" height="126.667"/>
+  <object id="55" name="Alley" x="1887.33" y="1087.33" width="64.6667" height="66"/>
+  <object id="56" name="House" x="1471.33" y="1025.33" width="191.333" height="126.667"/>
+  <object id="58" name="House" x="1536.67" y="1152.67" width="62.6667" height="32"/>
+  <object id="59" name="House" x="1663.33" y="1055.33" width="64.6667" height="96"/>
+  <object id="60" name="House" x="1760.67" y="960" width="95.3333" height="96.6667"/>
+  <object id="61" name="CT Start" x="1536" y="512" width="383.333" height="446.667"/>
+  <object id="65" name="CT Start" x="1249" y="639" width="287" height="97"/>
+  <object id="66" name="CT Start " x="1249" y="863" width="286" height="95"/>
  </objectgroup>
 </map>

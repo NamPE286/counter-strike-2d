@@ -29,10 +29,8 @@ GameScene::GameScene(SDL_Renderer *renderer):
 			(float)Utils::getRandomRange((int)TSpawn->x, int(TSpawn->x + TSpawn->width)),
 			(float)Utils::getRandomRange((int)TSpawn->y, int(TSpawn->y + TSpawn->height))),
 		true);
-	hud = new HUD(renderer, self, &match);
 
 	match.add_player(self);
-	/*
 	match.add_player(new Player(
 		renderer,
 		this,
@@ -42,8 +40,8 @@ GameScene::GameScene(SDL_Renderer *renderer):
 			(float)Utils::getRandomRange((int)CTSpawn->x, int(CTSpawn->x + CTSpawn->width)),
 			(float)Utils::getRandomRange((int)CTSpawn->y, int(CTSpawn->y + CTSpawn->height))),
 		false));
-	*/
 
+	hud = new HUD(renderer, self, &match);
 	camera = new PlayerCamera(renderer, 960, 540, texture, self);
 
 	if (!texture) {

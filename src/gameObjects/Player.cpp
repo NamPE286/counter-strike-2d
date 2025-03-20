@@ -35,7 +35,7 @@ void Player::change_weapon(int slot) {
 	weaponSlot = slot;
 	weapons[weaponSlot]->equip(playable);
 
-	maxSpeed = 0.4f * weapons[weaponSlot]->mobility / 250;
+	maxSpeed = MAX_SPEED * weapons[weaponSlot]->mobility / 250;
 
 	if (keyboard[SDL_SCANCODE_LSHIFT]) {
 		maxSpeed /= 2;
@@ -336,13 +336,13 @@ void Player::on_key_down(SDL_Event &event) {
 		if (directionMap[event.key.keysym.scancode].x != 0) {
 			velocity.x = 0;
 			direction.x = directionMap[event.key.keysym.scancode].x;
-			acceleration.x = directionMap[event.key.keysym.scancode].x * 0.002f;
+			acceleration.x = directionMap[event.key.keysym.scancode].x * MAX_ACCELERATION;
 		}
 
 		if (directionMap[event.key.keysym.scancode].y != 0) {
 			velocity.y = 0;
 			direction.y = directionMap[event.key.keysym.scancode].y;
-			acceleration.y = directionMap[event.key.keysym.scancode].y * 0.002f;
+			acceleration.y = directionMap[event.key.keysym.scancode].y * MAX_ACCELERATION;
 		}
 	}
 }
@@ -365,27 +365,27 @@ void Player::on_key_up(SDL_Event &event) {
 		const auto keyboard = SDL_GetKeyboardState(0);
 
 		if (directionMap[event.key.keysym.scancode].x != 0 && velocity.x != 0) {
-			acceleration.x = directionMap[event.key.keysym.scancode].x * 0.002f * -1;
+			acceleration.x = directionMap[event.key.keysym.scancode].x * MAX_ACCELERATION * -1;
 		}
 
 		if (directionMap[event.key.keysym.scancode].y != 0 && velocity.y != 0) {
-			acceleration.y = directionMap[event.key.keysym.scancode].y * 0.002f * -1;
+			acceleration.y = directionMap[event.key.keysym.scancode].y * MAX_ACCELERATION * -1;
 		}
 
 		if (keyboard[SDL_SCANCODE_W] && !keyboard[SDL_SCANCODE_S]) {
 			direction.y = directionMap[SDL_SCANCODE_W].y;
-			acceleration.y = directionMap[SDL_SCANCODE_W].y * 0.002f;
+			acceleration.y = directionMap[SDL_SCANCODE_W].y * MAX_ACCELERATION;
 		} else if (!keyboard[SDL_SCANCODE_W] && keyboard[SDL_SCANCODE_S]) {
 			direction.y = directionMap[SDL_SCANCODE_S].y;
-			acceleration.y = directionMap[SDL_SCANCODE_S].y * 0.002f;
+			acceleration.y = directionMap[SDL_SCANCODE_S].y * MAX_ACCELERATION;
 		}
 
 		if (keyboard[SDL_SCANCODE_A] && !keyboard[SDL_SCANCODE_D]) {
 			direction.x = directionMap[SDL_SCANCODE_A].x;
-			acceleration.x = directionMap[SDL_SCANCODE_A].x * 0.002f;
+			acceleration.x = directionMap[SDL_SCANCODE_A].x * MAX_ACCELERATION;
 		} else if (!keyboard[SDL_SCANCODE_A] && keyboard[SDL_SCANCODE_D]) {
 			direction.x = directionMap[SDL_SCANCODE_D].x;
-			acceleration.x = directionMap[SDL_SCANCODE_D].x * 0.002f;
+			acceleration.x = directionMap[SDL_SCANCODE_D].x * MAX_ACCELERATION;
 		}
 	}
 }

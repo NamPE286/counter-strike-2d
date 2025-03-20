@@ -32,8 +32,11 @@ class Player : public MonoBehaviour {
 	SDL_Color color = { 0, 0, 0, 0 };
 	GameScene *target = nullptr;
 
+	const float MAX_SPEED = 0.15f;
+	const float MAX_ACCELERATION = 0.0005f;
+
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
-	float maxSpeed = 0.4f;
+	float maxSpeed = MAX_SPEED;
 	float footstepDelay = 0;
 
 	void update_position();
