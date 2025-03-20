@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#898989" nextlayerid="3" nextobjectid="9">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#898989" nextlayerid="4" nextobjectid="11">
  <tileset firstgid="1" source="tilesets/grass.tsx"/>
  <tileset firstgid="65" source="tilesets/stone_ground.tsx"/>
  <tileset firstgid="129" source="tilesets/wall.tsx"/>
@@ -57,10 +57,12 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <objectgroup id="2" name="Object Layer 1">
+ <objectgroup id="2" name="Spawn">
   <object id="3" name="T Spawn" x="448.333" y="642.333" width="126" height="123"/>
   <object id="4" name="CT Spawn" x="800.333" y="995.333" width="127" height="123"/>
-  <object id="6" name="Bombsite A" x="544.667" y="1089.67" width="125.333" height="125.333"/>
-  <object id="7" name="Bombsite B" x="995.333" y="768.333" width="126.667" height="126.667"/>
+ </objectgroup>
+ <objectgroup id="3" name="Bombsite">
+  <object id="9" name="Bombsite A" x="542.667" y="1090" width="125.333" height="125.333"/>
+  <object id="10" name="Bombsite B" x="993.333" y="768.665" width="126.667" height="126.667"/>
  </objectgroup>
 </map>

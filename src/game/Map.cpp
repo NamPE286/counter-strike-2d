@@ -157,11 +157,11 @@ tmx_tile *Map::get_tile(int x, int y) {
 	return map->tiles[gid];
 }
 
-tmx_layer *Map::get_layer(int type) {
+tmx_layer *Map::get_layer(std::string name) {
 	tmx_layer *layer = map->ly_head;
 
 	while (layer) {
-		if (layer->type == type) {
+		if (std::string(layer->name) == name) {
 			return layer;
 		}
 
@@ -422,7 +422,7 @@ int Map::distance(float originX, float originY, float angle, int length, int ste
 }
 
 tmx_object *Map::get_spawn(int side) {
-	auto *objgr = get_layer(L_OBJGR)->content.objgr;
+	auto *objgr = get_layer("Spawn")->content.objgr;
 	auto *obj = objgr->head;
 
 	while (obj) {
@@ -441,7 +441,7 @@ tmx_object *Map::get_spawn(int side) {
 }
 
 tmx_object *Map::get_bombsite(int index) {
-	auto *objgr = get_layer(L_OBJGR)->content.objgr;
+	auto *objgr = get_layer("Bombsite")->content.objgr;
 	auto *obj = objgr->head;
 	std::string s = "Bombsite " + ('A' + index);
 
@@ -456,8 +456,8 @@ tmx_object *Map::get_bombsite(int index) {
 	return nullptr;
 }
 
-tmx_object *Map::get_area(float x, float y) {
-	auto *objgr = get_layer(L_OBJGR)->content.objgr;
+tmx_object *Map::get_callout(float x, float y) {
+	auto *objgr = get_layer("Callout")->content.objgr;
 	auto *obj = objgr->head;
 
 	while (obj) {
