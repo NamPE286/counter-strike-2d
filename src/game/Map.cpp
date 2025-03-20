@@ -200,9 +200,8 @@ void Map::render() {
 
 	SDL_SetRenderTarget(renderer, texture);
 
-	SDL_SetRenderDrawColor(renderer, 137, 137, 137, 255);
-	SDL_RenderClear(renderer);
 	set_color(map->backgroundcolor);
+	SDL_RenderClear(renderer);
 	render_all_layers(map->ly_head);
 
 	SDL_SetRenderTarget(renderer, tmp);
@@ -464,7 +463,7 @@ tmx_object *Map::get_area(float x, float y) {
 	while (obj) {
 		SDL_FRect rect = {
 			obj->x, obj->y,
-			obj->x + obj->width, obj->y + obj->height
+			obj->width, obj->height
 		};
 		SDL_FPoint point = { x, y };
 
