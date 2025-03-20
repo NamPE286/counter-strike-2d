@@ -130,6 +130,12 @@ void GameScene::update() {
 
 		t.detach();
 	}
+
+	auto *area = map->get_area(self->position.x, self->position.y);
+
+	if (area != nullptr) {
+		std::cout << area->name << '\n';
+	}
 }
 
 void GameScene::fixed_update() {

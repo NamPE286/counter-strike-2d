@@ -36,4 +36,5 @@ public:
 	int distance(float originX, float originY, float angle, int length = INT_MAX, int step = 0);
 	tmx_object *get_spawn(int side);
 	tmx_object *get_bombsite(int index);
+	tmx_object *get_area(float x, float y);
 };

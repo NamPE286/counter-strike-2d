@@ -457,6 +457,27 @@ tmx_object *Map::get_bombsite(int index) {
 	return nullptr;
 }
 
+tmx_object *Map::get_area(float x, float y) {
+	auto *objgr = get_layer(L_OBJGR)->content.objgr;
+	auto *obj = objgr->head;
+
+	while (obj) {
+		SDL_FRect rect = {
+			obj->x, obj->y,
+			obj->x + obj->width, obj->y + obj->height
+		};
+		SDL_FPoint point = { x, y };
+
+		if (SDL_PointInFRect(&point, &rect)) {
+			return obj;
+		}
+
+		obj = obj->next;
+	}
+
+	return nullptr;
+}
+
 bool Map::RayIntersectsRect(float originX, float originY, float dirX, float dirY, const SDL_Rect &rect, float &tEnter, float &tExit) {
 	float tMin = (rect.x - originX) / dirX;
 	float tMax = ((rect.x + rect.w) - originX) / dirX;
