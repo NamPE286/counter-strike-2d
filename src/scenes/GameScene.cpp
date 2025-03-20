@@ -29,18 +29,20 @@ GameScene::GameScene(SDL_Renderer *renderer):
 			(float)Utils::getRandomRange((int)TSpawn->x, int(TSpawn->x + TSpawn->width)),
 			(float)Utils::getRandomRange((int)TSpawn->y, int(TSpawn->y + TSpawn->height))),
 		true);
-	hud = new HUD(renderer, self, &match);
 
-	match.add_player(self);
-	match.add_player(new Player(
+	auto *tmp = new Player(
 		renderer,
 		this,
 		"BOT A",
-		PlayerSide::CT, 
+		PlayerSide::CT,
 		Vec2(
 			(float)Utils::getRandomRange((int)CTSpawn->x, int(CTSpawn->x + CTSpawn->width)),
-			(float)Utils::getRandomRange((int)CTSpawn->y, int(CTSpawn->y + CTSpawn->height))), 
-		false));
+			(float)Utils::getRandomRange((int)CTSpawn->y, int(CTSpawn->y + CTSpawn->height))),
+		false);
+	hud = new HUD(renderer, self, &match);
+
+	match.add_player(self);
+	match.add_player(tmp);
 
 	camera = new PlayerCamera(renderer, 960, 540, texture, self);
 

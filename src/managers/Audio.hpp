@@ -18,7 +18,7 @@ namespace Audio {
 	Mix_Chunk *loadWAV(std::string filePath);
 	Mix_Music *loadMusic(std::string filePath);
 	void load_batch(std::vector<std::string> filePaths);
-	void playWAV(Mix_Chunk *chunk, Vec2 src, int channel = -1);
+	void playWAV(Mix_Chunk *chunk, Vec2 src, int channel = -1, float multiplier = 1.0f);
 
 	Mix_Chunk *death();
 	Mix_Chunk *kill();

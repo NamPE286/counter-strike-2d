@@ -86,7 +86,7 @@ void Weapon::fixed_update_reload() {
 
 void Weapon::play_firing_sound(bool lowAmmo) {
 	Mix_HaltChannel(1);
-	Audio::playWAV(firingSound, owner->position, 1);
+	Audio::playWAV(firingSound, owner->position, 1, 3.0f);
 
 	if (lowAmmo) {
 		Audio::playWAV(Audio::loadWAV("assets/weapons/lowammo_01.wav"), owner->position);
