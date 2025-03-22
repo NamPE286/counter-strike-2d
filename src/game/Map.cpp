@@ -404,32 +404,32 @@ int Map::distance(float originX, float originY, float angle, int length, int ste
 	auto *layer = get_layer("Wall");
 	float dx = cos(angle);
 	float dy = sin(angle);
-	float minDistance = static_cast<float>(length);
 
-	for (int tileY = 0; tileY < static_cast<int>(map->height); ++tileY) {
-		for (int tileX = 0; tileX < static_cast<int>(map->width); ++tileX) {
-			tmx_tile *tile = map->tiles[(layer->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL];
+	for (int len = 1; len <= length; len++) {
+		float x = originX + len * dx;
+		float y = originY + len * dy;
 
-			if (tile && tile->collision) {
-				SDL_Rect tileRect = {
-					tileX * static_cast<int>(map->tile_width),
-					tileY * static_cast<int>(map->tile_height),
-					static_cast<int>(map->tile_width),
-					static_cast<int>(map->tile_height)
-				};
+		int tileX = static_cast<int>(x) / map->tile_width;
+		int tileY = static_cast<int>(y) / map->tile_height;
 
-				float tEnter, tExit;
+		if (tileX < 0 || tileX >= static_cast<int>(map->width) || tileY < 0 || tileY >= static_cast<int>(map->height)) {
+			return len;
+		}
 
-				if (RayIntersectsRect(originX, originY, dx, dy, tileRect, tEnter, tExit)) {
-					if (tEnter >= 0.0f && tEnter < minDistance) {
-						minDistance = tEnter;
-					}
-				}
+		int gid = (layer->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL;
+		tmx_tile *tile = map->tiles[gid];
+
+		if (tile && tile->collision) {
+			if (step != 0.0f) {
+				len += (float)step;
+				step = 0.0f;
+			} else {
+				return len;
 			}
 		}
 	}
 
-	return static_cast<int>(minDistance);
+	return length;
 }
 
 tmx_object *Map::get_spawn(int side) {
