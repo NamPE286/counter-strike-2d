@@ -234,7 +234,7 @@ void Player::update() {
 			continue;
 		}
 
-		for (Player *p : target->match.players) {
+		for (Player *p : target->match->players) {
 			if (p == this || p->hp == 0) {
 				continue;
 			}

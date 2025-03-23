@@ -135,7 +135,7 @@ void Weapon::play_reload_sound() {
 
 void Weapon::add_bullet(int x, int y, float angle, int range) {
 	Bullet tmp(renderer, angle, x, y, range);
-	tmp.length = target->map->distance(x, y, angle, range);
+	tmp.length = target->match->map->distance(x, y, angle, range);
 
 	bullets.emplace_back(std::make_shared<Bullet>(tmp));
 	bulletQueue.push(tmp);

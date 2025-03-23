@@ -14,11 +14,11 @@
 GameScene::GameScene(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)
 {
-	map = new Map(renderer, "assets/tilemaps/de_ancient.tmx");
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, map->w, map->h);
+	match = new Match(renderer, "de_ancient");
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, match->map->w, match->map->h);
 
-	auto *TSpawn = map->get_spawn(PlayerSide::T);
-	auto *CTSpawn = map->get_spawn(PlayerSide::CT);
+	auto *TSpawn = match->map->get_spawn(PlayerSide::T);
+	auto *CTSpawn = match->map->get_spawn(PlayerSide::CT);
 
 	self = new Player(
 		renderer,
@@ -30,8 +30,8 @@ GameScene::GameScene(SDL_Renderer *renderer):
 			(float)Utils::getRandomRange((int)TSpawn->y, int(TSpawn->y + TSpawn->height))),
 		true);
 
-	match.add_player(self);
-	match.add_player(new Player(
+	match->add_player(self);
+	match->add_player(new Player(
 		renderer,
 		this,
 		"BOT A",
@@ -41,7 +41,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 			(float)Utils::getRandomRange((int)CTSpawn->y, int(CTSpawn->y + CTSpawn->height))),
 		false));
 
-	hud = new HUD(renderer, self, &match);
+	hud = new HUD(renderer, self, match);
 	camera = new PlayerCamera(renderer, 960, 540, texture, self);
 
 	if (!texture) {
@@ -53,14 +53,14 @@ GameScene::GameScene(SDL_Renderer *renderer):
 
 GameScene::~GameScene() {
 	delete hud;
-	delete map;
+	delete match;
 	delete camera;
 
 	SDL_DestroyTexture(texture);
 }
 
 void GameScene::event_handler(SDL_Event &event) {
-	if (match.phase != Phase::BUY || 
+	if (match->phase != Phase::BUY || 
 		(
 			event.key.keysym.scancode != SDL_SCANCODE_W &&
 			event.key.keysym.scancode != SDL_SCANCODE_A &&
@@ -69,7 +69,7 @@ void GameScene::event_handler(SDL_Event &event) {
 		)
 	) 
 	{
-		for (Player *p : match.players) {
+		for (Player *p : match->players) {
 			if (!p->playable) {
 				continue;
 			}
@@ -95,29 +95,29 @@ void GameScene::event_handler(SDL_Event &event) {
 }
 
 void GameScene::update() {
-	for (Player *p : match.players) {
+	for (Player *p : match->players) {
 		p->update();
-		map->collision_handler(p);
+		match->map->collision_handler(p);
 	}
 
 	camera->update();
 	hud->update();
 
-	auto *obj = map->get_callout(self->position.x, self->position.y);
+	auto *obj = match->map->get_callout(self->position.x, self->position.y);
 
 	if (obj != nullptr) {
 		hud->update_callout(obj->name);
 	}
 
-	if (match.update()) {
-		if (match.winner == PlayerSide::T) {
+	if (match->update()) {
+		if (match->winner == PlayerSide::T) {
 			std::cout << "Terrorist win" << '\n';
 		} else {
 			std::cout << "Counter Terrorist win" << '\n';
 		}
 
 		std::thread t([&]() {
-			if (match.winner == self->side) {
+			if (match->winner == self->side) {
 				Mix_PlayMusic(Audio::loadMusic("assets/sounds/music/wonround.mp3"), 0);
 			} else {
 				Mix_PlayMusic(Audio::loadMusic("assets/sounds/music/lostround.mp3"), 0);
@@ -125,7 +125,7 @@ void GameScene::update() {
 
 			SDL_Delay(1000);
 
-			if (match.winner == PlayerSide::T) {
+			if (match->winner == PlayerSide::T) {
 				Mix_PlayChannel(-1, Audio::loadWAV("assets/sounds/terwin.wav"), 0);
 			} else {
 				Mix_PlayChannel(-1, Audio::loadWAV("assets/sounds/ctwin.wav"), 0);
@@ -137,18 +137,18 @@ void GameScene::update() {
 }
 
 void GameScene::fixed_update() {
-	for (Player *p : match.players) {
+	for (Player *p : match->players) {
 		p->fixed_update();
 	}
 
-	match.fixed_update();
+	match->fixed_update();
 }
 
 void GameScene::render() {
 	SDL_SetRenderTarget(renderer, texture);
 
-	map->render();
-	map->render_visible_area(self, match.players);
+	match->map->render();
+	match->map->render_visible_area(self, match->players);
 
 	SDL_SetRenderTarget(renderer, nullptr);
 
@@ -157,7 +157,7 @@ void GameScene::render() {
 }
 
 void GameScene::on_mouse_button_down(SDL_Event &event) {
-	if (match.phase != Phase::BUY) {
+	if (match->phase != Phase::BUY) {
 		self->fire();
 	}
 }

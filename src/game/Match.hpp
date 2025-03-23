@@ -2,7 +2,9 @@
 
 #include <vector>
 #include <utility>
+
 #include "../gameObjects/Player.hpp"
+#include "Map.hpp"
 
 enum Reward {
 	KILLALL,
@@ -42,15 +44,15 @@ public:
 	std::pair<int, int> lossInARow = { 0, 0 };
 	std::vector<Player *> players;
 	std::pair< std::vector<Player *>, std::vector<Player *>> team;
+	Player *defuser = nullptr, *planter = nullptr;
 	Phase phase = Phase::WARMUP;
-	int round = 1;
+	Map *map = nullptr;
+
+	int round = 1, winner = PlayerSide::SPECTATOR;
 	float timeLeft = 999, defuseTimer = 10, plantTimer = 3;
 	bool planting = false, defusing = false;
-	Player *defuser = nullptr;
-	Player *planter = nullptr;
-	int winner = PlayerSide::SPECTATOR;
 
-	Match();
+	Match(SDL_Renderer *renderer, std::string mapName);
 	~Match();
 
 	void add_player(Player *player);

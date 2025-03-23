@@ -6,12 +6,16 @@
 #include "../managers/Time.hpp"
 
 
-Match::Match() {}
+Match::Match(SDL_Renderer *renderer, std::string mapName) {
+	map = new Map(renderer, "assets/tilemaps/" + mapName + ".tmx");
+}
 
 Match::~Match() {
 	for (Player *p : players) {
 		delete p;
 	}
+
+	delete map;
 }
 
 void Match::add_player(Player *player) {

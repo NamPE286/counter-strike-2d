@@ -18,8 +18,7 @@ class GameScene : public MonoBehaviour {
 
 public:
 	Player *self = nullptr;
-	Match match;
-	Map *map = nullptr;
+	Match *match = nullptr;
 
 	GameScene(SDL_Renderer *renderer);
 	~GameScene();
