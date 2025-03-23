@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 #include "../managers/Time.hpp"
-
+#include "../utilities/Utils.hpp"
 
 Match::Match(SDL_Renderer *renderer, std::string mapName) {
 	map = new Map(renderer, "assets/tilemaps/" + mapName + ".tmx");
@@ -97,8 +97,21 @@ void Match::start() {
 }
 
 void Match::reset() {
+	auto *TSpawn = map->get_spawn(PlayerSide::T);
+	auto *CTSpawn = map->get_spawn(PlayerSide::CT);
+
 	for (Player *p : players) {
 		p->reset();
+
+		if (p->side == PlayerSide::T) {
+			p->set_position(Vec2(
+				(float)Utils::getRandomRange((int)TSpawn->x, int(TSpawn->x + TSpawn->width)),
+				(float)Utils::getRandomRange((int)TSpawn->y, int(TSpawn->y + TSpawn->height))));
+		} else if (p->side == PlayerSide::CT) {
+			p->set_position(Vec2(
+				(float)Utils::getRandomRange((int)CTSpawn->x, int(CTSpawn->x + CTSpawn->width)),
+				(float)Utils::getRandomRange((int)CTSpawn->y, int(CTSpawn->y + CTSpawn->height))));
+		}
 	}
 }
 

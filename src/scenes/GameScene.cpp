@@ -17,6 +17,10 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	match = new Match(renderer, "de_ancient");
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, match->map->w, match->map->h);
 
+	if (!texture) {
+		throw std::runtime_error("Failed to create texture: " + std::string(SDL_GetError()));
+	}
+
 	auto *TSpawn = match->map->get_spawn(PlayerSide::T);
 	auto *CTSpawn = match->map->get_spawn(PlayerSide::CT);
 
@@ -25,9 +29,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		this,
 		"Me",
 		PlayerSide::T,
-		Vec2(
-			(float)Utils::getRandomRange((int)TSpawn->x, int(TSpawn->x + TSpawn->width)),
-			(float)Utils::getRandomRange((int)TSpawn->y, int(TSpawn->y + TSpawn->height))),
+		Vec2(0, 0),
 		true);
 
 	match->add_player(self);
@@ -36,19 +38,14 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		this,
 		"BOT A",
 		PlayerSide::CT,
-		Vec2(
-			(float)Utils::getRandomRange((int)CTSpawn->x, int(CTSpawn->x + CTSpawn->width)),
-			(float)Utils::getRandomRange((int)CTSpawn->y, int(CTSpawn->y + CTSpawn->height))),
+		Vec2(0, 0),
 		false));
 
 	hud = new HUD(renderer, self, match);
 	camera = new PlayerCamera(renderer, 960, 540, texture, self);
-
-	if (!texture) {
-		throw std::runtime_error("Failed to create texture: " + std::string(SDL_GetError()));
-	}
-
 	Audio::dest = &self->position;
+
+	match->reset();
 }
 
 GameScene::~GameScene() {

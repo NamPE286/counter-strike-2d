@@ -37,7 +37,6 @@ class Match {
 	void CT_win(int rewardType);
 
 	void start();
-	void reset();
 public:
 	std::pair<int, int> scores = { 0, 0 };
 	std::pair<int, int> alive = { 0, 0 };
@@ -56,6 +55,7 @@ public:
 	~Match();
 
 	void add_player(Player *player);
+	void reset();
 
 	// Return true if winner are decided
 	bool update();
