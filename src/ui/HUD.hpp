@@ -12,6 +12,7 @@
 #include "MiniScoreboard.hpp"
 #include "../game/Match.hpp"
 #include "Alert.hpp"
+#include "Announcer.hpp"
 
 class HUD : public MonoBehaviour {
 	Player *player = nullptr;
@@ -27,10 +28,10 @@ class HUD : public MonoBehaviour {
 
 public:
 	Alert *alert = nullptr;
+	Announcer *announcer = nullptr;
 
 	HUD(SDL_Renderer *renderer, Player *player, Match *match);
 	~HUD();
-
 
 	void update();
 	void update_callout(std::string s);

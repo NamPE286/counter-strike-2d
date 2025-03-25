@@ -48,7 +48,7 @@ public:
 	Map *map = nullptr;
 
 	int round = 1, winner = PlayerSide::SPECTATOR;
-	float timeLeft = 300, defuseTimer = 10, plantTimer = 3;
+	float timeLeft = 15, defuseTimer = 10, plantTimer = 3;
 	bool planting = false, defusing = false;
 
 	Match(SDL_Renderer *renderer, std::string mapName);

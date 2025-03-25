@@ -62,6 +62,7 @@ HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
 	scoreboard = new Scoreboard(renderer, match);
 	miniScoreboard = new MiniScoreboard(renderer, match);
 	alert = new Alert(renderer, color);
+	announcer = new Announcer(renderer, color);
 }
 
 HUD::~HUD() {
@@ -116,7 +117,6 @@ void HUD::update() {
 	scoreboard->update();
 	miniScoreboard->update();
 
-
 	if (match->phase == Phase::WARMUP) {
 		int m = (int)match->timeLeft / 60;
 		int s = (int)match->timeLeft % 60;
@@ -163,6 +163,7 @@ void HUD::render() {
 	calloutText->render();
 	miniScoreboard->render();
 	alert->render();
+	announcer->render(false);
 
 	if (player->armor > 0) {
 		armorText->render();

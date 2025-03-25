@@ -13,6 +13,10 @@ void Alert::set_content(std::string content) {
 	text->set_position((WINDOW_WIDTH - text->rect.w) / 2, rect.y + (rect.h - text->rect.h) / 2);
 }
 
+void Alert::set_color(SDL_Color newColor) {
+	color = newColor;
+}
+
 void Alert::render() {
 	if (text->empty()) {
 		return;

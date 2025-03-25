@@ -15,5 +15,6 @@ public:
 	Alert(SDL_Renderer *renderer, SDL_Color color);
 
 	void set_content(std::string content);
+	void set_color(SDL_Color newColor);
 	void render();
 };
