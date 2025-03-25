@@ -88,12 +88,12 @@ void Match::CT_win(int rewardType) {
 
 void Match::start() {
 	for (Player *p : players) {
-		p->hp = 100;
 		p->money = 800;
 		p->armor = 0;
 		p->helmet = false;
-		p->reset();
 	}
+
+	reset();
 }
 
 void Match::reset() {

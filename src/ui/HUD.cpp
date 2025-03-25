@@ -122,6 +122,8 @@ void HUD::update() {
 		int s = (int)match->timeLeft % 60;
 
 		alert->set_content("Warmup " + Utils::getClockString(m, s));
+	} else {
+		alert->set_content("");
 	}
 }
 
@@ -163,7 +165,10 @@ void HUD::render() {
 	calloutText->render();
 	miniScoreboard->render();
 	alert->render();
-	announcer->render(false);
+
+	if (match->phase == Phase::POST_ROUND) {
+		announcer->render(player->side == match->winner);
+	}
 
 	if (player->armor > 0) {
 		armorText->render();

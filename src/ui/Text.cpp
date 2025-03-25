@@ -20,6 +20,12 @@ bool Text::empty() {
 }
 
 void Text::set_content(std::string newContent) {
+	if (newContent.empty()) {
+		content.clear();
+
+		return;
+	}
+
 	if (content == newContent) {
 		return;
 	}

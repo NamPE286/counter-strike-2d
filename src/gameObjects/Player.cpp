@@ -245,6 +245,7 @@ void Player::update() {
 
 				if (p->hp == 0) {
 					money += weapons[weaponSlot]->killReward;
+					money = std::min(money, 16000);
 					kill++;
 				}
 			}

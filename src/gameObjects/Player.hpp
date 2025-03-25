@@ -46,7 +46,7 @@ public:
 	const int size = 25, borderWidth = 6;
 
 	Vec2 position, velocity, acceleration, direction, prevPosition;
-	int hp = 100, armor = 0, money = 800;
+	int hp = 100, armor = 0, money = 16000;
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
 	bool playable = true, helmet = false;
