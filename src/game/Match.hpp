@@ -60,4 +60,6 @@ public:
 	// Return true if winner are decided
 	bool update();
 	void fixed_update();
+
+	bool begun() const;
 };

@@ -194,10 +194,15 @@ void Match::fixed_update() {
 		} else if (phase == Phase::POST_ROUND) {
 			reset();
 
+			round++;
 			phase = Phase::BUY;
 			timeLeft = (float)buyTime;
 		}
 	}
+}
+
+bool Match::begun() const {
+	return ((int)timeLeft >= (roundTime - 3)) && (round == 1) && (phase == Phase::PRE_PLANT);
 }
 
 void Match::start_planting(Player *p) {
