@@ -11,6 +11,7 @@
 #include "Scoreboard.hpp"
 #include "MiniScoreboard.hpp"
 #include "../game/Match.hpp"
+#include "Alert.hpp"
 
 class HUD : public MonoBehaviour {
 	Player *player = nullptr;
@@ -20,6 +21,8 @@ class HUD : public MonoBehaviour {
 		*calloutText = nullptr;
 	Scoreboard *scoreboard = nullptr;
 	MiniScoreboard *miniScoreboard = nullptr;
+	Alert *alert = nullptr;
+	Match *match = nullptr;
 
 	SDL_Color color = { 0, 0, 0, 0 };
 	SDL_Rect healthBarRect = { WINDOW_WIDTH / 2 - 267, WINDOW_HEIGHT - 20, 43, 4 };

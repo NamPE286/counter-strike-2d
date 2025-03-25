@@ -15,6 +15,10 @@ Text::~Text() {
 	SDL_DestroyTexture(texture);
 }
 
+bool Text::empty() {
+	return content.empty();
+}
+
 void Text::set_content(std::string newContent) {
 	if (content == newContent) {
 		return;

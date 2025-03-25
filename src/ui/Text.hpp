@@ -20,6 +20,7 @@ public:
 	Text(SDL_Renderer *renderer, TTF_Font *font, SDL_Color color);
 	~Text();
 
+	bool empty();
 	void set_content(std::string newContent);
 	void set_position(int x, int y);
 	void render();

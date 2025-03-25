@@ -21,9 +21,6 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		throw std::runtime_error("Failed to create texture: " + std::string(SDL_GetError()));
 	}
 
-	auto *TSpawn = match->map->get_spawn(PlayerSide::T);
-	auto *CTSpawn = match->map->get_spawn(PlayerSide::CT);
-
 	self = new Player(
 		renderer,
 		this,

@@ -4,15 +4,16 @@
 #include <map>
 #include <iostream>
 
+#include "../utilities/Utils.hpp"
 #include "../common.h"
 
 HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
-	MonoBehaviour(renderer), player(player)
+	MonoBehaviour(renderer), player(player), match(match)
 {
 	if (player->side == PlayerSide::T) {
-		color = { 255, 205, 100, 255 };
+		color = TColor;
 	} else if (player->side == PlayerSide::CT) {
-		color = { 154, 203, 249, 255 };
+		color = CTColor;
 	}
 
 	ammoText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 40), color);
@@ -60,6 +61,7 @@ HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
 
 	scoreboard = new Scoreboard(renderer, match);
 	miniScoreboard = new MiniScoreboard(renderer, match);
+	alert = new Alert(renderer, color);
 }
 
 HUD::~HUD() {
@@ -76,6 +78,7 @@ HUD::~HUD() {
 	delete secondaryGunBindText;
 	delete knifeBindText;
 	delete scoreboard;
+	delete alert;
 }
 
 void HUD::update() {
@@ -112,6 +115,14 @@ void HUD::update() {
 	healthBarRect.w = 43 * player->hp / 100;
 	scoreboard->update();
 	miniScoreboard->update();
+
+
+	if (match->phase == Phase::WARMUP) {
+		int m = (int)match->timeLeft / 60;
+		int s = (int)match->timeLeft % 60;
+
+		alert->set_content("Warmup " + Utils::getClockString(m, s));
+	}
 }
 
 void HUD::update_callout(std::string s) {
@@ -150,6 +161,8 @@ void HUD::render() {
 	knifeBindText->render();
 	weaponNameText->render();
 	calloutText->render();
+	miniScoreboard->render();
+	alert->render();
 
 	if (player->armor > 0) {
 		armorText->render();
@@ -162,6 +175,4 @@ void HUD::render() {
 	if (keyboard[SDL_SCANCODE_TAB]) {
 		scoreboard->render();
 	}
-
-	miniScoreboard->render();
 }

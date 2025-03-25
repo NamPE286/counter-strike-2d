@@ -6,6 +6,7 @@
 #include "../managers/Time.hpp"
 #include "../utilities/Utils.hpp"
 #include "../managers/Audio.hpp"
+#include "../common.h"
 
 void Player::update_position() {
 	prevPosition = position;
