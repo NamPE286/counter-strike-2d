@@ -113,6 +113,9 @@ void Match::reset() {
 				(float)Utils::getRandomRange((int)CTSpawn->y, int(CTSpawn->y + CTSpawn->height))));
 		}
 	}
+
+	winner = PlayerSide::SPECTATOR;
+	planting = defusing = false;
 }
 
 bool Match::update() {

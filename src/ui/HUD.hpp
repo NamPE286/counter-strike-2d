@@ -21,13 +21,13 @@ class HUD : public MonoBehaviour {
 		*calloutText = nullptr;
 	Scoreboard *scoreboard = nullptr;
 	MiniScoreboard *miniScoreboard = nullptr;
-	Alert *alert = nullptr;
 	Match *match = nullptr;
-
 	SDL_Color color = { 0, 0, 0, 0 };
 	SDL_Rect healthBarRect = { WINDOW_WIDTH / 2 - 267, WINDOW_HEIGHT - 20, 43, 4 };
 
 public:
+	Alert *alert = nullptr;
+
 	HUD(SDL_Renderer *renderer, Player *player, Match *match);
 	~HUD();
 
