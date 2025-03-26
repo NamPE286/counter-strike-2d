@@ -41,7 +41,7 @@ void Match::T_win(int rewardType) {
 
 	scores.first++;
 	lossInARow.first = 0;
-	lossInARow.second = std::max(lossInARow.second + 1, 5);
+	lossInARow.second = std::min(lossInARow.second + 1, 5);
 
 	for (Player *p : team.first) {
 		p->money += reward[rewardType];
@@ -63,7 +63,7 @@ void Match::CT_win(int rewardType) {
 	winner = PlayerSide::CT;
 
 	scores.second++;
-	lossInARow.first = std::max(lossInARow.first + 1, 5);
+	lossInARow.first = std::min(lossInARow.first + 1, 5);
 	lossInARow.second = 0;
 
 	for (Player *p : team.second) {
@@ -240,6 +240,8 @@ void Match::switch_side() {
 	}
 
 	std::swap(scores.first, scores.second);
+	std::swap(team.first, team.second);
+
 	lossInARow = { 0, 0 };
 	
 }

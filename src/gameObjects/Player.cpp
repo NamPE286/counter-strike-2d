@@ -270,7 +270,6 @@ void Player::update() {
 				p->take_damage(weapons[weaponSlot].get(), p->distance(bullet) < 3.7f);
 
 				if (p->hp == 0) {
-					std::cout << weapons[weaponSlot]->killReward << '\n';
 					money += weapons[weaponSlot]->killReward;
 					kill++;
 				}
