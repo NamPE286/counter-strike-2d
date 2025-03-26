@@ -48,7 +48,7 @@ void Match::T_win(int rewardType) {
 	}
 
 	for (Player *p : team.second) {
-		if (round % (maxRound / 2) == 1) {
+		if (round % (maxRound / 2) == 0) {
 			p->money += lossBonus[0];
 		} else {
 			p->money += lossBonus[lossInARow.second];
@@ -75,7 +75,7 @@ void Match::CT_win(int rewardType) {
 			continue;
 		}
 
-		if (round % (maxRound / 2) == 1) {
+		if (round % (maxRound / 2) == 0) {
 			p->money += lossBonus[0];
 		} else {
 			p->money += lossBonus[lossInARow.first];
