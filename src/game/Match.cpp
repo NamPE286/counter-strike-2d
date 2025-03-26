@@ -206,7 +206,7 @@ bool Match::is_first_round_start() const {
 }
 
 bool Match::is_last_round_of_first_half() const {
-	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (round == maxRound || round == (maxRound / 2));
+	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (round == (maxRound / 2));
 }
 
 void Match::start_planting(Player *p) {

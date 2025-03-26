@@ -25,7 +25,7 @@ enum class Phase {
 };
 
 class Match {
-	int maxRound = 24, maxPlayer = 5;
+	int maxRound = 4, maxPlayer = 5;
 	int roundTime = 105, buyTime = 20, postRoundTime = 7;
 	int reward[7] = { 3250, 3250, 3500, 3500, 800, 300, 300 };
 	int lossBonus[6] = { 1900, 1400, 1900, 2400, 2900, 3400 };
