@@ -122,7 +122,7 @@ void HUD::update() {
 		int s = (int)match->timeLeft % 60;
 
 		alert->set_content("Warmup " + Utils::getClockString(m, s));
-	} else if (match->begun()) {
+	} else if (match->is_first_round_start()) {
 		alert->set_content("MATCH STARTED");
 	} else {
 		alert->set_content("");

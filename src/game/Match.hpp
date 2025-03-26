@@ -61,5 +61,6 @@ public:
 	bool update();
 	void fixed_update();
 
-	bool begun() const;
+	bool is_first_round_start() const;
+	bool is_last_round_of_first_half() const;
 };

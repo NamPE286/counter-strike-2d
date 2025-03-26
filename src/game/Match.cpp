@@ -201,8 +201,12 @@ void Match::fixed_update() {
 	}
 }
 
-bool Match::begun() const {
+bool Match::is_first_round_start() const {
 	return ((int)timeLeft >= (roundTime - 3)) && (round == 1) && (phase == Phase::PRE_PLANT);
+}
+
+bool Match::is_last_round_of_first_half() const {
+	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (round == maxRound || round == (maxRound / 2));
 }
 
 void Match::start_planting(Player *p) {
