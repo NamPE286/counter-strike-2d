@@ -200,20 +200,22 @@ void Match::fixed_update() {
 
 			if (std::max(scores.first, scores.second) == maxRound / 2) {
 				Mix_PlayChannel(-1, Audio::loadWAV("assets/sounds/cs_stinger.wav"), 0);
+			} else if (round == maxRound / 2) {
+				Mix_PlayChannel(-1, Audio::loadWAV("assets/sounds/lastroundhalf.wav"), 0);
 			}
 		}
 	}
 }
 
-bool Match::is_first_round_start() const {
+bool Match::is_match_start_alert_visible() const {
 	return ((int)timeLeft >= (roundTime - 3)) && (round == 1) && (phase == Phase::PRE_PLANT);
 }
 
-bool Match::is_last_round_of_first_half() const {
+bool Match::is_last_round_half_alert_visible() const {
 	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (round == (maxRound / 2));
 }
 
-bool Match::is_match_point() {
+bool Match::is_match_point_alert_visible() {
 	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (std::max(scores.first, scores.second) == maxRound / 2);
 }
 

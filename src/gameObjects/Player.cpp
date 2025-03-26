@@ -116,6 +116,10 @@ void Player::reset() {
 
 	velocity = acceleration = direction = Vec2(0, 0);
 	hp = 100;
+
+	for (size_t i = 0; i < 513; i++) {
+		keyboard[i] = false;
+	}
 }
 
 void Player::stop_movement() {

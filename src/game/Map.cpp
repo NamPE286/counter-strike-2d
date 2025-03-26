@@ -290,8 +290,9 @@ void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool re
 	std::pair<float, float> r1 = points[1];
 
 	std::sort(points.begin(), points.end(), [&](const std::pair<float, float> &a, const std::pair<float, float> &b) {
-		return Utils::cross_product({ p->position.x, p->position.y }, { a.first, a.second }, { b.first, b.second }) > 0;
-		});
+		bool res = (Utils::cross_product({ p->position.x, p->position.y }, { a.first, a.second }, { b.first, b.second }) > 0);
+		return res;
+	});
 
 	auto it1 = std::find(points.begin(), points.end(), r0);
 	auto it2 = std::find(points.begin(), points.end(), r1);

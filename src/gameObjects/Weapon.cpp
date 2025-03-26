@@ -266,6 +266,8 @@ void Weapon::render() {
 void Weapon::reset() {
 	ammo = magSize;
 	reserveAmmo = reserveAmmoBase;
+
+	stop_firing();
 }
 
 bool Weapon::poll_bullets(Bullet &bullet) {
