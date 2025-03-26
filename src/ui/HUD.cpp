@@ -124,6 +124,8 @@ void HUD::update() {
 		alert->set_content("Warmup " + Utils::getClockString(m, s));
 	} else if (match->is_first_round_start()) {
 		alert->set_content("MATCH STARTED");
+	} else if (match->is_match_point()) {
+		alert->set_content("MATCH POINT");
 	} else if (match->is_last_round_of_first_half()) {
 		alert->set_content("LAST ROUND OF FIRST HALF");
 	} else {

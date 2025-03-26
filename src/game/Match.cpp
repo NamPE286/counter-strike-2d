@@ -197,6 +197,10 @@ void Match::fixed_update() {
 			round++;
 			phase = Phase::BUY;
 			timeLeft = (float)buyTime;
+
+			if (std::max(scores.first, scores.second) == maxRound / 2) {
+				Mix_PlayChannel(-1, Audio::loadWAV("assets/sounds/cs_stinger.wav"), 0);
+			}
 		}
 	}
 }
@@ -207,6 +211,10 @@ bool Match::is_first_round_start() const {
 
 bool Match::is_last_round_of_first_half() const {
 	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (round == (maxRound / 2));
+}
+
+bool Match::is_match_point() {
+	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (std::max(scores.first, scores.second) == maxRound / 2);
 }
 
 void Match::start_planting(Player *p) {

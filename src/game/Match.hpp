@@ -63,4 +63,5 @@ public:
 
 	bool is_first_round_start() const;
 	bool is_last_round_of_first_half() const;
+	bool is_match_point();
 };
