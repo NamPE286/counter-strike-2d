@@ -25,10 +25,11 @@ enum class Phase {
 };
 
 class Match {
-	int maxRound = 4, maxPlayer = 5;
+	int maxRound = 2, maxPlayer = 5;
 	int roundTime = 105, buyTime = 5, postRoundTime = 7;
 	int reward[7] = { 3250, 3250, 3500, 3500, 800, 300, 300 };
 	int lossBonus[6] = { 1900, 1400, 1900, 2400, 2900, 3400 };
+	bool sideSwitched = false;
 
 	void start_planting(Player *p);
 	void start_defusing(Player *p, bool kit);
@@ -64,4 +65,7 @@ public:
 	bool is_match_start_alert_visible() const;
 	bool is_last_round_half_alert_visible() const;
 	bool is_match_point_alert_visible();
+	bool is_side_switched();
+
+	void switch_side();
 };

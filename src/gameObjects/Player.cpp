@@ -134,6 +134,16 @@ void Player::stop_movement_y() {
 	velocity.y = acceleration.y = direction.y = 0;
 }
 
+void Player::switch_side() {
+	if (side == PlayerSide::T) {
+		side = PlayerSide::CT;
+		color = CTColor;
+	} else {
+		side = PlayerSide::T;
+		color = TColor;
+	}
+}
+
 bool Player::collide(Bullet bullet) {
 	SDL_Rect rect = {
 		(int)position.x - size / 2,

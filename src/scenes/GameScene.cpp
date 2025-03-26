@@ -128,6 +128,11 @@ void GameScene::update() {
 
 		t.detach();
 	}
+
+	if (match->is_side_switched()) {
+		delete hud;
+		hud = new HUD(renderer, self, match);
+	}
 }
 
 void GameScene::fixed_update() {

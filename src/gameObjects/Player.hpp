@@ -70,6 +70,7 @@ public:
 	void stop_movement();
 	void stop_movement_x();
 	void stop_movement_y();
+	void switch_side();
 
 	bool collide(Bullet bullet);
 	

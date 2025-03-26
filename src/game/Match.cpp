@@ -192,6 +192,11 @@ void Match::fixed_update() {
 			phase = Phase::PRE_PLANT;
 			timeLeft = (float)roundTime;
 		} else if (phase == Phase::POST_ROUND) {
+			if (round == maxRound / 2) {
+				switch_side();
+				sideSwitched = true;
+			}
+
 			reset();
 
 			round++;
@@ -217,6 +222,24 @@ bool Match::is_last_round_half_alert_visible() const {
 
 bool Match::is_match_point_alert_visible() {
 	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (std::max(scores.first, scores.second) == maxRound / 2);
+}
+
+bool Match::is_side_switched() {
+	if (!sideSwitched) {
+		return false;
+	}
+
+	sideSwitched = false;
+
+	return true;
+}
+
+void Match::switch_side() {
+	for (Player *p : players) {
+		p->switch_side();
+	}
+
+	std::swap(scores.first, scores.second);
 }
 
 void Match::start_planting(Player *p) {
