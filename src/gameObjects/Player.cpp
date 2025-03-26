@@ -110,7 +110,7 @@ void Player::take_damage(Weapon *w, bool headshot) {
 }
 
 void Player::reset() {
-	for (Weapon *w : weapons) {
+	for (auto w : weapons) {
 		w->reset();
 	}
 
@@ -135,6 +135,9 @@ void Player::stop_movement_y() {
 }
 
 void Player::switch_side() {
+	money = 800;
+	armor = 0;
+
 	if (side == PlayerSide::T) {
 		side = PlayerSide::CT;
 		color = CTColor;
@@ -226,23 +229,32 @@ Player::Player(SDL_Renderer *renderer, GameScene *scene, std::string name, int s
 		color = { 154, 203, 249, 255 };
 	}
 
-	weapons[0] = new Weapon(renderer, "AK-47", this, scene);
-	weapons[1] = new Weapon(renderer, "Glock-18", this, scene);
-	weapons[2] = new Weapon(renderer, "Knife", this, scene);
+	weapons[0] = std::make_shared<Weapon>(renderer, "AK-47", this, scene);
+	weapons[1] = std::make_shared<Weapon>(renderer, "Glock-18", this, scene);
+	weapons[2] = std::make_shared<Weapon>(renderer, "Knife", this, scene);
 
 	change_weapon(0);
 }
 
 Player::~Player() {
-	for (int i = 0; i < 3; i++) {
-		delete weapons[i];
-	}
 }
 
 void Player::update() {
 	update_position();
 
 	Bullet bullet(renderer);
+
+	for (int i = 0; i < 3; i++) {
+		if(!weapons[i]) {
+			continue;
+		}
+
+		weapons[i]->update();
+	}
+
+	if (!weapons[weaponSlot]) {
+		return;
+	}
 
 	while (weapons[weaponSlot]->poll_bullets(bullet)) {
 		if (target == nullptr) {
@@ -255,19 +267,15 @@ void Player::update() {
 			}
 
 			if (p->collide(bullet)) {
-				p->take_damage(weapons[weaponSlot], p->distance(bullet) < 3.7f);
+				p->take_damage(weapons[weaponSlot].get(), p->distance(bullet) < 3.7f);
 
 				if (p->hp == 0) {
+					std::cout << weapons[weaponSlot]->killReward << '\n';
 					money += weapons[weaponSlot]->killReward;
-					money = std::min(money, 16000);
 					kill++;
 				}
 			}
 		}
-	}
-
-	for (int i = 0; i < 3; i++) {
-		weapons[i]->update();
 	}
 }
 
@@ -423,5 +431,5 @@ void Player::stop_firing() {
 }
 
 Weapon *Player::get_weapon() const {
-	return weapons[weaponSlot];
+	return weapons[weaponSlot].get();
 }

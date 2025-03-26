@@ -25,7 +25,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		renderer,
 		this,
 		"Me",
-		PlayerSide::T,
+		PlayerSide::CT,
 		Vec2(0, 0),
 		true);
 
@@ -34,7 +34,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		renderer,
 		this,
 		"BOT A",
-		PlayerSide::CT,
+		PlayerSide::T,
 		Vec2(0, 0),
 		false));
 

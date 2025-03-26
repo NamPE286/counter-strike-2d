@@ -240,6 +240,8 @@ void Match::switch_side() {
 	}
 
 	std::swap(scores.first, scores.second);
+	lossInARow = { 0, 0 };
+	
 }
 
 void Match::start_planting(Player *p) {

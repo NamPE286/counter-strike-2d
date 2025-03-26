@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <array>
+#include <memory>
 
 #include "../gameObjects/Bullet.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
@@ -50,7 +52,7 @@ public:
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
 	bool playable = true, helmet = false;
-	Weapon *weapons[3] = { nullptr, nullptr, nullptr };
+	std::array<std::shared_ptr<Weapon>, 3> weapons;
 	int weaponSlot = 0;
 	std::string name;
 
