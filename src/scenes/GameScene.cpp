@@ -21,15 +21,13 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		throw std::runtime_error("Failed to create texture: " + std::string(SDL_GetError()));
 	}
 
-	self = new Player(
+	match->add_player(new Player(
 		renderer,
 		this,
 		"Me",
 		PlayerSide::CT,
 		Vec2(0, 0),
-		true);
-
-	match->add_player(self);
+		true));
 	match->add_player(new Player(
 		renderer,
 		this,
@@ -38,8 +36,9 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		Vec2(0, 0),
 		false));
 
+	self = match->players[0];
 	hud = new HUD(renderer, self, match);
-	camera = new PlayerCamera(renderer, 960, 540, texture, self);
+	camera = new PlayerCamera(renderer, 960, 540, texture, match->players[0]);
 	Audio::dest = &self->position;
 
 	match->reset();
@@ -63,13 +62,7 @@ void GameScene::event_handler(SDL_Event &event) {
 		)
 	) 
 	{
-		for (Player *p : match->players) {
-			if (!p->playable) {
-				continue;
-			}
-
-			p->event_handler(event);
-		}
+		self->event_handler(event);
 	}
 
 	switch (event.type) {

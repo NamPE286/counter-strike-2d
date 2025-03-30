@@ -69,28 +69,30 @@ void Audio::load_batch(std::vector<std::string> filePaths) {
 	}
 }
 
-void Audio::playWAV(Mix_Chunk *chunk, Vec2 src, int channel, float multiplier) {
+int Audio::playWAV(Mix_Chunk *chunk, Vec2 src, int channel, float multiplier) {
 	channel = Mix_PlayChannel(channel, chunk, 0);
 
 	if (channel == -1) {
-		return;
+		return -1;
 	}
 
 	Vec2 v = src + *dest * -1;
 	v = v.normalized();
 
 	float distance = std::sqrt((src.x - dest->x) * (src.x - dest->x) + (src.y - dest->y) * (src.y - dest->y));
-	float volume = std::max(0.0f, 255.0f - distance / multiplier);
+	float volume = std::max(0.0f, 255.0f - distance / multiplier) / 255;
 
 	float angle = std::atan2(v.y, v.x);
 	float l = 255.0f * (1.0f - std::cos(angle)) / 2.0f;
 	float r = 255.0f * (1.0f + std::cos(angle)) / 2.0f;
 
-	if (distance <= 5.0f) {
+	if (distance <= 1.0f) {
 		Mix_SetPanning(channel, 255, 255);
 	} else {
-		Mix_SetPanning(channel, (int)l, (int)r);
+		Mix_SetPanning(channel, int(l * volume), int(r * volume));
 	}
+
+	return channel;
 }
 
 Mix_Chunk *Audio::death() {

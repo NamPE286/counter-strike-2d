@@ -86,7 +86,7 @@ void Weapon::fixed_update_reload() {
 
 void Weapon::play_firing_sound(bool lowAmmo) {
 	Mix_HaltChannel(1);
-	Audio::playWAV(firingSound, owner->position, 1, 3.0f);
+	Audio::playWAV(firingSound, owner->position, 1, 7.0f);
 
 	if (lowAmmo) {
 		Audio::playWAV(Audio::loadWAV("assets/weapons/lowammo_01.wav"), owner->position);
@@ -114,7 +114,7 @@ void Weapon::play_reload_sound() {
 		SDL_Delay(200);
 
 		for (int i = 0; i < (int)reloadSound.size(); i++) {
-			int channel = Mix_PlayChannel(-1, reloadSound[i], 0);
+			int channel = Audio::playWAV(reloadSound[i], owner->position, -1, 2.5f);
 
 			while (Mix_Playing(channel) != 0) {
 				SDL_Delay(0);
@@ -135,7 +135,7 @@ void Weapon::play_reload_sound() {
 
 void Weapon::add_bullet(int x, int y, float angle, int range) {
 	Bullet tmp(renderer, angle, x, y, range);
-	tmp.length = target->match->map->distance(x, y, angle, range);
+	tmp.length = target->match->map->distance((float)x, (float)y, angle, range);
 
 	bullets.emplace_back(std::make_shared<Bullet>(tmp));
 	bulletQueue.push(tmp);
