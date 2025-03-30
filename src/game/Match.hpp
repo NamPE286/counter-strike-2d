@@ -28,7 +28,7 @@ class Match {
 	int maxRound = 4, maxPlayer = 10;
 	int roundTime = 105, buyTime = 5, postRoundTime = 7;
 	int reward[7] = { 3250, 3250, 3500, 3500, 800, 300, 300 };
-	int lossBonus[6] = { 1900, 1400, 1900, 2400, 2900, 3400 };
+	int lossBonus[5] = { 1400, 1900, 2400, 2900, 3400 };
 	bool sideSwitched = false;
 
 	void sort_players();
@@ -43,7 +43,7 @@ class Match {
 public:
 	std::pair<int, int> scores = { 0, 0 };
 	std::pair<int, int> alive = { 0, 0 };
-	std::pair<int, int> lossInARow = { 0, 0 };
+	std::pair<int, int> bonusLevel = { 1, 1 };
 	std::vector<Player *> players;
 	std::pair< std::vector<Player *>, std::vector<Player *>> team;
 	Player *defuser = nullptr, *planter = nullptr;

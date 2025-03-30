@@ -41,19 +41,15 @@ void Match::T_win(int rewardType) {
 	winner = PlayerSide::T;
 
 	scores.first++;
-	lossInARow.first = 0;
-	lossInARow.second = std::min(lossInARow.second + 1, 5);
+	bonusLevel.first = 0;
+	bonusLevel.second = std::min(bonusLevel.second + 1, 4);
 
 	for (Player *p : team.first) {
 		p->money += reward[rewardType];
 	}
 
 	for (Player *p : team.second) {
-		if (round % (maxRound / 2) == 0) {
-			p->money += lossBonus[0];
-		} else {
-			p->money += lossBonus[lossInARow.second];
-		}
+		p->money += lossBonus[bonusLevel.second];
 	}
 
 	phase = Phase::POST_ROUND;
@@ -64,8 +60,8 @@ void Match::CT_win(int rewardType) {
 	winner = PlayerSide::CT;
 
 	scores.second++;
-	lossInARow.first = std::min(lossInARow.first + 1, 5);
-	lossInARow.second = 0;
+	bonusLevel.first = std::min(bonusLevel.first + 1, 4);
+	bonusLevel.second = 0;
 
 	for (Player *p : team.second) {
 		p->money += reward[rewardType];
@@ -76,11 +72,7 @@ void Match::CT_win(int rewardType) {
 			continue;
 		}
 
-		if (round % (maxRound / 2) == 0) {
-			p->money += lossBonus[0];
-		} else {
-			p->money += lossBonus[lossInARow.first];
-		}
+		p->money += lossBonus[bonusLevel.first];
 	}
 
 	phase = Phase::POST_ROUND;
@@ -245,7 +237,7 @@ void Match::switch_side() {
 	std::swap(scores.first, scores.second);
 	std::swap(team.first, team.second);
 
-	lossInARow = { 0, 0 };
+	bonusLevel = { 1, 1 };
 }
 
 void Match::sort_players() {
