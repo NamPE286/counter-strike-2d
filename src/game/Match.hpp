@@ -31,6 +31,8 @@ class Match {
 	int lossBonus[6] = { 1900, 1400, 1900, 2400, 2900, 3400 };
 	bool sideSwitched = false;
 
+	void sort_players();
+
 	void start_planting(Player *p);
 	void start_defusing(Player *p, bool kit);
 
@@ -64,7 +66,7 @@ public:
 
 	bool is_match_start_alert_visible() const;
 	bool is_last_round_half_alert_visible() const;
-	bool is_match_point_alert_visible();
+	bool is_match_point_alert_visible() const;
 	bool is_side_switched();
 
 	void switch_side();

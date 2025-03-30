@@ -1,5 +1,6 @@
 #include "Match.hpp"
 
+#include <algorithm>
 #include <stdexcept>
 
 #include "../managers/Audio.hpp"
@@ -116,6 +117,8 @@ void Match::reset() {
 
 	winner = PlayerSide::SPECTATOR;
 	planting = defusing = false;
+
+	sort_players();
 }
 
 bool Match::update() {
@@ -220,7 +223,7 @@ bool Match::is_last_round_half_alert_visible() const {
 	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (round == (maxRound / 2));
 }
 
-bool Match::is_match_point_alert_visible() {
+bool Match::is_match_point_alert_visible() const {
 	return (phase == Phase::BUY) && (timeLeft >= buyTime - 3) && (std::max(scores.first, scores.second) == maxRound / 2);
 }
 
@@ -243,7 +246,12 @@ void Match::switch_side() {
 	std::swap(team.first, team.second);
 
 	lossInARow = { 0, 0 };
-	
+}
+
+void Match::sort_players() {
+	std::sort(players.begin(), players.end(), [](Player *a, Player *b) {
+		return (a->kill * 2 + a->assist) > (b->kill * 2 + b->assist);
+	});
 }
 
 void Match::start_planting(Player *p) {
