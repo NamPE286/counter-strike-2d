@@ -8,7 +8,6 @@
 
 #include "../game/Map.hpp"
 #include "../managers/Audio.hpp"
-#include "../ui/Text.hpp"
 
 GameScene::GameScene(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)

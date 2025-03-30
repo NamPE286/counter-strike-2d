@@ -24,6 +24,7 @@ class Map : public MonoBehaviour {
 	tmx_layer *get_layer(std::string name);
 
 public:
+	std::string name;
 	int w = 0, h = 0;
 
 	Map(SDL_Renderer* renderer, std::string filePath);

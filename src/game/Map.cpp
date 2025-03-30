@@ -187,6 +187,11 @@ Map::Map(SDL_Renderer *renderer, std::string filePath):
 		throw std::runtime_error("Failed to load tilemap " + filePath);
 	}
 
+	size_t index = filePath.find("de_");
+
+	name = filePath.substr(index + 3, filePath.size() - index - 7);
+	name[0] = toupper(name[0]);
+
 	w = map->width * map->tile_width, h = map->height * map->tile_height;
 	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, w, h);
 
