@@ -45,7 +45,7 @@ void Map::render_all_layers(tmx_layer *layers) {
 }
 
 void Map::render_image_layer(tmx_image *image) {
-	SDL_Rect dim;
+	SDL_Rect dim = { 0, 0, 0, 0 };
 	dim.x = dim.y = 0;
 
 	SDL_Texture *texture = (SDL_Texture *)image->resource_image;
@@ -85,7 +85,7 @@ void Map::render_layer(tmx_layer *layer) {
 }
 
 void Map::render_tile(void *image, unsigned int sx, unsigned int sy, unsigned int sw, unsigned int sh, unsigned int dx, unsigned int dy, float opacity, unsigned int flags) {
-	SDL_Rect src_rect, dest_rect;
+	SDL_Rect src_rect = { 0, 0, 0, 0 }, dest_rect = { 0, 0, 0, 0 };
 	src_rect.x = sx;
 	src_rect.y = sy;
 	src_rect.w = dest_rect.w = sw;
@@ -222,7 +222,7 @@ void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool re
 	std::vector<std::pair<float, float>> points;
 	std::vector<float> offsets = { 0.0f, -0.05f, 0.05f };
 	float mouseAngle = Utils::getAngle((int)p->position.x, (int)p->position.y, Mouse::x, Mouse::y);
-	float fov = 2.35619;
+	float fov = 2.35619f;
 
 	pointTmp.push_back({ int(p->position.x + 10000.0f * cos(mouseAngle - fov / 2)), int(p->position.y + 10000.0f * sin(mouseAngle - fov / 2)) });
 	pointTmp.push_back({ int(p->position.x + 10000.0f * cos(mouseAngle + fov / 2)), int(p->position.y + 10000.0f * sin(mouseAngle + fov / 2)) });
@@ -423,8 +423,8 @@ int Map::distance(float originX, float originY, float angle, int length, int ste
 
 		if (tile && tile->collision) {
 			if (step != 0.0f) {
-				len += (float)step;
-				step = 0.0f;
+				len += step;
+				step = 0;
 			} else {
 				return len;
 			}
@@ -474,8 +474,8 @@ tmx_object *Map::get_callout(float x, float y) {
 
 	while (obj) {
 		SDL_FRect rect = {
-			obj->x, obj->y,
-			obj->width, obj->height
+			(float)obj->x, (float)obj->y,
+			(float)obj->width, (float)obj->height
 		};
 		SDL_FPoint point = { x, y };
 
