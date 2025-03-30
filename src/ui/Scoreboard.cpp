@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include "../common.h"
+
 Scoreboard::Scoreboard(SDL_Renderer *renderer, Match *match):
 	MonoBehaviour(renderer), match(match)
 {

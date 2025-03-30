@@ -1,15 +1,14 @@
 #include "GameScene.hpp"
 
-#include <SDL2/SDL_mixer.h>
 #include <iostream>
+#include <SDL2/SDL_mixer.h>
 #include <string>
 #include <thread>
+#include <vector>
 
-#include "../managers/Font.hpp"
+#include "../game/Map.hpp"
 #include "../managers/Audio.hpp"
-#include "../managers/Time.hpp"
-#include "../utilities/Utils.hpp"
-#include "../common.h"
+#include "../ui/Text.hpp"
 
 GameScene::GameScene(SDL_Renderer *renderer):
 	MonoBehaviour(renderer)

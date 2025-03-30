@@ -3,7 +3,6 @@
 #include <SDL2/SDL.h>
 
 #include "../gameObjects/Pointer.hpp"
-#include "../managers/Scene.hpp"
 
 class Game {
 	SDL_Window *window = nullptr;

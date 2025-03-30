@@ -1,18 +1,16 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include <vector>
 
-#include "../ui/Text.hpp"
-#include "../gameObjects/Player.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../common.h"
-#include "../gameObjects/Player.hpp"
-#include "Scoreboard.hpp"
-#include "MiniScoreboard.hpp"
 #include "../game/Match.hpp"
+#include "../gameObjects/Player.hpp"
+#include "../ui/Text.hpp"
 #include "Alert.hpp"
 #include "Announcer.hpp"
+#include "MiniScoreboard.hpp"
+#include "Scoreboard.hpp"
 
 class HUD : public MonoBehaviour {
 	Player *player = nullptr;

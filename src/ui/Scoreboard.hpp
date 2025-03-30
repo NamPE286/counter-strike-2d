@@ -1,9 +1,8 @@
 #pragma once
 
-#include <SDL2/SDL.h>
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../game/Match.hpp"
-#include "../common.h"
+#include <SDL2/SDL.h>
 
 class Scoreboard : public MonoBehaviour {
 	int w = 1000, h = 562;

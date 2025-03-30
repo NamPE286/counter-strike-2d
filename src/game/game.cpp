@@ -1,18 +1,16 @@
 #include "Game.hpp"
 
-#include <SDL2/SDL_mixer.h>
+#include <chrono>
 #include <stdexcept>
 #include <string>
-#include <chrono>
 #include <thread>
-#include <iostream>
 
+#include "../common.h"
+#include "../managers/Audio.hpp"
 #include "../managers/Font.hpp"
 #include "../managers/Time.hpp"
-#include "../gameObjects/Player.hpp"
-#include "../common.h"
 #include "../scenes/GameScene.hpp"
-#include "../managers/Audio.hpp"
+#include "../managers/Scene.hpp"
 
 Game::Game() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {

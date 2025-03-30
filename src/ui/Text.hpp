@@ -4,7 +4,6 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 
-#include "../managers/Font.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
 
 class Text : public MonoBehaviour {

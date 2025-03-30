@@ -1,7 +1,6 @@
-#include <SDL2/SDL.h>
-#include <stack>
-#include <memory>
 #include "../behaviours/MonoBehaviour.hpp"
+#include <memory>
+#include <stack>
 
 namespace Scene {
 	inline SDL_Renderer *renderer = nullptr;

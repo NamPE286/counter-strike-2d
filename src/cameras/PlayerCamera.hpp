@@ -1,8 +1,8 @@
 #pragma once
 
-#include <SDL2/SDL.h>
-#include "../gameObjects/Player.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
+#include "../gameObjects/Player.hpp"
+#include <SDL2/SDL.h>
 
 class PlayerCamera : public MonoBehaviour {
 	SDL_Texture *texture = nullptr;

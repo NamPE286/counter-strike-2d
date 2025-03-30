@@ -1,9 +1,9 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <map>
 #include <SDL2/SDL_mixer.h>
+#include <string>
+#include <vector>
 
 #include "../geometry/Vec2.hpp"
 

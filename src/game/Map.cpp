@@ -1,15 +1,16 @@
 #include "Map.hpp"
 
-#include <stdexcept>
-#include <iostream>
-#include <tmx.h>
-#include <vector>
-#include <utility>
 #include <algorithm>
+#include <iostream>
+#include <SDL2/SDL_image.h>
 #include <set>
+#include <stdexcept>
+#include <tmx.h>
+#include <utility>
+#include <vector>
 
-#include "../utilities/Utils.hpp"
 #include "../managers/Mouse.hpp"
+#include "../utilities/Utils.hpp"
 
 SDL_Renderer *_renderer = nullptr;
 

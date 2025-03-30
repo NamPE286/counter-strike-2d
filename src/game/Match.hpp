@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include "../gameObjects/Player.hpp"
 #include "Map.hpp"

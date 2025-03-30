@@ -1,10 +1,9 @@
 #pragma once
 
-#include <string>
-#include <vector>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <string>
 #include <tmx.h>
+#include <vector>
 
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../gameObjects/Player.hpp"

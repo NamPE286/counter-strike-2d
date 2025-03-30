@@ -1,14 +1,11 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include <vector>
 
-#include "../ui/Text.hpp"
 #include "../ui/HUD.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../gameObjects/Player.hpp"
 #include "../game/Match.hpp"
-#include "../game/Map.hpp"
 #include "../cameras/PlayerCamera.hpp"
 
 class GameScene : public MonoBehaviour {

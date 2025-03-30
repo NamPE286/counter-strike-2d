@@ -1,18 +1,14 @@
 #pragma once
 
-#include <string>
-#include <vector>
-#include <stdexcept>
-#include <thread>
-#include <queue>
 #include <memory>
+#include <queue>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <string>
+#include <vector>
 
 #include "../behaviours/MonoBehaviour.hpp"
 #include "Bullet.hpp"
-#include "../geometry/Vec2.hpp"
-#include "../managers/Audio.hpp"
 
 class GameScene;
 class Player;

@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <vector>
+
 #include "../geometry/Vec2.hpp"
 
 namespace Utils {

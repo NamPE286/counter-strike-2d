@@ -4,7 +4,6 @@
 
 #include "../managers/Font.hpp"
 #include "../utilities/Utils.hpp"
-#include "../common.h"
 
 MiniScoreboard::MiniScoreboard(SDL_Renderer *renderer, Match *match):
 	MonoBehaviour(renderer), match(match)

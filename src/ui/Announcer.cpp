@@ -1,5 +1,10 @@
 #include "Announcer.hpp"
 
+#include <SDL2/SDL.h>
+#include <string>
+
+#include "../managers/Font.hpp"
+
 Announcer::Announcer(SDL_Renderer *renderer, SDL_Color color):
 	MonoBehaviour(renderer), color(color)
 {

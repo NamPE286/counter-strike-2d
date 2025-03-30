@@ -1,10 +1,11 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+
 #include "../behaviours/MonoBehaviour.hpp"
+#include "../common.h"
 #include "../game/Match.hpp"
 #include "../ui/Text.hpp"
-#include "../common.h"
 
 class MiniScoreboard : public MonoBehaviour {
 	Match *match = nullptr;

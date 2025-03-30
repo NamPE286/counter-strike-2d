@@ -1,11 +1,8 @@
 #pragma once
 
-#include <SDL2/SDL.h>
-#include <string>
-
-#include "Text.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../common.h"
+#include "Text.hpp"
 
 class Announcer : public MonoBehaviour {
 	Text *wonText = nullptr;

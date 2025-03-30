@@ -1,7 +1,7 @@
 #include "PlayerCamera.hpp"
 
-#include "../managers/Mouse.hpp"
 #include "../common.h"
+#include "../managers/Mouse.hpp"
 
 PlayerCamera::PlayerCamera(SDL_Renderer *renderer, int w, int h, SDL_Texture *texture, Player *player):
 	MonoBehaviour(renderer), texture(texture), player(player)

@@ -1,11 +1,11 @@
 #include "HUD.hpp"
 
-#include <string>
 #include <map>
-#include <iostream>
+#include <string>
 
-#include "../utilities/Utils.hpp"
 #include "../common.h"
+#include "../managers/Font.hpp"
+#include "../utilities/Utils.hpp"
 
 HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
 	MonoBehaviour(renderer), player(player), match(match)

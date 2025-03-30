@@ -1,12 +1,13 @@
-#include "Player.hpp"
 #include "../scenes/GameScene.hpp"
+#include "Player.hpp"
 
 #include <iostream>
+#include <SDL2/SDL_mixer.h>
+#include <utility>
 
-#include "../managers/Time.hpp"
-#include "../utilities/Utils.hpp"
-#include "../managers/Audio.hpp"
 #include "../common.h"
+#include "../managers/Audio.hpp"
+#include "../managers/Time.hpp"
 
 void Player::update_position() {
 	prevPosition = position;

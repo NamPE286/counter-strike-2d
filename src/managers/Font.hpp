@@ -1,11 +1,10 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include <map>
 #include <SDL2/SDL_ttf.h>
 #include <string>
-#include <vector>
 #include <utility>
-#include <map>
+#include <vector>
 
 namespace Font {
 	inline std::map<std::pair<std::string, int>, TTF_Font *> fontMap;

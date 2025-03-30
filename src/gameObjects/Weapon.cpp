@@ -1,13 +1,15 @@
 #include "Weapon.hpp"
 
 #include <iostream>
-#include <thread>
 #include <stdexcept>
+#include <thread>
 
-#include "../managers/Time.hpp"
+#include "../geometry/Vec2.hpp"
+#include "../managers/Audio.hpp"
 #include "../managers/Mouse.hpp"
-#include "../utilities/Utils.hpp"
+#include "../managers/Time.hpp"
 #include "../scenes/GameScene.hpp"
+#include "../utilities/Utils.hpp"
 #include "Player.hpp"
 
 void Weapon::fixed_update_fire() {
