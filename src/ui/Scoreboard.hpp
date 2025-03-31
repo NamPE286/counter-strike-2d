@@ -17,6 +17,7 @@ class Scoreboard : public MonoBehaviour {
 	Match *match = nullptr;
 	Text *TScoreText = nullptr, *CTScoreText = nullptr,
 		*TText = nullptr, *CTText = nullptr,
+		*TAliveText = nullptr, *CTAliveText = nullptr,
 		*infoText = nullptr, *timeElapsedText = nullptr;
 
 public:

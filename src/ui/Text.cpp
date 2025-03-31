@@ -11,7 +11,10 @@ Text::Text(SDL_Renderer *renderer, TTF_Font *font, SDL_Color color):
 }
 
 Text::~Text() {
-	SDL_FreeSurface(surface);
+	if (surface) {
+		SDL_FreeSurface(surface);
+	}
+
 	SDL_DestroyTexture(texture);
 }
 

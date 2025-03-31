@@ -30,6 +30,9 @@ Scoreboard::Scoreboard(SDL_Renderer *renderer, Match *match):
 	CTText = new Text(renderer, Font::load("assets/fonts/stratum2-medium.ttf", 16), CTColor);
 	CTText->set_content("Counter-Ter");
 	CTText->set_position(xOffset + 28 - (CTText->rect.w) / 2, yOffset + 50 + CTScoreText->rect.h + 15);
+
+	TAliveText = new Text(renderer, Font::load("assets/fonts/stratum2-regular.ttf", 16), TColor);
+	CTAliveText = new Text(renderer, Font::load("assets/fonts/stratum2-regular.ttf", 16), CTColor);
 }
 
 Scoreboard::~Scoreboard() {
@@ -40,6 +43,8 @@ Scoreboard::~Scoreboard() {
 	delete CTText,
 	delete infoText;
 	delete timeElapsedText;
+	delete TAliveText;
+	delete CTAliveText;
 }
 
 void Scoreboard::update() {
@@ -50,8 +55,15 @@ void Scoreboard::update() {
 
 	timeElapsedText->set_content(Utils::getClockString(m, s));
 	timeElapsedText->set_position(rect.x + rect.w - padding - timeElapsedText->rect.w, rect.y + padding);
+
 	TScoreText->set_content(std::to_string(match->scores.first));
 	CTScoreText->set_content(std::to_string(match->scores.second));
+
+	TAliveText->set_content("Alive " + std::to_string(match->alive.first) + "/" + std::to_string(match->team.first.size()));
+	CTAliveText->set_content("Alive " + std::to_string(match->alive.second) + "/" + std::to_string(match->team.second.size()));
+
+	TAliveText->set_position(TScoreText->rect.x - 12, TScoreText->rect.y + TScoreText->rect.h + TText->rect.h + 10);
+	CTAliveText->set_position(CTScoreText->rect.x - 12, CTScoreText->rect.y + CTScoreText->rect.h + CTText->rect.h + 10);
 }
 
 void Scoreboard::render() {
@@ -64,6 +76,8 @@ void Scoreboard::render() {
 	CTScoreText->render();
 	TText->render();
 	CTText->render();
+	TAliveText->render();
+	CTAliveText->render();
 
 	int xOffset = rect.x + padding;
 	int yOffset = rect.y + padding + infoText->rect.h;
