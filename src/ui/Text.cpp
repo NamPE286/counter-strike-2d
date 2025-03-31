@@ -11,10 +11,7 @@ Text::Text(SDL_Renderer *renderer, TTF_Font *font, SDL_Color color):
 }
 
 Text::~Text() {
-	if (surface) {
-		SDL_FreeSurface(surface);
-	}
-
+	SDL_FreeSurface(surface);
 	SDL_DestroyTexture(texture);
 }
 
@@ -57,8 +54,12 @@ void Text::set_position(int x, int y) {
 	rect.x = x, rect.y = y;
 }
 
-void Text::center(int w) {
+void Text::align_center(int w) {
 	rect.x += (w - rect.w) / 2;
+}
+
+void Text::align_right(int w) {
+	rect.x += w - rect.w;
 }
 
 void Text::render() {

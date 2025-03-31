@@ -102,9 +102,6 @@ void Player::take_damage(Weapon *w, bool headshot) {
 				Mix_PlayChannel(-1, Audio::bodyshot_no_armor(), 0);
 			}
 		}
-
-		armor = 0, helmet = false;
-		death++;
 	}
 
 	std::cout << "Damage taken: " << (int)dmg << ". HP: " << hp << " Armor: " << armor << " Helmet: " << helmet << '\n';

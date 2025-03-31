@@ -11,6 +11,62 @@ void Scoreboard::render_column_name() {
 	}
 }
 
+void Scoreboard::render_row(int x, int y, Player *p) {
+	for (size_t i = 0; i < columnWidth.size(); i++) {
+		SDL_Rect r = { x, y, columnWidth[i], 20 };
+		SDL_Color color = { 255, 255, 255, 255 };
+
+		if (p->side == PlayerSide::T) {
+			color = TColor;
+		} else if (p->side == PlayerSide::CT) {
+			color = CTColor;
+		}
+
+		Text *text = text = new Text(renderer, Font::load("assets/fonts/stratum2-medium.ttf", 16), color);
+
+		if (i == columnWidth.size() - 1) {
+			SDL_SetRenderDrawColor(renderer, 80, 80, 80, 200);
+		} else if (i % 2 == 0) {
+			SDL_SetRenderDrawColor(renderer, 48, 48, 48, 200);
+		} else {
+			SDL_SetRenderDrawColor(renderer, 60, 60, 60, 200);
+		}
+
+		SDL_RenderFillRect(renderer, &r);
+		if (columnName[i] == "") {
+			text->set_content(p->name);
+			text->set_position(x, y);
+			text->rect.x += 20;
+		} else if (columnName[i] == "Money") {
+			text->set_content("$" + std::to_string(p->money));
+			text->set_position(x, y);
+			text->align_right(columnWidth[i]);
+			text->rect.x -= 5;
+		} else if (columnName[i] == "Kills") {
+			text->set_content(std::to_string(p->kill));
+			text->set_position(x, y);
+			text->align_center(columnWidth[i]);
+		} else if (columnName[i] == "Deaths") {
+			text->set_content(std::to_string(p->death));
+			text->set_position(x, y);
+			text->align_center(columnWidth[i]);
+		} else if (columnName[i] == "Assists") {
+			text->set_content(std::to_string(p->assist));
+			text->set_position(x, y);
+			text->align_center(columnWidth[i]);
+		} else if (columnName[i] == "Scores") {
+			text->set_content(std::to_string(p->kill * 2 + p->assist));
+			text->set_position(x, y);
+			text->align_center(columnWidth[i]);
+		}
+
+		text->render();
+
+		x += columnWidth[i];
+		delete text;
+	}
+}
+
 Scoreboard::Scoreboard(SDL_Renderer *renderer, Match *match):
 	MonoBehaviour(renderer), match(match)
 {
@@ -48,7 +104,7 @@ Scoreboard::Scoreboard(SDL_Renderer *renderer, Match *match):
 		columnNameText[i] = std::unique_ptr<Text>(new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 12), { 180, 180, 180, 255 }));
 		columnNameText[i]->set_content(columnName[i]);
 		columnNameText[i]->set_position(x, yOffset);
-		columnNameText[i]->center(columnWidth[i]);
+		columnNameText[i]->align_center(columnWidth[i]);
 
 		x += columnWidth[i];
 	}
@@ -60,7 +116,6 @@ Scoreboard::~Scoreboard() {
 	delete CTScoreText;
 	delete TText;
 	delete CTText;
-	delete infoText;
 	delete timeElapsedText;
 	delete TAliveText;
 	delete CTAliveText;
@@ -113,4 +168,20 @@ void Scoreboard::render() {
 	xOffset += 80;
 
 	render_column_name();
+
+	yOffset += 25;
+
+	for (Player *p : match->team.second) {
+		render_row(xOffset, yOffset, p);
+
+		yOffset += 22;
+	}
+
+	yOffset = 430;
+
+	for (Player *p : match->team.first) {
+		render_row(xOffset, yOffset, p);
+
+		yOffset += 22;
+	}
 }

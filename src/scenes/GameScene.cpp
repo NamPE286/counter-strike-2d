@@ -34,6 +34,14 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		Vec2(0, 0),
 		false));
 
+	match->add_player(new Player(
+		renderer,
+		this,
+		"BOT B",
+		PlayerSide::CT,
+		Vec2(0, 0),
+		false));
+
 	self = match->players[0];
 	hud = new HUD(renderer, self, match);
 	camera = new PlayerCamera(renderer, 960, 540, texture, match->players[0]);
