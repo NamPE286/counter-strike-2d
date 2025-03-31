@@ -84,7 +84,7 @@ void Match::start() {
 
 	for (Player *p : players) {
 		p->money = 800;
-		p->armor = 0;
+		p->armor = p->kill = p->death = p->assist = 0;
 		p->helmet = false;
 	}
 
