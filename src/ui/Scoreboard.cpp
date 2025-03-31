@@ -1,10 +1,15 @@
 #include "Scoreboard.hpp"
 
 #include <cmath>
-#include <iostream>
 
 #include "../managers/Font.hpp"
 #include "../utilities/Utils.hpp"
+
+void Scoreboard::render_column_name() {
+	for (auto &i : columnNameText) {
+		i->render();
+	}
+}
 
 Scoreboard::Scoreboard(SDL_Renderer *renderer, Match *match):
 	MonoBehaviour(renderer), match(match)
@@ -33,14 +38,28 @@ Scoreboard::Scoreboard(SDL_Renderer *renderer, Match *match):
 
 	TAliveText = new Text(renderer, Font::load("assets/fonts/stratum2-regular.ttf", 16), TColor);
 	CTAliveText = new Text(renderer, Font::load("assets/fonts/stratum2-regular.ttf", 16), CTColor);
+
+	xOffset += 80;
+	yOffset -= 10;
+
+	int x = xOffset;
+
+	for (size_t i = 0; i < columnName.size(); i++) {
+		columnNameText[i] = std::unique_ptr<Text>(new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 12), { 180, 180, 180, 255 }));
+		columnNameText[i]->set_content(columnName[i]);
+		columnNameText[i]->set_position(x, yOffset);
+		columnNameText[i]->center(columnWidth[i]);
+
+		x += columnWidth[i];
+	}
 }
 
 Scoreboard::~Scoreboard() {
 	delete infoText;
 	delete TScoreText;
-	delete CTScoreText,
+	delete CTScoreText;
 	delete TText;
-	delete CTText,
+	delete CTText;
 	delete infoText;
 	delete timeElapsedText;
 	delete TAliveText;
@@ -91,5 +110,7 @@ void Scoreboard::render() {
 		yOffset + 10);
 
 	yOffset += 50;
+	xOffset += 80;
 
+	render_column_name();
 }

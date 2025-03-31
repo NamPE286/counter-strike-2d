@@ -22,5 +22,6 @@ public:
 	bool empty();
 	void set_content(std::string newContent);
 	void set_position(int x, int y);
+	void center(int w);
 	void render();
 };

@@ -57,6 +57,10 @@ void Text::set_position(int x, int y) {
 	rect.x = x, rect.y = y;
 }
 
+void Text::center(int w) {
+	rect.x += (w - rect.w) / 2;
+}
+
 void Text::render() {
 	SDL_RenderCopy(renderer, texture, nullptr, &rect);
 }
