@@ -15,11 +15,12 @@ class Scoreboard : public MonoBehaviour {
 		w, h
 	};
 	Match *match = nullptr;
-	Text *TScoreText = nullptr, *CTScoreText = nullptr, *infoText = nullptr, *timeElapsed = nullptr;
+	Text *TScoreText = nullptr, *CTScoreText = nullptr, *infoText = nullptr, *timeElapsedText = nullptr;
 
 public:
 	Scoreboard(SDL_Renderer *renderer, Match *match);
 	~Scoreboard();
 
+	void update();
 	void render();
 };

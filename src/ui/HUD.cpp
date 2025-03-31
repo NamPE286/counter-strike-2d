@@ -1,5 +1,6 @@
 #include "HUD.hpp"
 
+#include <cmath>
 #include <map>
 #include <string>
 
@@ -118,7 +119,7 @@ void HUD::update() {
 	miniScoreboard->update();
 
 	if (match->phase == Phase::WARMUP) {
-		int m = (int)match->timeLeft / 60;
+		int m = (int)std::ceil(match->timeLeft) / 60;
 		int s = (int)match->timeLeft % 60;
 
 		alert->set_content("Warmup " + Utils::getClockString(m, s));
@@ -131,6 +132,8 @@ void HUD::update() {
 	} else {
 		alert->set_content("");
 	}
+
+	scoreboard->update();
 }
 
 void HUD::update_callout(std::string s) {

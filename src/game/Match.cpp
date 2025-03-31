@@ -80,6 +80,8 @@ void Match::CT_win(int rewardType) {
 }
 
 void Match::start() {
+	timeElapsed = 0.0;
+
 	for (Player *p : players) {
 		p->money = 800;
 		p->armor = 0;
@@ -160,7 +162,8 @@ bool Match::update() {
 
 void Match::fixed_update() {
 	timeLeft -= Time::fixedDeltaTime / 1000;
-	timeLeft = (float)std::max(0.0f, timeLeft);
+	timeLeft = std::max(0.0f, timeLeft);
+	timeElapsed += Time::fixedDeltaTime / 1000;
 
 	if (planting) {
 		plantTimer -= Time::fixedDeltaTime / 1000;

@@ -51,6 +51,7 @@ public:
 	Map *map = nullptr;
 
 	int round = 1, winner = PlayerSide::SPECTATOR;
+	double timeElapsed = 0.0;
 	float timeLeft = 5, defuseTimer = 10, plantTimer = 3;
 	bool planting = false, defusing = false;
 
