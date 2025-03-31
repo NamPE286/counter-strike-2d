@@ -2,11 +2,11 @@
 
 #include <SDL2/SDL.h>
 
-#include "../ui/HUD.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
-#include "../gameObjects/Player.hpp"
-#include "../game/Match.hpp"
 #include "../cameras/PlayerCamera.hpp"
+#include "../game/Match.hpp"
+#include "../gameObjects/Player.hpp"
+#include "../ui/HUD.hpp"
 
 class GameScene : public MonoBehaviour {
 	SDL_Texture *texture = nullptr;

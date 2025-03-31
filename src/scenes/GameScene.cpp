@@ -44,7 +44,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 
 	self = match->players[0];
 	hud = new HUD(renderer, self, match);
-	camera = new PlayerCamera(renderer, 960, 540, texture, match->players[0]);
+	camera = new PlayerCamera(renderer, 960, 540, texture, self);
 	Audio::dest = &self->position;
 
 	match->reset();
@@ -146,7 +146,7 @@ void GameScene::render() {
 	SDL_SetRenderTarget(renderer, texture);
 
 	match->map->render();
-	match->map->render_visible_area(self, match->players);
+	match->map->render_visible_area(camera->target, match->players);
 
 	SDL_SetRenderTarget(renderer, nullptr);
 
