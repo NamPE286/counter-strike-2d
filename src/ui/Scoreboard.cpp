@@ -12,6 +12,12 @@ void Scoreboard::render_column_name() {
 }
 
 void Scoreboard::render_row(int x, int y, Player *p) {
+	SDL_Rect r = { x, y, 0, 20 };
+
+	for (size_t i = 0; i < columnWidth.size(); i++) {
+		r.w += columnWidth[i];
+	}
+
 	for (size_t i = 0; i < columnWidth.size(); i++) {
 		SDL_Rect r = { x, y, columnWidth[i], 20 };
 		SDL_Color color = { 255, 255, 255, 255 };
@@ -64,6 +70,11 @@ void Scoreboard::render_row(int x, int y, Player *p) {
 
 		x += columnWidth[i];
 		delete text;
+	}
+
+	if (p->hp == 0) {
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 100);
+		SDL_RenderFillRect(renderer, &r);
 	}
 }
 
@@ -174,7 +185,7 @@ void Scoreboard::render() {
 	for (Player *p : match->team.second) {
 		render_row(xOffset, yOffset, p);
 
-		yOffset += 22;
+		yOffset += 23;
 	}
 
 	yOffset = 430;
@@ -182,6 +193,6 @@ void Scoreboard::render() {
 	for (Player *p : match->team.first) {
 		render_row(xOffset, yOffset, p);
 
-		yOffset += 22;
+		yOffset += 23;
 	}
 }
