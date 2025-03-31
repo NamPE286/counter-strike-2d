@@ -245,7 +245,7 @@ void Match::switch_side() {
 
 void Match::sort_players() {
 	std::sort(players.begin(), players.end(), [](Player *a, Player *b) {
-		return (a->kill * 2 + a->assist) > (b->kill * 2 + b->assist);
+		return (a->kill * 2 + a->assist) < (b->kill * 2 + b->assist);
 	});
 }
 
