@@ -22,7 +22,7 @@ class Scoreboard : public MonoBehaviour {
 		*TAliveText = nullptr, *CTAliveText = nullptr,
 		*infoText = nullptr, *timeElapsedText = nullptr;
 	std::array<std::unique_ptr<Text>, 6> columnNameText;
-	std::array<std::string, 6> columnName = { "", "Money", "Kills", "Deaths", "Assists", "Scores" };
+	std::array<std::string, 6> columnName = { "", "Money", "Kills", "Deaths", "Assists", "Score" };
 	std::array<int, 6> columnWidth = { 610, 70, 50, 50, 50, 50 };
 
 	void render_column_name();

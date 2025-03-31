@@ -86,7 +86,7 @@ int Audio::playWAV(Mix_Chunk *chunk, Vec2 src, int channel, float multiplier) {
 	float l = 255.0f * (1.0f - std::cos(angle)) / 2.0f;
 	float r = 255.0f * (1.0f + std::cos(angle)) / 2.0f;
 
-	if (distance <= 1.0f) {
+	if (distance <= 5.0f) {
 		Mix_SetPanning(channel, 255, 255);
 	} else {
 		Mix_SetPanning(channel, int(l * volume), int(r * volume));

@@ -92,16 +92,21 @@ Scoreboard::Scoreboard(SDL_Renderer *renderer, Match *match):
 	TScoreText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 55), TColor);
 	CTScoreText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 55), CTColor);
 
-	TScoreText->set_position(xOffset + 15, yOffset + 250);
-	CTScoreText->set_position(xOffset + 15, yOffset);
+	TScoreText->set_position(rect.x, yOffset + 250);
+	CTScoreText->set_position(rect.x, yOffset);
+
+	TScoreText->align_center(75);
+	CTScoreText->align_center(75);
 
 	TText = new Text(renderer, Font::load("assets/fonts/stratum2-medium.ttf", 16), TColor);
 	TText->set_content("Terrorist");
-	TText->set_position(xOffset + 28 - (TText->rect.w) / 2, yOffset + 300 + TScoreText->rect.h + 15);
+	TText->set_position(rect.x, yOffset + 300 + TScoreText->rect.h + 15);
+	TText->align_center(100);
 
 	CTText = new Text(renderer, Font::load("assets/fonts/stratum2-medium.ttf", 16), CTColor);
 	CTText->set_content("Counter-Ter");
-	CTText->set_position(xOffset + 28 - (CTText->rect.w) / 2, yOffset + 50 + CTScoreText->rect.h + 15);
+	CTText->set_position(rect.x, yOffset + 50 + CTScoreText->rect.h + 15);
+	CTText->align_center(100);
 
 	TAliveText = new Text(renderer, Font::load("assets/fonts/stratum2-regular.ttf", 16), TColor);
 	CTAliveText = new Text(renderer, Font::load("assets/fonts/stratum2-regular.ttf", 16), CTColor);
@@ -147,8 +152,11 @@ void Scoreboard::update() {
 	TAliveText->set_content("Alive " + std::to_string(match->alive.first) + "/" + std::to_string(match->team.first.size()));
 	CTAliveText->set_content("Alive " + std::to_string(match->alive.second) + "/" + std::to_string(match->team.second.size()));
 
-	TAliveText->set_position(TScoreText->rect.x - 12, TScoreText->rect.y + TScoreText->rect.h + TText->rect.h + 10);
-	CTAliveText->set_position(CTScoreText->rect.x - 12, CTScoreText->rect.y + CTScoreText->rect.h + CTText->rect.h + 10);
+	TAliveText->set_position(rect.x, TScoreText->rect.y + TScoreText->rect.h + TText->rect.h + 10);
+	CTAliveText->set_position(rect.x, CTScoreText->rect.y + CTScoreText->rect.h + CTText->rect.h + 10);
+
+	TAliveText->align_center(100);
+	CTAliveText->align_center(100);
 }
 
 void Scoreboard::render() {

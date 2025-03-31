@@ -9,7 +9,7 @@
 
 Match::Match(SDL_Renderer *renderer, std::string mapName) {
 	map = new Map(renderer, "assets/tilemaps/" + mapName + ".tmx");
-}
+}	
 
 Match::~Match() {
 	for (Player *p : players) {
