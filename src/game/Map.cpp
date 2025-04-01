@@ -225,7 +225,7 @@ void Map::render() {
 void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool renderAll, bool renderLine) {
 	std::vector<SDL_Point> pointTmp = cornerPoints;
 	std::vector<std::pair<float, float>> points;
-	std::vector<float> offsets = { 0.0f, -0.05f, 0.05f };
+	std::vector<float> offsets = { 0.0f, -0.015f, 0.015f };
 	float mouseAngle = Utils::getAngle((int)p->position.x, (int)p->position.y, Mouse::x, Mouse::y);
 	float fov = 2.35619f;
 

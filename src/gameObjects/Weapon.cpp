@@ -240,6 +240,10 @@ void Weapon::update() {
 	std::vector<std::shared_ptr<Bullet>> tmp;
 
 	for (auto &i : bullets) {
+		if (i.get() == nullptr) {
+			continue;
+		}
+
 		i->update();
 
 		if (!i->finished()) {

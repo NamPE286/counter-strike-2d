@@ -48,13 +48,14 @@ GameScene::GameScene(SDL_Renderer *renderer):
 
 	match->reset();
 
-	ai = new PlayerAI(match, self);
+	ai = new PlayerAI(match, match->players[1]);
 }
 
 GameScene::~GameScene() {
 	delete hud;
 	delete match;
 	delete camera;
+	delete ai;
 
 	SDL_DestroyTexture(texture);
 }
@@ -148,7 +149,7 @@ void GameScene::render() {
 	SDL_SetRenderTarget(renderer, texture);
 
 	match->map->render();
-	match->map->render_visible_area(camera->target, match->players, true);
+	match->map->render_visible_area(camera->target, match->players, false);
 
 	SDL_SetRenderTarget(renderer, nullptr);
 
