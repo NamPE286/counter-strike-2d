@@ -1,7 +1,27 @@
 #include "PlayerAI.hpp"
 
-#include <SDL2/SDL.h>
 #include <cmath>
+#include <SDL2/SDL.h>
+#include <thread>
+
+std::pair<int, int> PlayerAI::get_direction(Vec2 a, Vec2 b) {
+	int x = 0;
+	int y = 0;
+
+	if (b.x > a.x) {
+		x = 1;
+	} else if (b.x < a.x) {
+		x = -1;
+	}
+
+	if (b.y > a.y) {
+		y = 1;
+	} else if (b.y < a.y) {
+		y = -1;
+	}
+
+	return { x, y };
+}
 
 void PlayerAI::move(int x, int y) {
 	if (x == 1) {
@@ -27,19 +47,44 @@ void PlayerAI::move(int x, int y) {
 
 		p->on_key_down(e);
 	}
+
+	moving = true;
 }
 
-PlayerAI::PlayerAI(Map *map, Player *p):
-	map(map), p(p)
+void PlayerAI::move_to(float x, float y) {
+	std::thread t([&]() {
+		auto path = get_path(x, y);
+
+		for (Vec2 &i : path) {
+			while (moving) {
+				continue;
+			}
+
+			dest = i;
+			auto dir = get_direction(p->position, i);
+
+			move(dir.first, dir.second);
+		}
+	});
+
+	t.detach();
+}
+
+std::vector<Vec2> PlayerAI::get_path(float x, float y) {
+	return { p->position + Vec2(32, 0), p->position + Vec2(32, 32), p->position + Vec2(0, 32), p->position };
+}
+
+PlayerAI::PlayerAI(Match *match, Player *p):
+	match(match), p(p)
 {
-	auto *tile = map->get_tile((int)p->position.x, (int)p->position.y);
+	auto *tile = match->map->get_tile((int)p->position.x, (int)p->position.y);
 
 	p->set_position(Vec2(
-		std::floor(p->position.x / (float)map->map->tile_width) * (float)map->map->tile_width + (float)map->map->tile_width / 2,
-		std::floor(p->position.y / (float)map->map->tile_height) * (float)map->map->tile_height + (float)map->map->tile_height / 2
+		std::floor(p->position.x / (float)match->map->map->tile_width) * (float)match->map->map->tile_width + (float)match->map->map->tile_width / 2,
+		std::floor(p->position.y / (float)match->map->map->tile_height) * (float)match->map->map->tile_height + (float)match->map->map->tile_height / 2
 	));
 
-	move(1, 1);
+	move_to(1, 1);
 
 	dest = p->position + Vec2(32, 32);
 }
@@ -48,12 +93,13 @@ void PlayerAI::update() {
 	if ((dest + p->position * -1).magnitude() < 1.0f) {
 		p->stop_movement();
 		p->position = dest;
+		moving = false;
 	}
 
 	if (p->velocity.magnitude() == 0) {
 		p->set_position(Vec2(
-			std::floor(p->position.x / (float)map->map->tile_width) * (float)map->map->tile_width + (float)map->map->tile_width / 2,
-			std::floor(p->position.y / (float)map->map->tile_height) * (float)map->map->tile_height + (float)map->map->tile_height / 2
+			std::floor(p->position.x / (float)match->map->map->tile_width) * (float)match->map->map->tile_width + (float)match->map->map->tile_width / 2,
+			std::floor(p->position.y / (float)match->map->map->tile_height) * (float)match->map->map->tile_height + (float)match->map->map->tile_height / 2
 		));
 	}
 }
