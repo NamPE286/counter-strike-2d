@@ -40,7 +40,7 @@ public:
 	const float MAX_ACCELERATION = 0.0005f;
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
 
-	const int size = 25, borderWidth = 6;
+	const int size = 23, borderWidth = 6;
 
 	Vec2 position, velocity, acceleration, direction, prevPosition;
 	int hp = 100, armor = 0, money = 16000;

@@ -154,7 +154,7 @@ tmx_tile *Map::get_tile(int x, int y) {
 		return nullptr;
 	}
 
-	int gid = (map->ly_head->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL;
+	int gid = (get_layer("Wall")->content.gids[(tileY * map->width) + tileX]) & TMX_FLIP_BITS_REMOVAL;
 
 	return map->tiles[gid];
 }

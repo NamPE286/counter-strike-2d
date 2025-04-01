@@ -1,7 +1,10 @@
 #include "PlayerAI.hpp"
 
 #include <cmath>
+#include <map>
+#include <queue>
 #include <SDL2/SDL.h>
+#include <set>
 #include <thread>
 
 std::pair<int, int> PlayerAI::get_direction(Vec2 a, Vec2 b) {
@@ -52,8 +55,9 @@ void PlayerAI::move(int x, int y) {
 }
 
 void PlayerAI::move_to(float x, float y) {
-	std::thread t([&]() {
-		auto path = get_path(x, y);
+	std::thread t([this, x, y]() {
+		dest = Vec2(x * match->map->map->tile_width + match->map->map->tile_width / 2, y * match->map->map->tile_height + match->map->map->tile_height / 2);
+		auto path = get_path(dest.x, dest.y);
 
 		for (Vec2 &i : path) {
 			while (moving) {
@@ -68,6 +72,13 @@ void PlayerAI::move_to(float x, float y) {
 	});
 
 	t.detach();
+}
+
+void PlayerAI::align_position() {
+	p->set_position(Vec2(
+		std::floor(p->position.x / (float)match->map->map->tile_width) * (float)match->map->map->tile_width + (float)match->map->map->tile_width / 2,
+		std::floor(p->position.y / (float)match->map->map->tile_height) * (float)match->map->map->tile_height + (float)match->map->map->tile_height / 2
+	));
 }
 
 std::vector<Vec2> PlayerAI::optimize_path(std::vector<Vec2> &v) {
@@ -95,7 +106,60 @@ std::vector<Vec2> PlayerAI::optimize_path(std::vector<Vec2> &v) {
 }
 
 std::vector<Vec2> PlayerAI::get_path(float x, float y) {
-	std::vector<Vec2> res = { p->position + Vec2(0, 32), p->position + Vec2(0, 32 * 2), p->position + Vec2(0, 32 * 3), p->position + Vec2(32, 32 * 3), p->position + Vec2(32 * 2, 32 * 3), p->position + Vec2(32 * 3, 32 * 3) };
+	std::vector<std::pair<int, int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
+	std::map<std::pair<int, int>, std::pair<int, int>> parent;
+	std::set<std::pair<int, int>> visited;
+	std::queue<std::pair<int, int>> q;
+	std::pair<int, int> end = { (int)x, (int)y };
+	
+	align_position();
+	q.emplace((int)p->position.x, (int)p->position.y);
+	visited.emplace((int)p->position.x, (int)p->position.y);
+
+	while (!q.empty()) {
+		std::pair<int, int> cur = q.front();
+		q.pop();
+
+		if (cur == end) {
+			break;
+		}
+
+		for (auto &[x, y] : dirs) {
+			std::pair<int, int> tmp = {
+				cur.first + x * match->map->map->tile_width,
+				cur.second + y * match->map->map->tile_height
+			};
+			auto tile = match->map->get_tile(tmp.first, tmp.second);
+
+			if (tile && tile->collision) {
+				continue;
+			}
+
+			if (visited.contains(tmp)) {
+				continue;
+			}
+
+			visited.insert(tmp);
+			parent[tmp] = cur;
+
+			q.push(tmp);
+		}
+	}
+
+	std::vector<std::pair<int, int>> tmp = { end };
+	
+	while (parent.contains(tmp.back())) {
+		tmp.push_back(parent[tmp.back()]);
+	}
+
+	tmp.pop_back();
+
+	std::vector<Vec2> res;
+
+	for (int i = (int)tmp.size() - 1; i >= 0; i--) {
+		res.push_back(Vec2((float)tmp[i].first, (float)tmp[i].second));
+	}
+
 	return optimize_path(res);
 }
 
@@ -104,14 +168,8 @@ PlayerAI::PlayerAI(Match *match, Player *p):
 {
 	auto *tile = match->map->get_tile((int)p->position.x, (int)p->position.y);
 
-	p->set_position(Vec2(
-		std::floor(p->position.x / (float)match->map->map->tile_width) * (float)match->map->map->tile_width + (float)match->map->map->tile_width / 2,
-		std::floor(p->position.y / (float)match->map->map->tile_height) * (float)match->map->map->tile_height + (float)match->map->map->tile_height / 2
-	));
-
-	move_to(1, 1);
-
-	dest = p->position + Vec2(32, 32);
+	align_position();
+	move_to(50, 70);
 }
 
 void PlayerAI::update() {
@@ -122,9 +180,6 @@ void PlayerAI::update() {
 	}
 
 	if (p->velocity.magnitude() == 0) {
-		p->set_position(Vec2(
-			std::floor(p->position.x / (float)match->map->map->tile_width) * (float)match->map->map->tile_width + (float)match->map->map->tile_width / 2,
-			std::floor(p->position.y / (float)match->map->map->tile_height) * (float)match->map->map->tile_height + (float)match->map->map->tile_height / 2
-		));
+		align_position();
 	}
 }
