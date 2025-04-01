@@ -222,7 +222,7 @@ void Map::render() {
 	SDL_SetTextureColorMod(mapTexture, 255, 255, 255);
 }
 
-void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool renderLine) {
+void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool renderAll, bool renderLine) {
 	std::vector<SDL_Point> pointTmp = cornerPoints;
 	std::vector<std::pair<float, float>> points;
 	std::vector<float> offsets = { 0.0f, -0.05f, 0.05f };
@@ -343,12 +343,14 @@ void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool re
 
 	p->render();
 
-	if (!renderLine) {
-		return;
+	if (renderAll) {
+		SDL_RenderCopy(renderer, texture, nullptr, nullptr);
 	}
 
-	for (auto &i : points) {
-		SDL_RenderDrawLine(renderer, static_cast<int>(p->position.x), static_cast<int>(p->position.y), static_cast<int>(i.first), static_cast<int>(i.second));
+	if (renderLine) {
+		for (auto &i : points) {
+			SDL_RenderDrawLine(renderer, static_cast<int>(p->position.x), static_cast<int>(p->position.y), static_cast<int>(i.first), static_cast<int>(i.second));
+		}
 	}
 }
 
