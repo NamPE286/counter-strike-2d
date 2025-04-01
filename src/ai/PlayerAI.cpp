@@ -70,8 +70,33 @@ void PlayerAI::move_to(float x, float y) {
 	t.detach();
 }
 
+std::vector<Vec2> PlayerAI::optimize_path(std::vector<Vec2> &v) {
+	std::vector<Vec2> res;
+	std::pair<int, int> dir;
+
+	for (Vec2 &i : v) {
+		std::pair<int, int> tmp;
+
+		if (res.empty()) {
+			tmp = get_direction(p->position, i);
+		} else {
+			tmp = get_direction(res.back(), i);
+		}
+
+		if (tmp == dir) {
+			res.pop_back();
+		}
+
+		res.push_back(i);
+		dir = tmp;
+	}
+
+	return res;
+}
+
 std::vector<Vec2> PlayerAI::get_path(float x, float y) {
-	return { p->position + Vec2(32, 0), p->position + Vec2(32, 32), p->position + Vec2(0, 32), p->position };
+	std::vector<Vec2> res = { p->position + Vec2(0, 32), p->position + Vec2(0, 32 * 2), p->position + Vec2(0, 32 * 3), p->position + Vec2(32, 32 * 3), p->position + Vec2(32 * 2, 32 * 3), p->position + Vec2(32 * 3, 32 * 3) };
+	return optimize_path(res);
 }
 
 PlayerAI::PlayerAI(Match *match, Player *p):

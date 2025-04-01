@@ -48,7 +48,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 
 	match->reset();
 
-	ai = new PlayerAI(match, match->players[1]);
+	ai = new PlayerAI(match, self);
 }
 
 GameScene::~GameScene() {

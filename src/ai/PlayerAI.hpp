@@ -16,6 +16,7 @@ class PlayerAI {
 	std::pair<int, int> get_direction(Vec2 a, Vec2 b);
 	void move(int x, int y);
 	void move_to(float x, float y);
+	std::vector<Vec2> optimize_path(std::vector<Vec2> &v);
 	std::vector<Vec2> get_path(float x, float y);
 
 public:
