@@ -1,13 +1,13 @@
 #pragma once
 
-#include <SDL2/SDL.h>
-#include <map>
-#include <string>
 #include <array>
+#include <map>
 #include <memory>
+#include <SDL2/SDL.h>
+#include <string>
 
-#include "../gameObjects/Bullet.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
+#include "../gameObjects/Bullet.hpp"
 #include "../geometry/Vec2.hpp"
 #include "Weapon.hpp"
 
@@ -29,10 +29,6 @@ class Player : public MonoBehaviour {
 	SDL_Color color = { 0, 0, 0, 0 };
 	GameScene *target = nullptr;
 
-	const float MAX_SPEED = 0.15f;
-	const float MAX_ACCELERATION = 0.0005f;
-
-	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
 	float maxSpeed = MAX_SPEED;
 	float footstepDelay = 0;
 
@@ -40,6 +36,10 @@ class Player : public MonoBehaviour {
 	void change_weapon(int slot);
 
 public:
+	const float MAX_SPEED = 0.15f;
+	const float MAX_ACCELERATION = 0.0005f;
+	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
+
 	const int size = 25, borderWidth = 6;
 
 	Vec2 position, velocity, acceleration, direction, prevPosition;

@@ -33,7 +33,6 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		PlayerSide::CT,
 		Vec2(0, 0),
 		false));
-
 	match->add_player(new Player(
 		renderer,
 		this,
@@ -48,6 +47,8 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	Audio::dest = &self->position;
 
 	match->reset();
+
+	ai = new PlayerAI(match->map, self);
 }
 
 GameScene::~GameScene() {
@@ -95,6 +96,7 @@ void GameScene::update() {
 
 	camera->update();
 	hud->update();
+	ai->update();
 
 	auto *obj = match->map->get_callout(self->position.x, self->position.y);
 

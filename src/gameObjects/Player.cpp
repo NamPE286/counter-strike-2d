@@ -122,14 +122,17 @@ void Player::reset() {
 
 void Player::stop_movement() {
 	velocity = acceleration = direction = Vec2(0, 0);
+	keyboard[SDL_SCANCODE_W] = keyboard[SDL_SCANCODE_A] = keyboard[SDL_SCANCODE_S] = keyboard[SDL_SCANCODE_D] = 0;
 }
 
 void Player::stop_movement_x() {
 	velocity.x = acceleration.x = direction.x = 0;
+	keyboard[SDL_SCANCODE_A] = keyboard[SDL_SCANCODE_D] = 0;
 }
 
 void Player::stop_movement_y() {
 	velocity.y = acceleration.y = direction.y = 0;
+	keyboard[SDL_SCANCODE_W] = keyboard[SDL_SCANCODE_S] = 0;
 }
 
 void Player::switch_side() {

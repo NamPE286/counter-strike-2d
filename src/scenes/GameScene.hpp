@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "../ai/PlayerAI.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
 #include "../cameras/PlayerCamera.hpp"
 #include "../game/Match.hpp"
@@ -12,6 +13,7 @@ class GameScene : public MonoBehaviour {
 	SDL_Texture *texture = nullptr;
 	PlayerCamera *camera = nullptr;
 	HUD *hud = nullptr;
+	PlayerAI *ai = nullptr;
 
 public:
 	Player *self = nullptr;
