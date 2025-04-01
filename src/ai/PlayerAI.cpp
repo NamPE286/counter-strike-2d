@@ -1,8 +1,10 @@
 #include "PlayerAI.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <map>
 #include <queue>
+#include <random>
 #include <SDL2/SDL.h>
 #include <set>
 #include <thread>
@@ -106,28 +108,47 @@ std::vector<Vec2> PlayerAI::optimize_path(std::vector<Vec2> &v) {
 }
 
 std::vector<Vec2> PlayerAI::get_path(float x, float y) {
+	struct Item {
+		std::pair<int, int> pos, dir;
+		int step = 0, turn = 0;
+
+		bool operator<(const Item &y) const {
+			if (step == y.step) {
+				return turn < y.turn;
+			}
+
+			return step > y.step;
+		}
+	};
+
 	std::vector<std::pair<int, int>> dirs = { {1, 0}, {-1, 0}, {0, 1}, {0, -1} };
 	std::map<std::pair<int, int>, std::pair<int, int>> parent;
 	std::set<std::pair<int, int>> visited;
-	std::queue<std::pair<int, int>> q;
+	std::priority_queue<Item> pq;
 	std::pair<int, int> end = { (int)x, (int)y };
+
 	
 	align_position();
-	q.emplace((int)p->position.x, (int)p->position.y);
+	pq.push({ { (int)p->position.x, (int)p->position.y }, { 0, 0 }, 0, 0});
 	visited.emplace((int)p->position.x, (int)p->position.y);
 
-	while (!q.empty()) {
-		std::pair<int, int> cur = q.front();
-		q.pop();
+	while (!pq.empty()) {
+		Item cur = pq.top();
+		auto &[pos, dir, turn, step] = cur;
+		pq.pop();
 
-		if (cur == end) {
+		if (pos == end) {
 			break;
 		}
 
-		for (auto &[x, y] : dirs) {
+		auto rng = std::default_random_engine{};
+		std::shuffle(dirs.begin(), dirs.end(), rng);
+
+		for (auto &i : dirs) {
+			auto &[x, y] = i;
 			std::pair<int, int> tmp = {
-				cur.first + x * match->map->map->tile_width,
-				cur.second + y * match->map->map->tile_height
+				pos.first + x * match->map->map->tile_width,
+				pos.second + y * match->map->map->tile_height
 			};
 			auto tile = match->map->get_tile(tmp.first, tmp.second);
 
@@ -140,9 +161,9 @@ std::vector<Vec2> PlayerAI::get_path(float x, float y) {
 			}
 
 			visited.insert(tmp);
-			parent[tmp] = cur;
+			parent[tmp] = pos;
 
-			q.push(tmp);
+			pq.push({ tmp, i, step + 1, turn + (i == dir)});
 		}
 	}
 
@@ -169,7 +190,7 @@ PlayerAI::PlayerAI(Match *match, Player *p):
 	auto *tile = match->map->get_tile((int)p->position.x, (int)p->position.y);
 
 	align_position();
-	move_to(50, 70);
+	move_to(21, 46);
 }
 
 void PlayerAI::update() {
