@@ -31,7 +31,7 @@ public:
 	~Map();
 
 	void render();
-	void render_visible_area(Player *p, std::vector<Player *> &players, bool renderAll = false, bool renderLine = false);
+	void render_visible_area(Player *p, std::vector<Player *> &players, float fov = 2.35619f, bool renderAll = false, bool renderLine = false);
 	void collision_handler(Player *p);
 	int distance(float originX, float originY, float angle, int length = INT_MAX, int step = 0);
 	bool is_visible(Vec2 src, Vec2 dest);

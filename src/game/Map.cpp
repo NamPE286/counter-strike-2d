@@ -222,12 +222,11 @@ void Map::render() {
 	SDL_SetTextureColorMod(mapTexture, 255, 255, 255);
 }
 
-void Map::render_visible_area(Player *p, std::vector<Player *> &players, bool renderAll, bool renderLine) {
+void Map::render_visible_area(Player *p, std::vector<Player *> &players, float fov, bool renderAll, bool renderLine) {
 	std::vector<SDL_Point> pointTmp = cornerPoints;
 	std::vector<std::pair<float, float>> points;
 	std::vector<float> offsets = { 0.0f, -0.015f, 0.015f };
 	float mouseAngle = Utils::getAngle((int)p->position.x, (int)p->position.y, Mouse::x, Mouse::y);
-	float fov = 2.35619f;
 
 	pointTmp.push_back({ int(p->position.x + 10000.0f * cos(mouseAngle - fov / 2)), int(p->position.y + 10000.0f * sin(mouseAngle - fov / 2)) });
 	pointTmp.push_back({ int(p->position.x + 10000.0f * cos(mouseAngle + fov / 2)), int(p->position.y + 10000.0f * sin(mouseAngle + fov / 2)) });

@@ -8,6 +8,7 @@
 #include "../common.h"
 #include "../managers/Audio.hpp"
 #include "../managers/Time.hpp"
+#include "../utilities/Utils.hpp"
 
 void Player::update_position() {
 	prevPosition = position;
@@ -115,15 +116,34 @@ void Player::take_damage(Weapon *w, bool headshot) {
 }
 
 void Player::reset() {
-	for (auto w : weapons) {
+	for (auto &w : weapons) {
 		w->reset();
 	}
 
 	velocity = acceleration = direction = Vec2(0, 0);
+
+	if (hp == 0) {
+		armor = 0;
+		helmet = false;
+	}
+
 	hp = 100;
 
 	for (size_t i = 0; i < 513; i++) {
 		keyboard[i] = false;
+	}
+
+	auto *TSpawn = target->match->map->get_spawn(PlayerSide::T);
+	auto *CTSpawn = target->match->map->get_spawn(PlayerSide::CT);
+
+	if (side == PlayerSide::T) {
+		set_position(Vec2(
+			(float)Utils::getRandomRange((int)TSpawn->x, int(TSpawn->x + TSpawn->width)),
+			(float)Utils::getRandomRange((int)TSpawn->y, int(TSpawn->y + TSpawn->height))));
+	} else if (side == PlayerSide::CT) {
+		set_position(Vec2(
+			(float)Utils::getRandomRange((int)CTSpawn->x, int(CTSpawn->x + CTSpawn->width)),
+			(float)Utils::getRandomRange((int)CTSpawn->y, int(CTSpawn->y + CTSpawn->height))));
 	}
 }
 
@@ -316,6 +336,16 @@ void Player::fixed_update() {
 		}
 	} else if (!keyboard[SDL_SCANCODE_LSHIFT]) {
 		footstepDelay = 360;
+	}
+
+	if (hp == 0.0f && target->match->phase == Phase::WARMUP) {
+		respawnTimer -= Time::fixedDeltaTime;
+
+		if (respawnTimer <= 0.0f) {
+			respawnTimer = 5000.0f;
+
+			reset();
+		}
 	}
 }
 

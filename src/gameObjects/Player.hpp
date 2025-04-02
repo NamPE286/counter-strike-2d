@@ -30,6 +30,7 @@ class Player : public MonoBehaviour {
 
 	float maxSpeed = MAX_SPEED;
 	float footstepDelay = 0;
+	float respawnTimer = 3000.0f;
 
 	void update_position();
 	void change_weapon(int slot);

@@ -60,7 +60,7 @@ void Scoreboard::render_row(int x, int y, Player *p) {
 			text->set_content(std::to_string(p->assist));
 			text->set_position(x, y);
 			text->align_center(columnWidth[i]);
-		} else if (columnName[i] == "Scores") {
+		} else if (columnName[i] == "Score") {
 			text->set_content(std::to_string(p->kill * 2 + p->assist));
 			text->set_position(x, y);
 			text->align_center(columnWidth[i]);
