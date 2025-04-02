@@ -22,25 +22,12 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	match->add_player(new Player(
 		renderer,
 		this,
-		"T BOT A",
+		"Me",
 		PlayerSide::T,
 		Vec2(0, 0),
 		true));
 
-	for (char c = 'B'; c <= 'B'; c++) {
-		std::string name = "T BOT ";
-		name += c;
-
-		match->add_player(new Player(
-			renderer,
-			this,
-			name,
-			PlayerSide::T,
-			Vec2(0, 0),
-			false));
-	}
-
-	for (char c = 'A'; c <= 'B'; c++) {
+	for (char c = 'A'; c <= 'C'; c++) {
 		std::string name = "CT BOT ";
 		name += c;
 
@@ -60,7 +47,9 @@ GameScene::GameScene(SDL_Renderer *renderer):
 
 	match->reset();
 
-	for (size_t i = 0; i < match->players.size(); i++) {
+	return;
+
+	for (size_t i = 1; i < match->players.size(); i++) {
 		AIs.push_back(new PlayerAI(match, match->players[i]));
 	}
 }
@@ -163,6 +152,7 @@ void GameScene::fixed_update() {
 	}
 
 	match->fixed_update();
+	hud->fixed_update();
 }
 
 void GameScene::render() {

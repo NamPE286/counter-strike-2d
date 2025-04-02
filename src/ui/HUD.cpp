@@ -32,23 +32,17 @@ HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
 	armorText = new Text(renderer, Font::load("assets/fonts/stratum2-medium.ttf", 18), color);
 	armorText->set_position(WINDOW_WIDTH / 2 - 320, WINDOW_HEIGHT - 43);
 
-	primaryGun = new Text(renderer, Font::load("assets/fonts/icon.ttf", 100), color);
-	primaryGun->set_position(WINDOW_WIDTH - 140, WINDOW_HEIGHT - 300);
+	primaryGun = new Text(renderer, Font::load("assets/fonts/icon.ttf", 40), color);
+	secondaryGun = new Text(renderer, Font::load("assets/fonts/icon.ttf", 40), color);
+	knife = new Text(renderer, Font::load("assets/fonts/icon.ttf", 40), color);
 
 	primaryGunBindText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
 	primaryGunBindText->set_position(WINDOW_WIDTH - 25, WINDOW_HEIGHT - 280);
 	primaryGunBindText->set_content("1");
 
-	secondaryGun = new Text(renderer, Font::load("assets/fonts/icon.ttf", 50), color);
-	secondaryGun->set_position(WINDOW_WIDTH - 90, WINDOW_HEIGHT - 200);
-
 	secondaryGunBindText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
 	secondaryGunBindText->set_position(WINDOW_WIDTH - 25, WINDOW_HEIGHT - 205);
 	secondaryGunBindText->set_content("2");
-
-	knife = new Text(renderer, Font::load("assets/fonts/icon.ttf", 100), color);
-	knife->set_position(WINDOW_WIDTH - 140, WINDOW_HEIGHT - 150);
-	knife->set_content("M");
 
 	knifeBindText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 14), { 255, 255, 255, 255 });
 	knifeBindText->set_position(WINDOW_WIDTH - 25, WINDOW_HEIGHT - 130);
@@ -58,7 +52,6 @@ HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
 
 	calloutText = new Text(renderer, Font::load("assets/fonts/stratum2-bold.ttf", 20), color);
 	calloutText->set_position(10, 10);
-	calloutText->set_content("Test");
 
 	scoreboard = new Scoreboard(renderer, match);
 	miniScoreboard = new MiniScoreboard(renderer, match);
@@ -93,14 +86,23 @@ void HUD::update() {
 
 	if (player->weapons[0] != nullptr) {
 		primaryGun->set_content(std::string{ player->weapons[0]->symbol });
+		primaryGun->set_position(WINDOW_WIDTH - primaryGun->rect.w - 30, primaryGunBindText->rect.y + 10);
 	} else {
 		primaryGun->set_content("");
 	}
 
-	if (player->weapons[0] != nullptr) {
+	if (player->weapons[1] != nullptr) {
 		secondaryGun->set_content(std::string{ player->weapons[1]->symbol });
+		secondaryGun->set_position(WINDOW_WIDTH - secondaryGun->rect.w - 30, secondaryGunBindText->rect.y + 10);
 	} else {
 		secondaryGun->set_content("");
+	}
+
+	if (player->weapons[2] != nullptr) {
+		knife->set_content(std::string{ player->weapons[2]->symbol });
+		knife->set_position(WINDOW_WIDTH - knife->rect.w - 30, knifeBindText->rect.y + 10);
+	} else {
+		knife->set_content("");
 	}
 
 	if (player->weapons[player->weaponSlot] != nullptr) {
@@ -130,10 +132,10 @@ void HUD::update() {
 	}
 
 	scoreboard->update();
+	killfeed->update();
 }
 
 void HUD::fixed_update() {
-	killfeed->fixed_update();
 }
 
 void HUD::update_callout(std::string s) {

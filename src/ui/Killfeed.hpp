@@ -9,7 +9,15 @@
 
 class Killfeed : public MonoBehaviour {
 	struct Item {
-		Text *from = nullptr, *tp = nullptr, *sym = nullptr;
+		Text *from = nullptr, *to = nullptr, *sym = nullptr;
+		float timeLeft;
+		bool isSelf;
+
+		void cleanup() {
+			delete from;
+			delete to;
+			delete sym;
+		}
 	};
 	std::list<Item> feed;
 
@@ -18,5 +26,5 @@ public:
 
 	void add(Player *from, Player *to, bool headshot);
 	void render();
-	void fixed_update();
+	void update();
 };
