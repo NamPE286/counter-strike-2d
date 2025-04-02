@@ -37,7 +37,7 @@ void Killfeed::render() {
 			30
 		};
 
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 140);
 		SDL_RenderFillRect(renderer, &r);
 
 		i.from->render();

@@ -49,7 +49,7 @@ void MiniScoreboard::update() {
 }
 
 void MiniScoreboard::render() {
-	SDL_SetRenderDrawColor(renderer, 16, 16, 16, 150);
+	SDL_SetRenderDrawColor(renderer, 16, 16, 16, 140);
 
 	SDL_RenderFillRect(renderer, &timerRect);
 	SDL_RenderFillRect(renderer, &TScoreRect);
