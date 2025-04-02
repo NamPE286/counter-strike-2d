@@ -1,5 +1,6 @@
 #pragma once
 
+#include <thread>
 #include <utility>
 #include <vector>
 
@@ -11,18 +12,22 @@ class PlayerAI {
 	Match *match = nullptr;
 	Player *p = nullptr;
 	Vec2 dest = Vec2(-1, -1);
-	bool moving = false;
+	std::thread t;
+	bool moving = false, movingOnPath = false;
+	bool stopped = false;
 
 	std::pair<int, int> get_direction(Vec2 a, Vec2 b);
 	void move(int x, int y);
 	void move_to(float x, float y);
 	void align_position();
+	void logic_loop();
 
 	std::vector<Vec2> optimize_path(std::vector<Vec2> &v);
 	std::vector<Vec2> get_path(float x, float y);
 
 public:
 	PlayerAI(Match *match, Player *p);
+	~PlayerAI();
 
 	void update();
 };

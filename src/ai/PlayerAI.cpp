@@ -58,6 +58,9 @@ void PlayerAI::move(int x, int y) {
 }
 
 void PlayerAI::move_to(float x, float y) {
+	std::cout << p->name << " is moving to " << x << ' ' << y << '\n';
+	movingOnPath = true;
+
 	std::thread t([this, x, y]() {
 		dest = Vec2(x * match->map->map->tile_width + match->map->map->tile_width / 2, y * match->map->map->tile_height + match->map->map->tile_height / 2);
 		auto path = get_path(dest.x, dest.y);
@@ -72,6 +75,13 @@ void PlayerAI::move_to(float x, float y) {
 
 			move(dir.first, dir.second);
 		}
+
+		while (moving) {
+			continue;
+		}
+
+		movingOnPath = false;
+		std::cout << p->name << " arrived at destination" << '\n';
 	});
 
 	t.detach();
@@ -82,6 +92,25 @@ void PlayerAI::align_position() {
 		std::floor(p->position.x / (float)match->map->map->tile_width) * (float)match->map->map->tile_width + (float)match->map->map->tile_width / 2,
 		std::floor(p->position.y / (float)match->map->map->tile_height) * (float)match->map->map->tile_height + (float)match->map->map->tile_height / 2
 	));
+}
+
+void PlayerAI::logic_loop() {
+	while (!stopped) {
+		if (movingOnPath) {
+			continue;
+		}
+
+		auto pos = match->map->get_random_position();
+
+		align_position();
+		move_to((float)pos.first, (float)pos.second);
+
+		while (movingOnPath) {
+			continue;
+		}
+
+		SDL_Delay(5000);
+	}
 }
 
 std::vector<Vec2> PlayerAI::optimize_path(std::vector<Vec2> &v) {
@@ -128,7 +157,6 @@ std::vector<Vec2> PlayerAI::get_path(float x, float y) {
 	std::priority_queue<Item> pq;
 	std::pair<int, int> end = { (int)x, (int)y };
 
-	
 	align_position();
 	pq.push({ { (int)p->position.x, (int)p->position.y }, { 0, 0 }, 0, 0});
 	visited.emplace((int)p->position.x, (int)p->position.y);
@@ -188,11 +216,15 @@ std::vector<Vec2> PlayerAI::get_path(float x, float y) {
 PlayerAI::PlayerAI(Match *match, Player *p):
 	match(match), p(p)
 {
-	auto *tile = match->map->get_tile((int)p->position.x, (int)p->position.y);
-	auto pos = match->map->get_random_position();
+	t = std::thread([this]() {
+		logic_loop();
+	});
+}
 
-	align_position();
-	move_to((float)pos.first, (float)pos.second);
+PlayerAI::~PlayerAI() {
+	stopped = true;
+
+	t.join();
 }
 
 void PlayerAI::update() {

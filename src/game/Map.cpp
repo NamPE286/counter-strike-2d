@@ -498,6 +498,7 @@ tmx_object *Map::get_callout(float x, float y) {
 
 tmx_object *Map::get_random_callout() {
 	auto *objgr = get_layer("Callout")->content.objgr;
+	srand(time(0));
 
 	if (!objgr || !objgr->head) {
 		return nullptr;
@@ -528,6 +529,7 @@ tmx_object *Map::get_random_callout() {
 
 std::pair<int, int> Map::get_random_position() {
 	auto *obj = get_random_callout();
+	srand(time(0));
 
 	if (!obj) {
 		return { 0, 0 };
