@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include <map>
 #include <SDL2/SDL_mixer.h>

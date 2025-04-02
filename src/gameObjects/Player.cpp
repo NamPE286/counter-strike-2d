@@ -69,14 +69,17 @@ void Player::take_damage(Weapon *w, bool headshot) {
 	hp = std::max(0, hp - (int)dmg);
 
 	if (hp == 0) {
-		Mix_PlayChannel(-1, Audio::kill(), 0);
+		if (playable) {
+			Mix_PlayChannel(-1, Audio::kill(), 0);
+		}
+
 		Audio::playWAV(Audio::death(), position);
 
 		if (headshot) {
 			if (armor > 0 && helmet) {
-				Mix_PlayChannel(-1, Audio::headshot_armor(), 0);
+				Mix_PlayChannel(-1, Audio::headshot_armor_dink(), 0);
 			} else {
-				Mix_PlayChannel(-1, Audio::headshot_no_armor(), 0);
+				Mix_PlayChannel(-1, Audio::headshot_armor_dink(), 0);
 			}
 		} else {
 			if (armor > 0) {

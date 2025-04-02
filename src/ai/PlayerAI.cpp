@@ -59,43 +59,35 @@ void PlayerAI::move(int x, int y) {
 
 void PlayerAI::move_to(float x, float y) {
 	std::cout << p->name << " is moving to " << x << ' ' << y << '\n';
+
+	pathDest = Vec2(x * match->map->map->tile_width + match->map->map->tile_width / 2, y * match->map->map->tile_height + match->map->map->tile_height / 2);
+
+	auto tmp = pathDest;
+	align_position();
+	auto path = get_path(pathDest.x, pathDest.y);
+
 	movingOnPath = true;
 
-	std::thread t([this, x, y]() {
-		dest = Vec2(x * match->map->map->tile_width + match->map->map->tile_width / 2, y * match->map->map->tile_height + match->map->map->tile_height / 2);
-		auto path = get_path(dest.x, dest.y);
-
-		for (Vec2 &i : path) {
-			if (!movingOnPath) {
-				break;
-			}
-
-			while (moving) {
-				continue;
-			}
-
-			dest = i;
-			auto dir = get_direction(p->position, i);
-
-			move(dir.first, dir.second);
+	for (Vec2 &i : path) {
+		while (moving) {
+			continue;
 		}
 
 		if (!movingOnPath) {
-			moving = false;
-			std::cout << p->name << " stopped moving" << '\n';
-		} else {
-			while (moving) {
-				continue;
-			}
-
-			movingOnPath = false;
-			std::cout << p->name << " arrived at destination" << '\n';
+			break;
 		}
-	});
 
-	t.detach();
+		dest = i;
+		auto dir = get_direction(p->position, i);
+
+		align_position();
+		move(dir.first, dir.second);
+	}
+
+	movingOnPath = false;
+
+	std::cout << p->name << " stopped moving to " << x << ' ' << y << '\n';
 }
-
 void PlayerAI::align_position() {
 	p->set_position(Vec2(
 		std::floor(p->position.x / (float)match->map->map->tile_width) * (float)match->map->map->tile_width + (float)match->map->map->tile_width / 2,
@@ -105,43 +97,95 @@ void PlayerAI::align_position() {
 
 void PlayerAI::movement_thread_handler() {
 	while (!stopped) {
-		if (movingOnPath) {
-			continue;
-		}
-
-		if (target != nullptr) {
+		if (movingOnPath || state != AIState::WANDERING) {
 			continue;
 		}
 
 		auto pos = match->map->get_random_position();
 
-		align_position();
-		move_to((float)pos.first, (float)pos.second);
+		//move_to((float)pos.first, (float)pos.second);
 
-		while (movingOnPath) {
-			continue;
-		}
-
-		SDL_Delay(5000);
+		move_to(55, 25);
+		SDL_Delay(3000);
 	}
 }
 
 void PlayerAI::attack_thread_handler() {
 	while (!stopped) {
-		if (target != nullptr && match->map->is_visible(p->position, target->position)) {
-			continue;
+		if (target != nullptr) {
+			if (can_shoot(target)) {
+				movingOnPath = moving = false;
+
+				p->stop_movement();
+				SDL_Delay(200);
+				p->fire();
+				SDL_Delay(300);
+				p->stop_firing();
+				SDL_Delay(500);
+			}
+
+			if (!can_target(target)) {
+				SDL_Delay(1000);
+
+				if (!can_target(target)) {
+					std::cout << p->name << " stop targetting " << target->name << '\n';
+					target = nullptr;
+				}
+			}
 		} else {
+			Player *tmp = nullptr;
+
 			for (Player *i : match->players) {
-				if (i == p) {
+				if (i == p || i->side == p->side) {
 					continue;
 				}
 
-				if (match->map->is_visible(p->position, i->position)) {
-					target = i;
+				if (can_target(i)) {
+					if (tmp == nullptr) {
+						tmp = i;
+					} else if ((p->position + i->position * -1).magnitude() < (p->position + tmp->position * -1).magnitude()) {
+						tmp = i;
+					}
 				}
+			}
+
+			if (tmp != nullptr) {
+				target = tmp;
+				movingOnPath = moving = false;
+				state = AIState::ATTACKING;
+
+				std::cout << p->name << " is targetting " << target->name << '\n';
+
+				p->set_fire_target(&target->position);
+				p->stop_movement();
+				align_position();
+				moving = false;
+				SDL_Delay(200);
+
+				std::thread t([this]() {
+					move_to(std::floor(target->position.x / 32), std::floor(target->position.y / 32));
+				});
+
+				t.detach();
+			} else {
+				state = AIState::WANDERING;
 			}
 		}
 	}
+}
+
+bool PlayerAI::can_target(Player *i) {
+	return i != nullptr &&
+		match->map->is_visible(p->position, i->position) &&
+		(p->position + i->position * -1).magnitude() < 500.0f &&
+		i->hp > 0;
+}
+
+bool PlayerAI::can_shoot(Player *i) {
+	return i != nullptr &&
+		match->map->is_visible(p->position, i->position) &&
+		(p->position + i->position * -1).magnitude() < std::min(p->get_weapon()->range, 250.0f) &&
+		i->hp > 0;
 }
 
 std::vector<Vec2> PlayerAI::optimize_path(std::vector<Vec2> &v) {
@@ -189,7 +233,7 @@ std::vector<Vec2> PlayerAI::get_path(float x, float y) {
 	std::pair<int, int> end = { (int)x, (int)y };
 
 	align_position();
-	pq.push({ { (int)p->position.x, (int)p->position.y }, { 0, 0 }, 0, 0});
+	pq.push({ { (int)p->position.x, (int)p->position.y }, { 0, 0 }, 0, 0 });
 	visited.emplace((int)p->position.x, (int)p->position.y);
 
 	while (!pq.empty()) {
@@ -223,12 +267,12 @@ std::vector<Vec2> PlayerAI::get_path(float x, float y) {
 			visited.insert(tmp);
 			parent[tmp] = pos;
 
-			pq.push({ tmp, i, step + 1, turn + (i == dir)});
+			pq.push({ tmp, i, step + 1, turn + (i == dir) });
 		}
 	}
 
 	std::vector<std::pair<int, int>> tmp = { end };
-	
+
 	while (parent.contains(tmp.back())) {
 		tmp.push_back(parent[tmp.back()]);
 	}
@@ -249,28 +293,27 @@ PlayerAI::PlayerAI(Match *match, Player *p):
 {
 	movementThread = std::thread([this]() {
 		movement_thread_handler();
-	});
+		});
 
 	attackThread = std::thread([this]() {
 		attack_thread_handler();
-	});
+		});
 }
 
 PlayerAI::~PlayerAI() {
 	stopped = true;
+	moving = movingOnPath = false;
 
 	movementThread.join();
 	attackThread.join();
+
 }
 
 void PlayerAI::update() {
 	if ((dest + p->position * -1).magnitude() < 1.0f) {
 		p->stop_movement();
+		align_position();
 		p->position = dest;
 		moving = false;
-	}
-
-	if (p->velocity.magnitude() == 0) {
-		align_position();
 	}
 }

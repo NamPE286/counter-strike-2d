@@ -15,7 +15,7 @@ class GameScene;
 class Player;
 
 class Weapon : public MonoBehaviour {
-	int magSize = -1, range = 50;
+	int magSize = -1;
 	int reserveAmmoBase = -1;
 	float standingInaccuracy = 0.0f, runningInaccuracy = 0.0f,
 		fireRate = 400.0f, fireCooldown = -1.0f, reloadTime = 0.0f, reloadCooldown = -1.0f;
@@ -36,7 +36,7 @@ class Weapon : public MonoBehaviour {
 	void add_bullet(int x, int y, float angle, int range);
 public:
 	std::string name = "Knife";
-	float baseDamage = 25.0f, armorPenetration = 0.85f, taggingPower = 0.0f, headshotMultiplier = 1.0f;
+	float baseDamage = 25.0f, armorPenetration = 0.85f, taggingPower = 0.0f, headshotMultiplier = 1.0f, range = 50;
 	int ammo = -1, reserveAmmo = -1;
 	int price = 0, mobility = 250, killReward = 1500;
 

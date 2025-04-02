@@ -43,10 +43,10 @@ public:
 	const int size = 23, borderWidth = 6;
 
 	Vec2 position, velocity, acceleration, direction, prevPosition;
-	int hp = 100, armor = 0, money = 16000;
+	int hp = 100, armor = 100, money = 16000;
 	int side = PlayerSide::T;
 	int kill = 0, death = 0, assist = 0, damageInflicted = 0;
-	bool playable = true, helmet = false;
+	bool playable = true, helmet = true;
 	std::array<std::shared_ptr<Weapon>, 3> weapons;
 	int weaponSlot = 0;
 	std::string name;
