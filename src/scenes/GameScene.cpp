@@ -159,7 +159,7 @@ void GameScene::render() {
 	SDL_SetRenderTarget(renderer, texture);
 
 	match->map->render();
-	match->map->render_visible_area(camera->target, match->players, true);
+	match->map->render_visible_area(camera->target, match->players);
 
 	SDL_SetRenderTarget(renderer, nullptr);
 
