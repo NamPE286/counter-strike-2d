@@ -1,5 +1,6 @@
 #include "PlayerAI.hpp"
 
+#include <iostream>
 #include <algorithm>
 #include <cmath>
 #include <map>
@@ -188,9 +189,10 @@ PlayerAI::PlayerAI(Match *match, Player *p):
 	match(match), p(p)
 {
 	auto *tile = match->map->get_tile((int)p->position.x, (int)p->position.y);
+	auto pos = match->map->get_random_position();
 
 	align_position();
-	move_to(21, 46);
+	move_to((float)pos.first, (float)pos.second);
 }
 
 void PlayerAI::update() {

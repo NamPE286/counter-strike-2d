@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <tmx.h>
+#include <utility>
 #include <vector>
 
 #include "../behaviours/MonoBehaviour.hpp"
@@ -26,11 +27,11 @@ public:
 	std::string name;
 	int w = 0, h = 0;
 
-	Map(SDL_Renderer* renderer, std::string filePath);
+	Map(SDL_Renderer *renderer, std::string filePath);
 	~Map();
 
 	void render();
-	void render_visible_area(Player* p, std::vector<Player*> &players, bool renderAll = false, bool renderLine = false);
+	void render_visible_area(Player *p, std::vector<Player *> &players, bool renderAll = false, bool renderLine = false);
 	void collision_handler(Player *p);
 	int distance(float originX, float originY, float angle, int length = INT_MAX, int step = 0);
 
@@ -38,4 +39,7 @@ public:
 	tmx_object *get_spawn(int side);
 	tmx_object *get_bombsite(int index);
 	tmx_object *get_callout(float x, float y);
+
+	tmx_object *get_random_callout();
+	std::pair<int, int> get_random_position();
 };

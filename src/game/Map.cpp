@@ -496,6 +496,69 @@ tmx_object *Map::get_callout(float x, float y) {
 	return nullptr;
 }
 
+tmx_object *Map::get_random_callout() {
+	auto *objgr = get_layer("Callout")->content.objgr;
+
+	if (!objgr || !objgr->head) {
+		return nullptr;
+	}
+
+	int count = 0;
+	auto *obj = objgr->head;
+
+	while (obj) {
+		count++;
+		obj = obj->next;
+	}
+
+	if (count == 0) {
+		return nullptr;
+	}
+
+	int randomIndex = rand() % count;
+
+	obj = objgr->head;
+
+	for (int i = 0; i < randomIndex; i++) {
+		obj = obj->next;
+	}
+
+	return obj;
+}
+
+std::pair<int, int> Map::get_random_position() {
+	auto *obj = get_random_callout();
+
+	if (!obj) {
+		return { 0, 0 };
+	}
+
+	int x = static_cast<int>(obj->x);
+	int y = static_cast<int>(obj->y);
+	int width = static_cast<int>(obj->width);
+	int height = static_cast<int>(obj->height);
+
+	int randomX = x + (rand() % width);
+	int randomY = y + (rand() % height);
+
+	tmx_tile *tile = get_tile(randomX, randomY);
+
+	int attempts = 0;
+	while (tile && tile->collision && attempts < 10) {
+		randomX = x + (rand() % width);
+		randomY = y + (rand() % height);
+		tile = get_tile(randomX, randomY);
+		attempts++;
+	}
+
+	if (tile && tile->collision) {
+		randomX = x + width / 2;
+		randomY = y + height / 2;
+	}
+
+	return { randomX / map->tile_width, randomY / map->tile_height };
+}
+
 bool Map::RayIntersectsRect(float originX, float originY, float dirX, float dirY, const SDL_Rect &rect, float &tEnter, float &tExit) {
 	float tMin = (rect.x - originX) / dirX;
 	float tMax = ((rect.x + rect.w) - originX) / dirX;

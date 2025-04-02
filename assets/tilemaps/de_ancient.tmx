@@ -328,7 +328,7 @@
   <object id="27" name="B" x="2242" y="1440" width="158.333" height="95.3333"/>
   <object id="76" name="A" x="1024" y="1120.5" width="225" height="127.5"/>
  </objectgroup>
- <objectgroup id="3" name="Callout" visible="0">
+ <objectgroup id="3" name="Callout">
   <object id="7" name="T Start" x="1504" y="2114.33" width="192" height="348"/>
   <object id="8" name="Tunnel" x="1697.33" y="2176.33" width="414.667" height="64"/>
   <object id="9" name="Water" x="2112.67" y="2049" width="94" height="254.667"/>
@@ -371,11 +371,11 @@
   <object id="71" name="CT Start" x="1025.33" y="961.333" width="159.667" height="64.6667"/>
   <object id="72" name="Bombsite A" x="1023" y="1120.5" width="320" height="160.5"/>
   <object id="73" name="Bombsite A" x="705" y="960" width="318" height="415"/>
-  <object id="74" name="Bombsite A" x="1022" y="1282" width="226" height="94"/>
+  <object id="74" name="Bombsite A" x="1056" y="1282" width="192" height="94"/>
   <object id="75" name="CT Start" x="1090" y="865" width="94" height="95"/>
-  <object id="115" name="Middle" x="1312.5" y="1505" width="161" height="94"/>
-  <object id="116" name="Side Hall" x="1057.5" y="1471" width="254" height="192"/>
-  <object id="117" name="Side Hall" x="1087.5" y="1377" width="97" height="93"/>
+  <object id="115" name="Middle" x="1282.5" y="1505" width="191" height="94"/>
+  <object id="116" name="Side Hall" x="1057.5" y="1471" width="222" height="192"/>
+  <object id="117" name="Side Hall" x="1118.5" y="1377" width="97" height="93"/>
   <object id="118" name="Main Hall" x="736.5" y="1375" width="96" height="96"/>
   <object id="119" name="Main Hall" x="672.5" y="1472" width="64" height="64"/>
   <object id="120" name="Main Hall" x="735.5" y="1472" width="255" height="287"/>
