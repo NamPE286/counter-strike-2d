@@ -96,13 +96,13 @@ void HUD::update() {
 	armorText->set_content(std::to_string(player->armor));
 
 	if (player->weapons[0] != nullptr) {
-		primaryGun->set_content(mp[player->weapons[0]->name]);
+		primaryGun->set_content(std::string{ player->weapons[0]->symbol });
 	} else {
 		primaryGun->set_content("");
 	}
 
 	if (player->weapons[0] != nullptr) {
-		secondaryGun->set_content(mp[player->weapons[1]->name]);
+		secondaryGun->set_content(std::string{ player->weapons[1]->symbol });
 	} else {
 		secondaryGun->set_content("");
 	}

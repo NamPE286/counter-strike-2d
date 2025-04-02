@@ -39,6 +39,7 @@ public:
 	float baseDamage = 25.0f, armorPenetration = 0.85f, taggingPower = 0.0f, headshotMultiplier = 1.0f, range = 50;
 	int ammo = -1, reserveAmmo = -1;
 	int price = 0, mobility = 250, killReward = 1500;
+	char symbol = '-';
 
 	Weapon(SDL_Renderer *renderer, std::string name, Player *owner, GameScene *scene);
 

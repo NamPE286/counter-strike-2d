@@ -155,6 +155,7 @@ Weapon::Weapon(SDL_Renderer *renderer, std::string name, Player *owner, GameScen
 	if (name == "Knife") {
 		drawSound = Audio::loadWAV("assets/weapons/knife/knife_deploy1.wav");
 		firingSound = Audio::loadWAV("assets/weapons/knife/knife_slash1.wav");
+		symbol = 'M';
 	} else if (name == "AK-47") {
 		magSize = 30, mobility = 215, range = 1000, killReward = 300, price = 2700;
 		baseDamage = 36.0f, armorPenetration = 0.775f, taggingPower = 0.6f,
@@ -162,6 +163,7 @@ Weapon::Weapon(SDL_Renderer *renderer, std::string name, Player *owner, GameScen
 			fireRate = 100.0f, reloadTime = 2400.0f;
 		automatic = true;
 		ammo = 30, reserveAmmo = reserveAmmoBase = 90;
+		symbol = 'A';
 
 		drawSound = Audio::loadWAV("assets/weapons/ak47/ak47_draw.wav");
 		firingSound = Audio::loadWAV("assets/weapons/ak47/ak47_01.wav");
@@ -180,6 +182,7 @@ Weapon::Weapon(SDL_Renderer *renderer, std::string name, Player *owner, GameScen
 			fireRate = 50.0f, reloadTime = 2300.0f;
 		automatic = false;
 		ammo = 20, reserveAmmo = reserveAmmoBase = 120;
+		symbol = 'K';
 
 		drawSound = Audio::loadWAV("assets/weapons/glock18/glock_draw.wav");
 		firingSound = Audio::loadWAV("assets/weapons/glock18/glock_01.wav");
