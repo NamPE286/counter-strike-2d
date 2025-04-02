@@ -110,7 +110,7 @@ void Weapon::play_draw_sound() {
 		}
 
 		pullingOut = false;
-		});
+	});
 
 	t.detach();
 }
@@ -202,6 +202,8 @@ void Weapon::equip(bool playSound) {
 
 	if (playSound) {
 		play_draw_sound();
+	} else {
+		pullingOut = false;
 	}
 }
 

@@ -49,6 +49,10 @@ void Player::set_position(Vec2 newPos) {
 }
 
 void Player::take_damage(Weapon *w, bool headshot) {
+	if (w->owner->side == side && !playable) {
+		return;
+	}
+
 	if (w->name == "Knife") {
 		headshot = false;
 	}
@@ -79,7 +83,7 @@ void Player::take_damage(Weapon *w, bool headshot) {
 			if (armor > 0 && helmet) {
 				Mix_PlayChannel(-1, Audio::headshot_armor_dink(), 0);
 			} else {
-				Mix_PlayChannel(-1, Audio::headshot_armor_dink(), 0);
+				Mix_PlayChannel(-1, Audio::headshot_no_armor(), 0);
 			}
 		} else {
 			if (armor > 0) {
@@ -251,6 +255,11 @@ Player::~Player() {
 }
 
 void Player::update() {
+	if (hp == 0) {
+		stop_movement();
+		stop_firing();
+	}
+
 	update_position();
 
 	Bullet bullet(renderer);
@@ -433,10 +442,6 @@ void Player::fire() {
 }
 
 void Player::stop_firing() {
-	if (hp == 0) {
-		return;
-	}
-
 	weapons[weaponSlot]->stop_firing();
 }
 

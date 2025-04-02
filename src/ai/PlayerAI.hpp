@@ -27,6 +27,7 @@ class PlayerAI {
 	void align_position();
 	void movement_thread_handler();
 	void attack_thread_handler();
+	void stop();
 	bool can_target(Player *i);
 	bool can_shoot(Player *i);
 

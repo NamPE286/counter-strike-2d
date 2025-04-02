@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <vector>
 
 #include "../ai/PlayerAI.hpp"
 #include "../behaviours/MonoBehaviour.hpp"
@@ -13,7 +14,7 @@ class GameScene : public MonoBehaviour {
 	SDL_Texture *texture = nullptr;
 	PlayerCamera *camera = nullptr;
 	HUD *hud = nullptr;
-	PlayerAI *ai = nullptr;
+	std::vector<PlayerAI*> AIs;
 
 public:
 	Player *self = nullptr;

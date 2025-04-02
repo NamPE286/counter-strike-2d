@@ -143,6 +143,17 @@ void HUD::update_callout(std::string s) {
 void HUD::render() {
 	const auto keyboard = SDL_GetKeyboardState(0);
 
+	miniScoreboard->render();
+	alert->render();
+	
+	if (keyboard[SDL_SCANCODE_TAB]) {
+		scoreboard->render();
+	}
+
+	if (match->phase == Phase::POST_ROUND) {
+		announcer->render(player->side == match->winner);
+	}
+
 	if (player->hp == 0) {
 		return;
 	}
@@ -172,12 +183,6 @@ void HUD::render() {
 	knifeBindText->render();
 	weaponNameText->render();
 	calloutText->render();
-	miniScoreboard->render();
-	alert->render();
-
-	if (match->phase == Phase::POST_ROUND) {
-		announcer->render(player->side == match->winner);
-	}
 
 	if (player->armor > 0) {
 		armorText->render();
@@ -185,9 +190,5 @@ void HUD::render() {
 		if (player->helmet) {
 			SDL_RenderFillRect(renderer, &helmetRect);
 		}
-	}
-
-	if (keyboard[SDL_SCANCODE_TAB]) {
-		scoreboard->render();
 	}
 }

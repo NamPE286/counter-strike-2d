@@ -1,8 +1,8 @@
 #include "PlayerAI.hpp"
 
-#include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <map>
 #include <queue>
 #include <random>
@@ -58,8 +58,6 @@ void PlayerAI::move(int x, int y) {
 }
 
 void PlayerAI::move_to(float x, float y) {
-	std::cout << p->name << " is moving to " << x << ' ' << y << '\n';
-
 	pathDest = Vec2(x * match->map->map->tile_width + match->map->map->tile_width / 2, y * match->map->map->tile_height + match->map->map->tile_height / 2);
 
 	auto tmp = pathDest;
@@ -85,8 +83,6 @@ void PlayerAI::move_to(float x, float y) {
 	}
 
 	movingOnPath = false;
-
-	std::cout << p->name << " stopped moving to " << x << ' ' << y << '\n';
 }
 void PlayerAI::align_position() {
 	p->set_position(Vec2(
@@ -97,6 +93,10 @@ void PlayerAI::align_position() {
 
 void PlayerAI::movement_thread_handler() {
 	while (!stopped) {
+		if (match->phase == Phase::BUY) {
+			continue;
+		}
+
 		if (movingOnPath || state != AIState::WANDERING) {
 			continue;
 		}
@@ -105,8 +105,13 @@ void PlayerAI::movement_thread_handler() {
 
 		//move_to((float)pos.first, (float)pos.second);
 
-		move_to(55, 25);
-		SDL_Delay(3000);
+		if (match->round == 1) {
+			move_to(48, 52);
+		} else if (match->round == 2) {
+			move_to(74, 47);
+		}
+
+		SDL_Delay(1500);
 	}
 }
 
@@ -128,7 +133,6 @@ void PlayerAI::attack_thread_handler() {
 				SDL_Delay(1000);
 
 				if (!can_target(target)) {
-					std::cout << p->name << " stop targetting " << target->name << '\n';
 					target = nullptr;
 				}
 			}
@@ -154,8 +158,6 @@ void PlayerAI::attack_thread_handler() {
 				movingOnPath = moving = false;
 				state = AIState::ATTACKING;
 
-				std::cout << p->name << " is targetting " << target->name << '\n';
-
 				p->set_fire_target(&target->position);
 				p->stop_movement();
 				align_position();
@@ -172,6 +174,13 @@ void PlayerAI::attack_thread_handler() {
 			}
 		}
 	}
+}
+
+void PlayerAI::stop() {
+	p->stop_movement();
+	p->stop_firing();
+	align_position();
+	moving = movingOnPath = false;
 }
 
 bool PlayerAI::can_target(Player *i) {
@@ -236,6 +245,9 @@ std::vector<Vec2> PlayerAI::get_path(float x, float y) {
 	pq.push({ { (int)p->position.x, (int)p->position.y }, { 0, 0 }, 0, 0 });
 	visited.emplace((int)p->position.x, (int)p->position.y);
 
+	auto rng = std::default_random_engine{};
+	std::shuffle(dirs.begin(), dirs.end(), rng);
+
 	while (!pq.empty()) {
 		Item cur = pq.top();
 		auto &[pos, dir, turn, step] = cur;
@@ -244,9 +256,6 @@ std::vector<Vec2> PlayerAI::get_path(float x, float y) {
 		if (pos == end) {
 			break;
 		}
-
-		auto rng = std::default_random_engine{};
-		std::shuffle(dirs.begin(), dirs.end(), rng);
 
 		for (auto &i : dirs) {
 			auto &[x, y] = i;
@@ -306,14 +315,19 @@ PlayerAI::~PlayerAI() {
 
 	movementThread.join();
 	attackThread.join();
-
 }
 
 void PlayerAI::update() {
+	if (match->phase == Phase::BUY) {
+		stop();
+		state = AIState::WANDERING;
+	}
+
 	if ((dest + p->position * -1).magnitude() < 1.0f) {
 		p->stop_movement();
+		p->stop_firing();
 		align_position();
-		p->position = dest;
 		moving = false;
+		p->position = dest;
 	}
 }

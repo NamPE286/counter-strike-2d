@@ -22,24 +22,36 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	match->add_player(new Player(
 		renderer,
 		this,
-		"Me",
+		"T BOT A",
 		PlayerSide::T,
 		Vec2(0, 0),
 		true));
-	match->add_player(new Player(
-		renderer,
-		this,
-		"BOT A",
-		PlayerSide::CT,
-		Vec2(0, 0),
-		false));
-	match->add_player(new Player(
-		renderer,
-		this,
-		"BOT B",
-		PlayerSide::CT,
-		Vec2(0, 0),
-		false));
+
+	for (char c = 'B'; c <= 'B'; c++) {
+		std::string name = "T BOT ";
+		name += c;
+
+		match->add_player(new Player(
+			renderer,
+			this,
+			name,
+			PlayerSide::T,
+			Vec2(0, 0),
+			false));
+	}
+
+	for (char c = 'A'; c <= 'B'; c++) {
+		std::string name = "CT BOT ";
+		name += c;
+
+		match->add_player(new Player(
+			renderer,
+			this,
+			name,
+			PlayerSide::CT,
+			Vec2(0, 0),
+			false));
+	}
 
 	self = match->players[0];
 	hud = new HUD(renderer, self, match);
@@ -47,14 +59,20 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	Audio::dest = &self->position;
 
 	match->reset();
-	ai = new PlayerAI(match, self);
+
+	for (size_t i = 0; i < match->players.size(); i++) {
+		AIs.push_back(new PlayerAI(match, match->players[i]));
+	}
 }
 
 GameScene::~GameScene() {
 	delete hud;
 	delete match;
 	delete camera;
-	delete ai;
+
+	for (auto *i : AIs) {
+		delete i;
+	}
 
 	SDL_DestroyTexture(texture);
 }
@@ -96,7 +114,10 @@ void GameScene::update() {
 
 	camera->update();
 	hud->update();
-	ai->update();
+	
+	for (auto *i : AIs) {
+		i->update();
+	}
 
 	auto *obj = match->map->get_callout(self->position.x, self->position.y);
 
@@ -148,7 +169,7 @@ void GameScene::render() {
 	SDL_SetRenderTarget(renderer, texture);
 
 	match->map->render();
-	match->map->render_visible_area(camera->target, match->players, false);
+	match->map->render_visible_area(camera->target, match->players, true);
 
 	SDL_SetRenderTarget(renderer, nullptr);
 

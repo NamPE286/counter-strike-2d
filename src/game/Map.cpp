@@ -518,7 +518,6 @@ tmx_object *Map::get_callout(float x, float y) {
 
 tmx_object *Map::get_random_callout() {
 	auto *objgr = get_layer("Callout")->content.objgr;
-	srand(time(0));
 
 	if (!objgr || !objgr->head) {
 		return nullptr;
@@ -536,20 +535,24 @@ tmx_object *Map::get_random_callout() {
 		return nullptr;
 	}
 
-	int randomIndex = rand() % count;
+	int randomIndex = Utils::getRandomRange(0, count - 1);
 
 	obj = objgr->head;
 
 	for (int i = 0; i < randomIndex; i++) {
+		if (obj == nullptr) {
+			break;
+		}
+
 		obj = obj->next;
 	}
 
 	return obj;
 }
 
+
 std::pair<int, int> Map::get_random_position() {
 	auto *obj = get_random_callout();
-	srand(time(0));
 
 	if (!obj) {
 		return { 0, 0 };
@@ -560,15 +563,15 @@ std::pair<int, int> Map::get_random_position() {
 	int width = static_cast<int>(obj->width);
 	int height = static_cast<int>(obj->height);
 
-	int randomX = x + (rand() % width);
-	int randomY = y + (rand() % height);
+	int randomX = Utils::getRandomRange(x, x + width);
+	int randomY = Utils::getRandomRange(y, y + height);
 
 	tmx_tile *tile = get_tile(randomX, randomY);
 
 	int attempts = 0;
 	while (tile && tile->collision && attempts < 10) {
-		randomX = x + (rand() % width);
-		randomY = y + (rand() % height);
+		randomX = Utils::getRandomRange(x, x + width);
+		randomY = Utils::getRandomRange(y, y + height);
 		tile = get_tile(randomX, randomY);
 		attempts++;
 	}

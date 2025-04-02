@@ -25,7 +25,6 @@ class Weapon : public MonoBehaviour {
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	std::queue<Bullet> bulletQueue;
 	GameScene *target = nullptr;
-	Player *owner = nullptr;
 	Vec2 *fireTarget = nullptr;
 
 	void fixed_update_fire();
@@ -35,6 +34,7 @@ class Weapon : public MonoBehaviour {
 	void play_reload_sound();
 	void add_bullet(int x, int y, float angle, int range);
 public:
+	Player *owner = nullptr;
 	std::string name = "Knife";
 	float baseDamage = 25.0f, armorPenetration = 0.85f, taggingPower = 0.0f, headshotMultiplier = 1.0f, range = 50;
 	int ammo = -1, reserveAmmo = -1;
