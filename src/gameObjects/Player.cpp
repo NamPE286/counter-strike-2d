@@ -74,7 +74,7 @@ void Player::take_damage(Weapon *w, bool headshot) {
 	hp = std::max(0, hp - (int)dmg);
 
 	if (hp == 0) {
-		if (playable) {
+		if (w->owner->playable) {
 			Mix_PlayChannel(-1, Audio::kill(), 0);
 		}
 
