@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../behaviours/MonoBehaviour.hpp"
+#include "../geometry/Vec2.hpp"
 #include "Bullet.hpp"
 
 class GameScene;
@@ -25,6 +26,7 @@ class Weapon : public MonoBehaviour {
 	std::queue<Bullet> bulletQueue;
 	GameScene *target = nullptr;
 	Player *owner = nullptr;
+	Vec2 *fireTarget = nullptr;
 
 	void fixed_update_fire();
 	void fixed_update_reload();
@@ -49,6 +51,7 @@ public:
 	void fixed_update();
 	void render();
 	void reset();
+	void set_target(Vec2 *t);
 
 	bool poll_bullets(Bullet &bullet);
 };

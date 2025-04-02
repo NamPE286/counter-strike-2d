@@ -68,10 +68,10 @@ public:
 	void stop_movement_x();
 	void stop_movement_y();
 	void switch_side();
+	void set_target(Vec2 *t);
 
 	bool collide(Bullet bullet);
-	
-	float distance(Bullet bullet);
+	float distance(Bullet bullet) const;
 
 	Weapon *get_weapon() const;
 };

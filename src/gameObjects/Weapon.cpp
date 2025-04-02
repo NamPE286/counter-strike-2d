@@ -23,6 +23,10 @@ void Weapon::fixed_update_fire() {
 	int x = Mouse::x, y = Mouse::y;
 	float variance = 0.0f;
 
+	if (fireTarget) {
+		x = (int)fireTarget->x, y = (int)fireTarget->y;
+	}
+
 	if (owner->velocity == Vec2(0, 0)) {
 		variance = standingInaccuracy;
 	} else {
@@ -274,6 +278,10 @@ void Weapon::reset() {
 	reserveAmmo = reserveAmmoBase;
 
 	stop_firing();
+}
+
+void Weapon::set_target(Vec2 *t) {
+	fireTarget = t;
 }
 
 bool Weapon::poll_bullets(Bullet &bullet) {

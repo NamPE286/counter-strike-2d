@@ -47,7 +47,6 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	Audio::dest = &self->position;
 
 	match->reset();
-
 	ai = new PlayerAI(match, self);
 }
 

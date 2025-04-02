@@ -441,6 +441,26 @@ int Map::distance(float originX, float originY, float angle, int length, int ste
 	return length;
 }
 
+bool Map::is_visible(Vec2 src, Vec2 dest) {
+	float dx = dest.x - src.x;
+	float dy = dest.y - src.y;
+	float length = sqrt(dx * dx + dy * dy);
+	float stepX = dx / length;
+	float stepY = dy / length;
+
+	for (float t = 0; t <= length; t += 1.0f) {
+		int x = static_cast<int>(src.x + stepX * t);
+		int y = static_cast<int>(src.y + stepY * t);
+
+		tmx_tile *tile = get_tile(x, y);
+		if (tile && tile->collision) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 tmx_object *Map::get_spawn(int side) {
 	auto *objgr = get_layer("Spawn")->content.objgr;
 	auto *obj = objgr->head;

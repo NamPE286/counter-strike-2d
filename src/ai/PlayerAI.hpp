@@ -10,18 +10,19 @@
 
 class PlayerAI {
 	Match *match = nullptr;
-	Player *p = nullptr;
+	Player *p = nullptr, *target = nullptr;
 	Vec2 dest = Vec2(-1, -1);
-	std::thread t;
+	std::thread movementThread, attackThread;
 	bool moving = false, movingOnPath = false;
 	bool stopped = false;
 
-	std::pair<int, int> get_direction(Vec2 a, Vec2 b);
 	void move(int x, int y);
 	void move_to(float x, float y);
 	void align_position();
-	void logic_loop();
+	void movement_thread_handler();
+	void attack_thread_handler();
 
+	std::pair<int, int> get_direction(Vec2 a, Vec2 b);
 	std::vector<Vec2> optimize_path(std::vector<Vec2> &v);
 	std::vector<Vec2> get_path(float x, float y);
 

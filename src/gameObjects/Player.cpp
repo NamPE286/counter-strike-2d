@@ -148,6 +148,12 @@ void Player::switch_side() {
 	}
 }
 
+void Player::set_target(Vec2 *t) {
+	for (size_t i = 0; i < 3; i++) {
+		weapons[i]->set_target(t);
+	}
+}
+
 bool Player::collide(Bullet bullet) {
 	SDL_Rect rect = {
 		(int)position.x - size / 2,
@@ -190,7 +196,7 @@ bool Player::collide(Bullet bullet) {
 	return false;
 }
 
-float Player::distance(Bullet bullet) {
+float Player::distance(Bullet bullet) const {
 	float endX = static_cast<float>(bullet.x + bullet.length * cos(bullet.angle));
 	float endY = static_cast<float>(bullet.y + bullet.length * sin(bullet.angle));
 
@@ -218,6 +224,7 @@ float Player::distance(Bullet bullet) {
 
 	float dx = position.x - xx;
 	float dy = position.y - yy;
+
 	return sqrt(dx * dx + dy * dy);
 }
 

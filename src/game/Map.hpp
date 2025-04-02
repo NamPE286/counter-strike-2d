@@ -34,6 +34,7 @@ public:
 	void render_visible_area(Player *p, std::vector<Player *> &players, bool renderAll = false, bool renderLine = false);
 	void collision_handler(Player *p);
 	int distance(float originX, float originY, float angle, int length = INT_MAX, int step = 0);
+	bool is_visible(Vec2 src, Vec2 dest);
 
 	tmx_tile *get_tile(int x, int y);
 	tmx_object *get_spawn(int side);
