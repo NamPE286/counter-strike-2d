@@ -280,7 +280,7 @@ void Weapon::reset() {
 	stop_firing();
 }
 
-void Weapon::set_target(Vec2 *t) {
+void Weapon::set_fire_target(Vec2 *t) {
 	fireTarget = t;
 }
 

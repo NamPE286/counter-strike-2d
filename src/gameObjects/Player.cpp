@@ -148,9 +148,9 @@ void Player::switch_side() {
 	}
 }
 
-void Player::set_target(Vec2 *t) {
+void Player::set_fire_target(Vec2 *t) {
 	for (size_t i = 0; i < 3; i++) {
-		weapons[i]->set_target(t);
+		weapons[i]->set_fire_target(t);
 	}
 }
 

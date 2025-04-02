@@ -68,7 +68,9 @@ public:
 	void stop_movement_x();
 	void stop_movement_y();
 	void switch_side();
-	void set_target(Vec2 *t);
+
+	// If NULL is passed then default to mouse position
+	void set_fire_target(Vec2 *t);
 
 	bool collide(Bullet bullet);
 	float distance(Bullet bullet) const;

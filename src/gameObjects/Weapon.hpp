@@ -51,7 +51,9 @@ public:
 	void fixed_update();
 	void render();
 	void reset();
-	void set_target(Vec2 *t);
+
+	// If NULL is passed then default to mouse position
+	void set_fire_target(Vec2 *t);
 
 	bool poll_bullets(Bullet &bullet);
 };
