@@ -103,14 +103,7 @@ void PlayerAI::movement_thread_handler() {
 
 		auto pos = match->map->get_random_position();
 
-		//move_to((float)pos.first, (float)pos.second);
-
-		if (match->round == 1) {
-			move_to(48, 52);
-		} else if (match->round == 2) {
-			move_to(74, 47);
-		}
-
+		move_to((float)pos.first, (float)pos.second);
 		SDL_Delay(1500);
 	}
 }

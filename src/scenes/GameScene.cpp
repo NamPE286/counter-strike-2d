@@ -27,7 +27,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		Vec2(0, 0),
 		true));
 
-	for (char c = 'A'; c <= 'C'; c++) {
+	for (char c = 'A'; c <= 'E'; c++) {
 		std::string name = "CT BOT ";
 		name += c;
 
@@ -46,8 +46,6 @@ GameScene::GameScene(SDL_Renderer *renderer):
 	Audio::dest = &self->position;
 
 	match->reset();
-
-	return;
 
 	for (size_t i = 1; i < match->players.size(); i++) {
 		AIs.push_back(new PlayerAI(match, match->players[i]));
