@@ -9,6 +9,7 @@
 #include "../ui/Text.hpp"
 #include "Alert.hpp"
 #include "Announcer.hpp"
+#include "Killfeed.hpp"
 #include "MiniScoreboard.hpp"
 #include "Scoreboard.hpp"
 
@@ -27,11 +28,13 @@ class HUD : public MonoBehaviour {
 public:
 	Alert *alert = nullptr;
 	Announcer *announcer = nullptr;
+	Killfeed *killfeed = nullptr;
 
 	HUD(SDL_Renderer *renderer, Player *player, Match *match);
 	~HUD();
 
 	void update();
+	void fixed_update();
 	void update_callout(std::string s);
 	void render();
 };

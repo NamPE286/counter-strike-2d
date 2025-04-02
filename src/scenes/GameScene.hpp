@@ -13,12 +13,12 @@
 class GameScene : public MonoBehaviour {
 	SDL_Texture *texture = nullptr;
 	PlayerCamera *camera = nullptr;
-	HUD *hud = nullptr;
 	std::vector<PlayerAI*> AIs;
 
 public:
 	Player *self = nullptr;
 	Match *match = nullptr;
+	HUD *hud = nullptr;
 
 	GameScene(SDL_Renderer *renderer);
 	~GameScene();

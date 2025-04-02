@@ -287,11 +287,14 @@ void Player::update() {
 			}
 
 			if (p->collide(bullet)) {
-				p->take_damage(weapons[weaponSlot].get(), p->distance(bullet) < 3.7f);
+				bool headshot = p->distance(bullet) < 3.7f;
+				p->take_damage(weapons[weaponSlot].get(), headshot);
 
 				if (p->hp == 0) {
 					money += weapons[weaponSlot]->killReward;
 					kill++;
+
+					target->hud->killfeed->add(this, p, headshot);
 				}
 			}
 		}

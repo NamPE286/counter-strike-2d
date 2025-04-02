@@ -64,6 +64,7 @@ HUD::HUD(SDL_Renderer *renderer, Player *player, Match *match):
 	miniScoreboard = new MiniScoreboard(renderer, match);
 	alert = new Alert(renderer, color);
 	announcer = new Announcer(renderer, color);
+	killfeed = new Killfeed(renderer);
 }
 
 HUD::~HUD() {
@@ -84,11 +85,6 @@ HUD::~HUD() {
 }
 
 void HUD::update() {
-	std::map<std::string, std::string> mp = {
-		{"AK-47", "A"},
-		{"Glock-18", "K"}
-	};
-
 	ammoText->set_content(std::to_string(player->get_weapon()->ammo));
 	reserveAmmoText->set_content(std::to_string(player->get_weapon()->reserveAmmo));
 	moneyText->set_content("$" + std::to_string(player->money));
@@ -136,6 +132,10 @@ void HUD::update() {
 	scoreboard->update();
 }
 
+void HUD::fixed_update() {
+	killfeed->fixed_update();
+}
+
 void HUD::update_callout(std::string s) {
 	calloutText->set_content(s);
 }
@@ -145,7 +145,8 @@ void HUD::render() {
 
 	miniScoreboard->render();
 	alert->render();
-	
+	killfeed->render();
+
 	if (keyboard[SDL_SCANCODE_TAB]) {
 		scoreboard->render();
 	}

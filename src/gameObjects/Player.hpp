@@ -26,7 +26,6 @@ class Player : public MonoBehaviour {
 		{ SDL_SCANCODE_S, Vec2(0, 1) },
 		{ SDL_SCANCODE_D, Vec2(1, 0) }
 	};
-	SDL_Color color = { 0, 0, 0, 0 };
 	GameScene *target = nullptr;
 
 	float maxSpeed = MAX_SPEED;
@@ -36,6 +35,7 @@ class Player : public MonoBehaviour {
 	void change_weapon(int slot);
 
 public:
+	SDL_Color color = { 0, 0, 0, 0 };
 	const float MAX_SPEED = 0.15f;
 	const float MAX_ACCELERATION = 0.0005f;
 	bool keyboard[SDL_NUM_SCANCODES + 1] = {};
