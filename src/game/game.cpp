@@ -8,9 +8,9 @@
 #include "../common.h"
 #include "../managers/Audio.hpp"
 #include "../managers/Font.hpp"
+#include "../managers/Scene.hpp"
 #include "../managers/Time.hpp"
 #include "../scenes/GameScene.hpp"
-#include "../managers/Scene.hpp"
 
 Game::Game() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
