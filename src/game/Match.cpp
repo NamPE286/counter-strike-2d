@@ -53,7 +53,12 @@ void Match::T_win(int rewardType) {
 	}
 
 	phase = Phase::POST_ROUND;
-	timeLeft = (float)postRoundTime;
+	
+	if (scores.first == maxRound / 2 + 1) {
+		timeLeft = 9999;
+	} else {
+		timeLeft = (float)postRoundTime;
+	}
 }
 
 void Match::CT_win(int rewardType) {
@@ -76,7 +81,12 @@ void Match::CT_win(int rewardType) {
 	}
 
 	phase = Phase::POST_ROUND;
-	timeLeft = (float)postRoundTime;
+
+	if (scores.second == maxRound / 2 + 1) {
+		timeLeft = 9999;
+	} else {
+		timeLeft = (float)postRoundTime;
+	}
 }
 
 void Match::start() {

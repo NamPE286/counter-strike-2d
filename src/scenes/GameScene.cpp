@@ -27,7 +27,7 @@ GameScene::GameScene(SDL_Renderer *renderer):
 		Vec2(0, 0),
 		true));
 
-	for (char c = 'A'; c <= 'E'; c++) {
+	for (char c = 'A'; c <= 'C'; c++) {
 		std::string name = "CT BOT ";
 		name += c;
 
@@ -36,6 +36,19 @@ GameScene::GameScene(SDL_Renderer *renderer):
 			this,
 			name,
 			PlayerSide::CT,
+			Vec2(0, 0),
+			false));
+	}
+
+	for (char c = 'B'; c <= 'C'; c++) {
+		std::string name = "CT BOT ";
+		name += c;
+
+		match->add_player(new Player(
+			renderer,
+			this,
+			name,
+			PlayerSide::T,
 			Vec2(0, 0),
 			false));
 	}
